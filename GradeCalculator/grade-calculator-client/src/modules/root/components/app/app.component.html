@@ -1,0 +1,17 @@
+<mat-toolbar color="primary">
+  <span class="title" (click)="routeToHome()">Grade Calculator</span>
+
+  <span class="example-spacer"></span>
+
+  <!-- @if(algorithmEventClient.connectedState$ | async;)
+  {
+  <mat-icon class="connected" fontIcon="bolt"></mat-icon>
+  <div>Connected</div>
+  }
+  @else {
+  <mat-icon class="disconnected" fontIcon="bolt"></mat-icon>
+  <div>Disconnected</div>
+  } -->
+</mat-toolbar>
+
+<router-outlet></router-outlet>
