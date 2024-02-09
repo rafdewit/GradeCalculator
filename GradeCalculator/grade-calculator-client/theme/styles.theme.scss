@@ -1,0 +1,50 @@
+@use "@angular/material" as mat;
+@use "custom-palettes.scss" as custom-palettes;
+@use "custom-material-palettes.scss" as custom-material-palettes;
+@use "style-scrollbar.theme.scss" as scrollbar;
+@use "../src/modules/common-module/theme/theme-selector/theme-selector.theme.scss" as theme-selector;
+@use "../src/modules/common-module/grid/grid-tile-blob/grid-tile-blob.theme.scss" as grid-tile-blob;
+@include mat.core();
+
+
+// Define a light theme
+$blue-primary: mat.define-palette(custom-material-palettes.$custom-blue, 400);
+$light-accent: mat.define-palette(custom-material-palettes.$custom-orange, A200, A100, A400);
+$light-theme: mat.define-light-theme((
+ color: (
+   primary: $blue-primary,
+   accent: $light-accent,
+ ),
+ density: -1,
+));
+
+// Define a dark theme
+$dark-accent: mat.define-palette(custom-material-palettes.$custom-red, A200, A100, A400);
+$dark-theme: mat.define-dark-theme((
+ color: (
+   primary: $blue-primary,
+   accent: $dark-accent,
+ ),
+ density: -1,
+));
+
+// mat.$theme-ignore-duplication-warnings: true;
+
+//Theming
+// @include mat.core-theme($light-theme);
+@include mat.all-component-themes($light-theme);
+
+@include scrollbar.theme(custom-palettes.$internal-theme);
+@include grid-tile-blob.theme(custom-palettes.$internal-theme);
+
+@include theme-selector.theme(custom-palettes.$dark-internal-theme, custom-palettes.$internal-theme);
+
+.dark-theme {
+    // @include mat.core-theme($dark-theme);
+    @include mat.all-component-themes($dark-theme);
+    @include scrollbar.theme(custom-palettes.$dark-internal-theme);
+    @include grid-tile-blob.theme(custom-palettes.$dark-internal-theme);
+    
+    color: white;
+    background-color: #303030;
+}

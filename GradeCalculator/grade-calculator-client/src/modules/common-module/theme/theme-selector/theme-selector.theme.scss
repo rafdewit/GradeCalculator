@@ -1,0 +1,31 @@
+@use "sass:map" as map;
+
+@mixin theme($dark-theme, $light-theme) {
+    .theme-list {
+        text-align: center;
+        padding: 10px;
+        margin: 0;
+        border-radius: 8px;
+
+        &.light-theme {
+            border: solid 2px map.get($light-theme, 4);
+            background: map.get($light-theme, 0);
+        }
+        &.dark-theme {
+            border: solid 2px map.get($dark-theme, 0);
+            background: map.get($dark-theme, 3);
+        }
+
+        .theme-option {
+            margin: 4px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+
+            .theme-text {
+                margin-left: 4px;
+            }
+        }
+    }
+}

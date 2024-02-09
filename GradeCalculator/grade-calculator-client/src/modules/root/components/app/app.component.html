@@ -1,17 +1,30 @@
-<mat-toolbar color="primary">
-  <span class="title" (click)="routeToHome()">Grade Calculator</span>
+<div class="grid-container">
 
-  <span class="example-spacer"></span>
+  <mat-toolbar color="primary">
+    <span class="title" (click)="routeToHome()">Grade Calculator</span>
+  
+    <span class="example-spacer"></span>
+  
+    @if(gradeHubClient.connectedState$ | async;)
+    {
+    <mat-icon class="connected" fontIcon="bolt"></mat-icon>
+    <div>Connected</div>
+    }
+    @else {
+    <mat-icon class="disconnected" fontIcon="bolt"></mat-icon>
+    <div>Disconnected</div>
+    }
+  
+  </mat-toolbar>
 
-  <!-- @if(algorithmEventClient.connectedState$ | async;)
-  {
-  <mat-icon class="connected" fontIcon="bolt"></mat-icon>
-  <div>Connected</div>
+  @if (gradeHubClient.connectedState$ | async) {
+    <div class="router-out">
+      <router-outlet></router-outlet>
+    </div>
+  } @else {
+  <div class="center-info">
+    Client is disconnected
+  </div>
   }
-  @else {
-  <mat-icon class="disconnected" fontIcon="bolt"></mat-icon>
-  <div>Disconnected</div>
-  } -->
-</mat-toolbar>
 
-<router-outlet></router-outlet>
+</div>

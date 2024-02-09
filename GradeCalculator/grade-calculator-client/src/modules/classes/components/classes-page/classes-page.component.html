@@ -1,1 +1,7 @@
-<p>classes-page works!</p>
+<mat-selection-list [multiple]="false">
+    @for (item of gradeStore.classes$ | async; track item) {
+    <mat-list-option [value]="item.id">
+        {{item.gradePeriods.length}}
+    </mat-list-option>
+    }
+</mat-selection-list>

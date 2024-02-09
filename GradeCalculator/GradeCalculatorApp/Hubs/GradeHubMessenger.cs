@@ -19,12 +19,12 @@ namespace GradeCalculatorApp.Hubs
 
         public async Task SendUpdatedStudentCollection(StudentCollection studentCollection)
         {
-            await _hubContext.Clients.All.SendAsync("studentcollectionupdate", studentCollection);
+            await _hubContext.Clients.All.SendAsync("studentcollectionupdated", studentCollection);
         }
 
         public async Task SendDeletedStudentCollection(string id)
         {
-            await _hubContext.Clients.All.SendAsync("studentcollectionupdate", id);
+            await _hubContext.Clients.All.SendAsync("studentcollectiondeleted", id);
         }
     }
 }

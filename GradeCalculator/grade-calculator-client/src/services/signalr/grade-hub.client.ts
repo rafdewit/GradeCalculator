@@ -7,7 +7,7 @@ import { StudentCollection } from "../dtos/student-collection.model";
 @Injectable({
     providedIn: 'root'
 })
-export class AlgorithmHubClient implements OnDestroy {
+export class GradeHubClient implements OnDestroy {
     private onDestroy$ = new Subject<void>();
 
     public connectedState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -19,7 +19,7 @@ export class AlgorithmHubClient implements OnDestroy {
         const connection: HubConnection = new HubConnectionBuilder()
             .withAutomaticReconnect(new RetryEveryFiveSeconds())
             .configureLogging(LogLevel.None)
-            .withUrl(environment.baseUrl + `hubs/algorithm`)
+            .withUrl(environment.baseUrl + `hubs/grades`)
             .build();  
 
         connection.onreconnected(() => {

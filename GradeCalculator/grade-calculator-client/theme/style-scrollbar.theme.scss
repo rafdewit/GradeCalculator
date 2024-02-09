@@ -1,0 +1,21 @@
+@use "sass:map" as map;
+
+@mixin theme($theme) {
+    .styled-scrollbars {
+        /* Foreground, Background */
+        padding-right: 8px;
+        scrollbar-color: map.get($theme, 10) map.get($theme, 5);
+    }
+    .styled-scrollbars::-webkit-scrollbar {
+        width: 10px; /* Mostly for vertical scrollbars */
+        height: 10px; /* Mostly for horizontal scrollbars */
+    }
+    .styled-scrollbars::-webkit-scrollbar-thumb {
+        /* Foreground */
+        background: map.get($theme, 10);
+    }
+    .styled-scrollbars::-webkit-scrollbar-track {
+        /* Background */
+        background: map.get($theme, 5);
+    }
+}

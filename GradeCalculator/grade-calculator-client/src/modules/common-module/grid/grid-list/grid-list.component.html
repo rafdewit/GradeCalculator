@@ -1,0 +1,9 @@
+<div class="grid-list-container styled-scrollbars">
+    <mat-grid-list [cols]="getCols()" rowHeight="200" class="styled-scrollbars">
+        @for (gridTileBlob of gridTileBlobs; track gridTileBlob) {
+            <mat-grid-tile>
+                <ng-container [ngTemplateOutlet]="gridTileBlob.root"></ng-container>
+            </mat-grid-tile>
+        }
+    </mat-grid-list>
+</div>

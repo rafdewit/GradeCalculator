@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { GradeStore } from 'src/services/stores/grade.store';
 
 @Component({
   selector: 'app-classes-page',
@@ -7,6 +8,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   styleUrl: './classes-page.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClassesPageComponent { 
+export class ClassesPageComponent {
+  constructor(public gradeStore: GradeStore) {
 
+  }
 }

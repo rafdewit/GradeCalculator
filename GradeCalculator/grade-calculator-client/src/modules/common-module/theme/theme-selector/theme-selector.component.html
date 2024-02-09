@@ -1,0 +1,24 @@
+@if(themeSelectorService.selectedTheme$ | async; as selectedTheme)
+{
+    <div>
+        <button (click)="isOpen = !isOpen" mat-icon-button cdkOverlayOrigin #trigger="cdkOverlayOrigin">
+            <mat-icon>format_color_fill</mat-icon>
+        </button>
+    
+        <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="trigger" [cdkConnectedOverlayOpen]="isOpen"
+            [cdkConnectedOverlayHasBackdrop]="true" (backdropClick)="backdropClick($event)">
+    
+            <div class="theme-list" [class]="selectedTheme.class" (click)="$event.stopPropagation()">
+                @for (theme of themeSelectorService.themes; track theme) {
+  <div (click)="selectTheme(theme)" class="theme-option">
+                    <mat-icon class="check-icon"
+                        [fontIcon]="selectedTheme.name === theme.name ? 'radio_button_checked' : 'radio_button_unchecked'">
+                    </mat-icon>
+                    
+                    <span class="theme-text">{{theme.name}}</span>
+                </div>
+}
+            </div>
+        </ng-template>
+    </div>
+}

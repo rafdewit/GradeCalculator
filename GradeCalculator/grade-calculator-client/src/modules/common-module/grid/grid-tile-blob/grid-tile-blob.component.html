@@ -1,0 +1,31 @@
+<div class="blob-container" (click)="emitClickRequest()">
+    <div class="grid-tile-blob" [ngClass]="colorClass" [class.success]="!colorClass" [class.clickable]="clickable">
+
+        <div class="header">
+            <h3>{{title}}</h3>
+    
+            <span>
+                @if(canEdit) { <mat-icon class="edit-icon" (click)="triggerEditRequest($event)">settings</mat-icon> }
+                @if(showMenu) { <mat-icon class="edit-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon> }
+            </span>
+    
+            <mat-menu #menu="matMenu">
+                <ng-content select="[menu-items]"></ng-content>
+            </mat-menu>
+        </div>
+        <div class="content">
+            <ng-content select="[content]"></ng-content>
+
+            @if(infoIcon) { <mat-icon>{{infoIcon}}</mat-icon> }
+            @if(info) { <div class="info">{{info}}</div> }
+
+            <div class="extra">
+                @if(extraText) { <span>{{extraText}}</span> }
+            </div>
+        </div>
+    
+        <div class="bottom">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>

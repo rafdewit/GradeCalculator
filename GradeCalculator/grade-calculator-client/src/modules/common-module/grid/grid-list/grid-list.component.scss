@@ -1,0 +1,9 @@
+:host {
+    height: 100%;
+    overflow: hidden;
+
+    .grid-list-container {
+        height: 100%;
+        overflow: auto;
+    }
+}

@@ -1,0 +1,20 @@
+@use "sass:map" as map;
+
+@mixin theme($theme) {
+    app-grid-tile-blob {
+        .grid-tile-blob {
+            background: map.get($theme, 2);
+            border-left: 7px solid map.get($theme, 12);
+
+            &.error {
+                border-left: 7px solid map.get($theme, error);
+            }
+            &.success {
+                border-left: 7px solid map.get($theme, succes);
+            }
+            &.warning {
+                border-left: 7px solid map.get($theme, warning);
+            }
+        }
+    }
+}

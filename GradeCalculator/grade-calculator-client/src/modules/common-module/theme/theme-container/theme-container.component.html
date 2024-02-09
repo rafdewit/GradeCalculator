@@ -1,0 +1,6 @@
+@if(themeSelectorService.selectedTheme$ | async; as selectedTheme)
+{
+    <div class="theme-container"  [class]="selectedTheme.class">
+        <ng-content></ng-content>
+    </div>
+}

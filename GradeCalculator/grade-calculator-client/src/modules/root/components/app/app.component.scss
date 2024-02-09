@@ -1,0 +1,39 @@
+:host {
+    height: 100%;
+    .grid-container {
+        display: flex;
+        height: 100%;
+        flex-direction: column;
+        mat-toolbar {
+            flex-shrink: 0;
+        }
+    
+        .title {
+            cursor: pointer;
+        }
+    
+        .example-spacer {
+            flex: 1 1 auto;
+        }
+    
+        .disconnected {
+            color: red;
+        }
+    
+        .connected {
+            color: green;
+        }
+
+        .router-out {
+            margin: 20px;
+        }
+
+        .center-info {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+    }
+}
