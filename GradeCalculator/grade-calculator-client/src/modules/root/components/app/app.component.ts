@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
 import { GradeHubClient } from 'src/services/signalr/grade-hub.client';
 
 @Component({
@@ -10,7 +11,7 @@ import { GradeHubClient } from 'src/services/signalr/grade-hub.client';
 export class AppComponent {
   title = 'grade-calculator-client';
 
-  constructor(private router: Router, public gradeHubClient: GradeHubClient) {
+  constructor(private router: Router, public gradeHubClient: GradeHubClient, public themeSelectorService: ThemeSelectorService) {
   }
 
   public routeToHome(): void {
