@@ -16,9 +16,9 @@ namespace GradeCalculatorApp.Controllers
 
         [HttpGet]
         [Route("")]
-        public IActionResult Get(string id)
+        public IActionResult Get(string? id = null)
         {
-            if(id == null)
+            if(string.IsNullOrEmpty(id))
             {
                 var gradeData = _gradeDataProvider.GetAll();
                 return Ok(gradeData);
