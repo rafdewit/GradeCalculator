@@ -1,0 +1,9 @@
+<div>
+    <div class="single-percentage">{{percentage | percentage}}</div>
+
+    <div class="progress-bar">
+        <div class="progress-bar-fill" [ngStyle]="{'width.%': percentage | percentageToHundred}"></div>
+    </div>
+    <!-- <progress style="width: 40px;" *ngIf="percentage !== null" max="100" [value]="percentage | percentageToHundred"></progress> -->
+    <!-- <mat-progress-bar [appProgressBarColor]="'#FF3613'" *ngIf="percentage !== null" mode="determinate" [value]="percentage | percentageToHundred"></mat-progress-bar> -->
+</div>

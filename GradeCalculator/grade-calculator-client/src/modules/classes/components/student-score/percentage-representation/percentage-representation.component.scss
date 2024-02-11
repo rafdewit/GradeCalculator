@@ -1,0 +1,14 @@
+:host {
+  display: block;
+
+  .progress-bar {
+    width: 40px;
+    height: 3px;
+    background-color: #777;
+  }
+  
+  .progress-bar-fill {
+    background-color: #5F5;
+    height: 100%; /* This is important */
+  }
+}

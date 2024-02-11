@@ -1,7 +1,7 @@
 <div class="multi-container" [class.root]="rootScore" [class.sub]="!rootScore">
     <div class="multi-score-title-container">
         <div class="multi-score-title" [class.root-score]="rootScore">{{multiInfo.multi.name}}:</div>
-        <div>{{multiInfo.percentage | percentage}}</div>
+        <app-percentage-representation [percentage]="multiInfo.percentage"></app-percentage-representation>
     </div>
 
     @for (single of multiInfo.singleConfigurations; track $index) {

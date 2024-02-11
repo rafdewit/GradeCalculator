@@ -13,19 +13,19 @@
                 Period: {{studentGradePeriodInfo.gradePeriod.name}}:
             </h2>
 
-            <div>
-                <div>{{ studentGradePeriodInfo.totalPercentage | percentage }}</div>
-                <mat-progress-bar mode="determinate"
-                    [value]="studentGradePeriodInfo.totalPercentage | percentageToHundred"></mat-progress-bar>
-            </div>
+            <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
         </div>
 
         @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
-        <app-single-score [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+            <div>
+                <app-single-score [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+            </div>
         }
 
         @for (multiInfo of studentGradePeriodInfo.studentMultiGradeInfos; track $index) {
-        <app-multi-score [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+            <div>
+                <app-multi-score [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+            </div>
         }
     </div>
     }

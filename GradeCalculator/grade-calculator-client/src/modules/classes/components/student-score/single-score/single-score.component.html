@@ -1,10 +1,7 @@
 <div class="single-container" [class.root]="rootScore" [class.sub]="!rootScore">
     <div [class.root-score]="rootScore" [class.sub-score]="!rootScore" class="single-title">{{singleInfo.single.name}}:</div>   
 
-    <div>
-        <div class="single-percentage">{{singleInfo.percentage | percentage}}</div>
-        <mat-progress-bar mode="determinate" [value]="singleInfo.percentage | percentageToHundred"></mat-progress-bar>
-    </div>
+    <app-percentage-representation [percentage]="singleInfo.percentage"></app-percentage-representation>
 
     <div>({{singleInfo.score?.score}}/{{singleInfo.single.totalScore}})</div>
 </div>

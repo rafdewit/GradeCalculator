@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { GradeCommonModule } from '../common-module/grade-common.module';
+import { ProgressBarColor } from 'src/services/directives/progress-bar-color';
 
 const routes: Routes = [
   { path: 'classes', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
