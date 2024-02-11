@@ -24,6 +24,6 @@
         public string Name { get; set; }
         public double Weight { get; set; }
         public IEnumerable<SingleGradeConfiguration> SingleGradeConfigurations { get; set; }
-        public IEnumerable<MultiGradeConfiguration> MultiGradeConfigurations { get; }
+        public IEnumerable<MultiGradeConfiguration> MultiGradeConfigurations { get; set; }
     }
 }

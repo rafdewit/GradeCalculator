@@ -1,9 +1,8 @@
 <ng-template #rootTemplate>
     <app-grid-tile-blob [title]="title" [clickable]="clickable" [canEdit]="canEdit" (editRequest)="editRequest.emit()" (clickRequest)="clickRequest.emit()"
         [extraText]="extraText" [info]="info" [infoIcon]="infoIcon" [showMenu]="showMenu" [colorClass]="colorClass">
-        <ng-content></ng-content>
 
-        <div content>
+        <div class="actual-content" content>
             <ng-content select="[content]"></ng-content>
         </div>
 

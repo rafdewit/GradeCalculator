@@ -66,15 +66,21 @@ namespace GradeCalculator.Tests
 
         private static IEnumerable<StudentSingleGrade> GenerateMultiGrades(MultiGradeConfiguration multi)
         {
-            foreach(var single in multi.SingleGradeConfigurations)
+            if(multi.SingleGradeConfigurations != null)
             {
-                yield return GenerateSingleGrade(single);
+                foreach (var single in multi.SingleGradeConfigurations)
+                {
+                    yield return GenerateSingleGrade(single);
+                }
             }
 
-            foreach(var innerMulti in multi.MultiGradeConfigurations)
+            if(multi.MultiGradeConfigurations != null)
             {
-                foreach (var item in GenerateMultiGrades(innerMulti))
-                    yield return item;
+                foreach (var innerMulti in multi.MultiGradeConfigurations)
+                {
+                    foreach (var item in GenerateMultiGrades(innerMulti))
+                        yield return item;
+                }
             }
         }
 
@@ -83,17 +89,36 @@ namespace GradeCalculator.Tests
             return new GradePeriod(
                 Guid.NewGuid().ToString(), 
                 name, 
-                GetMultiGradeConfigurations().ToList(),
-                GetSingleGradeConfigurations().ToList());
+                new List<MultiGradeConfiguration>() { GetDailyWorkMulti() },
+                GetExamSingleGradeConfigurations().ToList());
         }
 
-        private static IEnumerable<MultiGradeConfiguration> GetMultiGradeConfigurations()
+        private static MultiGradeConfiguration GetDailyWorkMulti()
         {
-            yield return new MultiGradeConfiguration()
+            return new MultiGradeConfiguration()
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Tests",
-                SingleGradeConfigurations = GetMultiSingleGradeConfigurations(_random.Next(3, 7)),
+                SingleGradeConfigurations = GetDailyWorkSingleGradeConfigurations().ToList(),
+                MultiGradeConfigurations = new List<MultiGradeConfiguration>() { GetTestsMultiConfig() },
+                Weight = 60
+            };
+        }
+
+        private static IEnumerable<SingleGradeConfiguration> GetExamSingleGradeConfigurations()
+        {
+            yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Exam", 50, 40);
+            yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Optional Oral", 30, 15);
+        }
+
+        private static MultiGradeConfiguration GetTestsMultiConfig()
+        {
+            return new MultiGradeConfiguration()
+            {
+                Id = Guid.NewGuid().ToString(),
+                Name = "Tests",
+                SingleGradeConfigurations = GetMultiSingleGradeConfigurations(_random.Next(3, 7)).ToList(),
+                MultiGradeConfigurations = new List<MultiGradeConfiguration>(),
                 Weight = 25
             };
         }
@@ -106,10 +131,9 @@ namespace GradeCalculator.Tests
             }
         }
 
-        private static IEnumerable<SingleGradeConfiguration> GetSingleGradeConfigurations()
+        private static IEnumerable<SingleGradeConfiguration> GetDailyWorkSingleGradeConfigurations()
         {
-            yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Exam", 50, 45);
-            yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Oral", 30, 15);
+            yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"DailyWork Oral", 30, 15);
             yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"DailyWork", 5, 15);
             yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"ClassParticipation", 5, 15);
         }
