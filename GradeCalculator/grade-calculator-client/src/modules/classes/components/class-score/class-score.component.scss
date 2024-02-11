@@ -10,12 +10,26 @@
 
       .grade-period {
         .grade-period-title {
-          text-decoration: underline;
+          display: flex;
+          flex-direction: row;
+          .grade-period-title-text {
+            text-decoration: underline;
+          }
         }
 
         .top-level-grades {
           display: flex;
           flex-direction: column;
+
+          .grade-name {
+            margin-right: 8px;
+          }
+
+          table, th, td {
+            border: 1px solid transparent;
+            border-collapse: collapse;
+            text-align: left;
+          }
         }
       }
     }

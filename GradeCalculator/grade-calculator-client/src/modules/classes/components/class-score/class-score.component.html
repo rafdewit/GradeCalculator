@@ -1,9 +1,12 @@
-@if(class$ | async; as class) {
+@if(classScoreInfo$ | async; as classScoreInfo) {
+
+<h1>{{classScoreInfo.class.name}}</h1>
+
 <div class="students-content">
     <app-grid-list>
-        @for (student of class.students; track student) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true"
-            [showMenu]="true">
+        @for (studentInfo of classScoreInfo.studentInfos; track studentInfo) {
+        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentInfo.student.name"
+            [clickable]="true" [showMenu]="true">
 
             <div menu-items>
                 <!-- <button mat-menu-item (click)="deleteStudent(student, class)">
@@ -13,24 +16,33 @@
             </div>
 
             <div content class="grade-periods">
-                @for (gradePeriod of class.gradePeriods; track $index) {
+                @for (gradePeriodInfo of studentInfo.gradePeriods; track $index) {
                 <div class="grade-period">
                     <div class="grade-period-title">
-                        {{gradePeriod.name}}
+                        <div class="grade-period-title-text">
+                            {{gradePeriodInfo.gradePeriod.name}}
+                        </div>
+                        <div class="grade-period-percentage">
+                            ({{gradePeriodInfo.totalPercentage | percentage}})
+                        </div>
                     </div>
 
                     <div class="top-level-grades">
-                        @for (single of gradePeriod.singleGradeConfigurations; track $index) {
-                            <div>
-                                {{single.name}} - {{single.totalScore}}
-                            </div>
-                        }
+                        <table>
+                            @for (singleInfo of gradePeriodInfo.studentSingleGradeInfos; track $index) {
+                            <tr>
+                                <th><div class="grade-name">{{singleInfo.single.name}}:</div></th>
+                                <th>{{singleInfo.percentage | percentage}}</th>
+                            </tr>
+                            }
 
-                        @for (multi of gradePeriod.multiGradeConfigurations; track $index) {
-                            <div>
-                                {{multi.name}}
-                            </div>
-                        }
+                            @for (multiInfo of gradePeriodInfo.studentMultiGradeInfos; track $index) {
+                            <tr>
+                                <th><div class="grade-name">{{multiInfo.multi.name}}:</div></th>
+                                <th>{{multiInfo.percentage | percentage}}</th>
+                            </tr>
+                            }
+                        </table>
                     </div>
                 </div>
                 }

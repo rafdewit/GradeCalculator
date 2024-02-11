@@ -1,8 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
+import { ClassScoreInfo } from 'src/services/stores/models/score';
 
 @Component({
   selector: 'app-class-score',
@@ -11,9 +10,11 @@ import { StudentCollection } from 'src/services/dtos/student-collection.model';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassScoreComponent {
-  public class$: Observable<StudentCollection>;
+  public classScoreInfo$: Observable<ClassScoreInfo>;
 
   constructor(activatedRoute: ActivatedRoute) {
-    this.class$ = activatedRoute.data.pipe(map(d => d['class']));
+    this.classScoreInfo$ = activatedRoute.data.pipe(map(d => d['classScore']));
+
+    
   }
 }

@@ -9,9 +9,11 @@ import { ClassResolver } from 'src/services/resolvers/class.resolver';
 import { PeriodPageComponent } from './components/period-page/period-page.component';
 import { PeriodResolver } from 'src/services/resolvers/period.resolver';
 import { ClassScoreComponent } from './components/class-score/class-score.component';
+import { ClassScoreInfoResolver } from 'src/services/resolvers/class-score-info.resolver';
+import { PercentagePipe } from 'src/services/pipes/percentage.pipe';
 
 const routes: Routes = [
-  { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { class: ClassResolver } },
+  { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },
   { path: ':classId', component: ClassConfigurationComponent, resolve: { class: ClassResolver } },
   { path: ':classId/periods/:periodId', component: PeriodPageComponent, resolve: { class: ClassResolver, period: PeriodResolver } },
   { path: '**', component: ClassesPageComponent },
@@ -22,7 +24,8 @@ const routes: Routes = [
     ClassesPageComponent,
     ClassConfigurationComponent,
     PeriodPageComponent,
-    ClassScoreComponent
+    ClassScoreComponent,
+    PercentagePipe
   ],
   imports: [
     MaterialModule,
