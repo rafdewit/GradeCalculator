@@ -1,0 +1,6 @@
+@if(info$ | async; as info) {
+    <app-navigator-bar [parts]="['Classes', info.class.name, 'Period: ' + 'info.period.name']">
+        <div actions>
+        </div>
+    </app-navigator-bar>
+}

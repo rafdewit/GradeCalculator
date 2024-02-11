@@ -1,0 +1,18 @@
+@if(class$ | async; as class) {
+    <div class="students-content">
+        <app-grid-list>
+            @for (student of class.students; track student) {
+            <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true" [showMenu]="true">
+    
+                <div menu-items>
+                    <!-- <button mat-menu-item (click)="deleteStudent(student, class)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete student</span>
+                    </button> -->
+                </div>
+        
+            </app-grid-tile-blob-template-ref>
+            }
+        </app-grid-list>
+    </div>
+}

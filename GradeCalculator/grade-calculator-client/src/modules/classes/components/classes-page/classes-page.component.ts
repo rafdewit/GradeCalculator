@@ -23,7 +23,7 @@ export class ClassesPageComponent {
   }
 
   public classClicked(studentCollection: StudentCollection): void {
-
+    this.router.navigate([studentCollection.id, "score-overview"], { relativeTo: this.activatedRoute })
   }
 
   public editClicked(studentCollection: StudentCollection): void {

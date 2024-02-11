@@ -6,16 +6,23 @@ import { RouterModule, Routes } from '@angular/router';
 import { GradeCommonModule } from '../common-module/grade-common.module';
 import { ClassConfigurationComponent } from './components/class-configuration/class-configuration.component';
 import { ClassResolver } from 'src/services/resolvers/class.resolver';
+import { PeriodPageComponent } from './components/period-page/period-page.component';
+import { PeriodResolver } from 'src/services/resolvers/period.resolver';
+import { ClassScoreComponent } from './components/class-score/class-score.component';
 
 const routes: Routes = [
+  { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { class: ClassResolver } },
   { path: ':classId', component: ClassConfigurationComponent, resolve: { class: ClassResolver } },
+  { path: ':classId/periods/:periodId', component: PeriodPageComponent, resolve: { class: ClassResolver, period: PeriodResolver } },
   { path: '**', component: ClassesPageComponent },
 ];
 
 @NgModule({
   declarations: [
     ClassesPageComponent,
-    ClassConfigurationComponent
+    ClassConfigurationComponent,
+    PeriodPageComponent,
+    ClassScoreComponent
   ],
   imports: [
     MaterialModule,

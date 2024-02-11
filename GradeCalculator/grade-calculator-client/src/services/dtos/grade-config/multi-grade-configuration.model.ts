@@ -5,4 +5,5 @@ export interface MultiGradeConfiguration {
     name: string;
     weight: number;
     singleGradeConfigurations: SingleGradeConfiguration[];
+    multiGradeConfigurations: MultiGradeConfiguration[];
 }
