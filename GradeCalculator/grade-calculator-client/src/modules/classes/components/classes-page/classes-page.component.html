@@ -2,7 +2,8 @@
 
 <app-grid-list>
     @for (studentCollection of gradeStore.classes$ | async; track studentCollection) {
-    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" >
+    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" [clickable]="true" 
+        (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
         <div menu-items>
             <button mat-menu-item (click)="copyClass(studentCollection)">
                 <mat-icon>copy_all</mat-icon>

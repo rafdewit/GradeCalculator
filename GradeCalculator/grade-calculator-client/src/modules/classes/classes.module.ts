@@ -4,14 +4,18 @@ import { ClassesPageComponent } from './components/classes-page/classes-page.com
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { GradeCommonModule } from '../common-module/grade-common.module';
+import { ClassConfigurationComponent } from './components/class-configuration/class-configuration.component';
+import { ClassResolver } from 'src/services/resolvers/class.resolver';
 
 const routes: Routes = [
+  { path: ':classId', component: ClassConfigurationComponent, resolve: { class: ClassResolver } },
   { path: '**', component: ClassesPageComponent },
 ];
 
 @NgModule({
   declarations: [
-    ClassesPageComponent
+    ClassesPageComponent,
+    ClassConfigurationComponent
   ],
   imports: [
     MaterialModule,

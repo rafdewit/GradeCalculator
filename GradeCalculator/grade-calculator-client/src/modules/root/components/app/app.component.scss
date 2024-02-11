@@ -25,7 +25,10 @@
         }
 
         .router-out {
-            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            margin: 20px auto 0 auto;
+            width: 80%;
         }
 
         .center-info {

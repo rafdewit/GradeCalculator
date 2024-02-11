@@ -1,7 +1,7 @@
 <div class="bar-container">
     <div class="navigation-container">
         @for (part of parts; track part; let i = $index) {
-            <h2 [class.clickable]="i + 1 < parts.length" (click)="routeBack(i)">{{part}}</h2>
+            <h1 [class.clickable]="i + 1 < parts.length" (click)="routeBack(i)">{{part}}</h1>
             @if(i === 0){<ng-content></ng-content>}
             @if(i + 1 < parts.length){<mat-icon>chevron_right</mat-icon>}
         }

@@ -10,8 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { GradeCommonModule } from '../common-module/grade-common.module';
 
 const routes: Routes = [
-  { path: 'classes-page', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
-  { path: '**', redirectTo: 'classes-page' }
+  { path: 'classes', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
+  { path: '**', redirectTo: 'classes' }
 ];
 
 @NgModule({

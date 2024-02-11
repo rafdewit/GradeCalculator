@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { GradeStore } from 'src/services/stores/grade.store';
 
@@ -9,7 +10,7 @@ import { GradeStore } from 'src/services/stores/grade.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassesPageComponent {
-  constructor(public gradeStore: GradeStore) {
+  constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute) {
     
   }
 
@@ -19,5 +20,13 @@ export class ClassesPageComponent {
 
   public deleteClass(studentCollection: StudentCollection): void {
     //
+  }
+
+  public classClicked(studentCollection: StudentCollection): void {
+
+  }
+
+  public editClicked(studentCollection: StudentCollection): void {
+    this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
   }
 }
