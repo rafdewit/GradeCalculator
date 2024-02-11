@@ -13,6 +13,9 @@ import { ClassScoreInfoResolver } from 'src/services/resolvers/class-score-info.
 import { PercentagePipe } from 'src/services/pipes/percentage.pipe';
 import { StudentScoreComponent } from './components/student-score/student-score.component';
 import { StudentScoreInfoResolver } from 'src/services/resolvers/student-score-info.resolver';
+import { SingleScoreComponent } from './components/student-score/single-score/single-score.component';
+import { MultiScoreComponent } from './components/student-score/multi-score/multi-score.component';
+import { PercentageToHundredPipe } from 'src/services/pipes/percentage-to-hundred.pipe';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },
@@ -29,7 +32,10 @@ const routes: Routes = [
     PeriodPageComponent,
     ClassScoreComponent,
     PercentagePipe,
-    StudentScoreComponent
+    PercentageToHundredPipe,
+    StudentScoreComponent,
+    MultiScoreComponent,
+    SingleScoreComponent
   ],
   imports: [
     MaterialModule,

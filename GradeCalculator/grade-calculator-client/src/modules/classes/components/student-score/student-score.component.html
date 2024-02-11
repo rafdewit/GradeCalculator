@@ -1,15 +1,35 @@
-<!-- <button mat-raised-button (click)="backToScores()">Return</button> -->
-
 @if(classStudentInfo$ | async; as info) {
-
 <app-navigator-bar [partsNav]="[1, 2]"
     [parts]="['Classes', info.classInfo?.class?.name ?? 'Class Unknown', info.studentInfo?.student?.name ?? 'Student Unknown']"></app-navigator-bar>
 
 @if(info.studentInfo; as student) {
-    <div>Year total: {{student.totalPercentage | percentage}}</div>
-    @for (item of student.gradePeriods; track $index) {
-        
-    }
-}
+<div>Year total: {{ student.totalPercentage | percentage }}</div>
 
+<div class="periods-container">
+    @for (studentGradePeriodInfo of student.gradePeriods; track $index) {
+    <div class="period-container">
+        <div class="period-title-container">
+            <h2 class="period-title">
+                Period: {{studentGradePeriodInfo.gradePeriod.name}}:
+            </h2>
+
+            <div>
+                <div>{{ studentGradePeriodInfo.totalPercentage | percentage }}</div>
+                <mat-progress-bar mode="determinate"
+                    [value]="studentGradePeriodInfo.totalPercentage | percentageToHundred"></mat-progress-bar>
+            </div>
+        </div>
+
+        @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
+        <app-single-score [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+        }
+
+        @for (multiInfo of studentGradePeriodInfo.studentMultiGradeInfos; track $index) {
+        <app-multi-score [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+        }
+    </div>
+    }
+</div>
+
+}
 }

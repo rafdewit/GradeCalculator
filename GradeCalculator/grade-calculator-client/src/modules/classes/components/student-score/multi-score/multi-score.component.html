@@ -1,0 +1,14 @@
+<div class="multi-container" [class.root]="rootScore" [class.sub]="!rootScore">
+    <div class="multi-score-title-container">
+        <div class="multi-score-title" [class.root-score]="rootScore">{{multiInfo.multi.name}}:</div>
+        <div>{{multiInfo.percentage | percentage}}</div>
+    </div>
+
+    @for (single of multiInfo.singleConfigurations; track $index) {
+        <app-single-score [singleInfo]="single"></app-single-score>
+    }
+    
+    @for (subMultiInfo of multiInfo.multiConfigurations; track $index) {
+        <app-multi-score [multiInfo]="subMultiInfo"></app-multi-score>
+    }
+</div>

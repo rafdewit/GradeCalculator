@@ -9,13 +9,14 @@ export class GridTileBlobComponent {
   @Input() title: string;
   @Input() clickable: boolean;
   @Input() canEdit: boolean;
-
+  
   @Input() extraText: string;
   @Input() info: string;
   @Input() infoIcon: string;
   @Input() showMenu: boolean;
 
   @Input() colorClass: string;
+  @Input() specificColor: string;
   
   @Output() editRequest = new EventEmitter<void>();
   @Output() clickRequest = new EventEmitter<void>();

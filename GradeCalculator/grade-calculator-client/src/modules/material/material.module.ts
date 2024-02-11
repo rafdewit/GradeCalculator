@@ -23,6 +23,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import {MatGridListModule} from '@angular/material/grid-list';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 @NgModule({
     exports: [
@@ -49,7 +50,8 @@ import {MatGridListModule} from '@angular/material/grid-list';
         MatCheckboxModule,
         MatRadioModule,
         MatSnackBarModule,
-        MatGridListModule
+        MatGridListModule,
+        MatProgressBarModule
     ],
     providers: [
         { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: { showDelay: 1000, hideDelay: 0, touchendHideDelay: 0, } }

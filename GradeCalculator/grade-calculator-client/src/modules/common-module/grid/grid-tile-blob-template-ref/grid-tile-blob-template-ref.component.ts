@@ -18,6 +18,7 @@ export class GridTileBlobTemplateRefComponent {
   @Input() showMenu: boolean;
 
   @Input() colorClass: string;
+  @Input() specificColor: string;
   
   @Output() editRequest = new EventEmitter<void>();
   @Output() clickRequest = new EventEmitter<void>();

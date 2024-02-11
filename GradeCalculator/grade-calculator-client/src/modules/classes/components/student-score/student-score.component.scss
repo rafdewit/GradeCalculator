@@ -1,3 +1,25 @@
 :host {
   display: block;
+
+  .periods-container {
+    display: flex;
+    flex-direction: row;
+
+    .period-container {
+      display: flex;
+      flex-direction: column;
+      margin: 32px;
+
+      .period-title-container {
+        display: flex;
+        flex-direction: row;
+
+        .period-title {
+          margin-right: 8px;
+          text-decoration: underline;
+        }
+      }
+    }
+
+  }
 }

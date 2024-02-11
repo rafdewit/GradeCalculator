@@ -117,7 +117,7 @@ namespace GradeCalculator.Tests
             {
                 Id = Guid.NewGuid().ToString(),
                 Name = "Tests",
-                SingleGradeConfigurations = GetMultiSingleGradeConfigurations(_random.Next(3, 7)).ToList(),
+                SingleGradeConfigurations = GetMultiSingleGradeConfigurations(_random.Next(7, 12)).ToList(),
                 MultiGradeConfigurations = new List<MultiGradeConfiguration>(),
                 Weight = 25
             };
@@ -127,7 +127,7 @@ namespace GradeCalculator.Tests
         {
             for (int i = 0; i < singleConfigurationCount; i++)
             {
-                yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Test-{i}", _random.Next(10, 30), 10);
+                yield return new SingleGradeConfiguration(Guid.NewGuid().ToString(), $"Test-{i + 1}", _random.Next(10, 30), 10);
             }
         }
 

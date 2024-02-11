@@ -1,0 +1,25 @@
+:host {
+  display: block;
+
+  .multi-container {
+    .multi-score-title-container {
+      display: flex;
+      flex-direction: row;
+
+      .multi-score-title {
+        margin-right: 8px;
+      }
+    }
+  }
+  .root {
+    margin: 8px;
+  }
+
+  .sub {
+    margin: 2px;
+  }
+
+  .root-score {
+    text-decoration: underline;
+  }
+}

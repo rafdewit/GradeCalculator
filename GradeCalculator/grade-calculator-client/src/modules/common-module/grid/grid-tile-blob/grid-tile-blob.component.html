@@ -1,5 +1,5 @@
 <div class="blob-container" (click)="emitClickRequest()">
-    <div class="grid-tile-blob" [ngClass]="colorClass" [class.success]="!colorClass" [class.clickable]="clickable">
+    <div class="grid-tile-blob" [ngClass]="colorClass" [class.success]="!colorClass" [class.clickable]="clickable" [style.border-left]="specificColor ? '' : '7px solid ' + specificColor">
 
         <div class="header">
             <h3>{{title}}</h3>
