@@ -3,8 +3,6 @@ using GradeCalculator.DataLayer.DataProviders;
 using GradeCalculator.DataLayer;
 using GradeCalculatorApp.Extensions;
 using GradeCalculatorApp.Hubs;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
@@ -24,8 +22,6 @@ namespace GradeCalculatorApp
 
         public static void ConfigureServices(IServiceCollection services)
         {
-
-
             services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(c =>
@@ -58,7 +54,6 @@ namespace GradeCalculatorApp
 
         public static void Configure(WebApplication app)
         {
-            // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
@@ -71,7 +66,6 @@ namespace GradeCalculatorApp
             app.UseAuthorization();
             app.UseStaticFiles();
             app.UseAuthorization();
-
 
             app.MapControllers();
             app.MapHub<GradeHub>("/hubs/grades");

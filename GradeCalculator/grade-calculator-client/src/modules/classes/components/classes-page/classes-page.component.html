@@ -1,7 +1,31 @@
-<mat-selection-list [multiple]="false">
-    @for (item of gradeStore.classes$ | async; track item) {
-    <mat-list-option [value]="item.id">
-        {{item.gradePeriods.length}}
-    </mat-list-option>
+<app-navigator-bar [parts]="['Classes']"></app-navigator-bar>
+
+<app-grid-list>
+    @for (studentCollection of gradeStore.classes$ | async; track studentCollection) {
+    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" >
+        <div menu-items>
+            <button mat-menu-item (click)="copyClass(studentCollection)">
+                <mat-icon>copy_all</mat-icon>
+                <span>Copy class</span>
+            </button>
+            <button mat-menu-item (click)="deleteClass(studentCollection)">
+                <mat-icon>delete</mat-icon>
+                <span>Delete class</span>
+            </button>
+        </div>
+
+        <div content>
+            <div>Periods: {{studentCollection.gradePeriods.length}}</div>
+            <div>Students: {{studentCollection.students.length}}</div>
+        </div>
+       
+        <div bottom-content>
+            <!-- <div class="actions">
+                <button class="action" mat-raised-button>Start</button>
+                <button class="action" mat-raised-button>Start</button>
+            </div> -->
+        </div>
+
+    </app-grid-tile-blob-template-ref>
     }
-</mat-selection-list>
+</app-grid-list>

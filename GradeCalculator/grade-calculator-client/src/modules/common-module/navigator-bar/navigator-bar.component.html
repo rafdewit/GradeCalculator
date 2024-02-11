@@ -1,0 +1,13 @@
+<div class="bar-container">
+    <div class="navigation-container">
+        @for (part of parts; track part; let i = $index) {
+            <h2 [class.clickable]="i + 1 < parts.length" (click)="routeBack(i)">{{part}}</h2>
+            @if(i === 0){<ng-content></ng-content>}
+            @if(i + 1 < parts.length){<mat-icon>chevron_right</mat-icon>}
+        }
+    </div>
+
+    <div class="content">
+        <ng-content select="[actions]"></ng-content>
+    </div>
+</div>

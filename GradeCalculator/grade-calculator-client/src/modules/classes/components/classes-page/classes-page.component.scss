@@ -1,3 +1,16 @@
 :host {
   display: block;
+
+
+  .actions {
+    margin-left: auto;
+
+    .auto-startup {
+      margin-right: 16px;
+    }
+
+    .action {
+      margin-left: 4px;
+    }
+  }
 }

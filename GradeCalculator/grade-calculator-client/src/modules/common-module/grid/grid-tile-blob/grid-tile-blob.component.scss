@@ -12,6 +12,8 @@
             width: 100%;
             border-radius: 4px;
             padding: 16px;
+            display: flex;
+            flex-direction: column;
 
             .header {
                 display: flex;
@@ -28,44 +30,44 @@
                     }
                 }
             }
-        }
-        .content {
-            display: flex;
-            margin-bottom: 16px;
-            mat-icon {
-                font-size: 18px;
-                margin-right: 2px;
-                position: relative;
-                top: 2px;
-            }
-
-            .info {
+            .content {
                 display: flex;
-                flex-direction: column;
-            }
-            .extra {
-                margin-left: auto;
-                display: flex;
+                margin-bottom: 16px;
                 mat-icon {
-                    font-size: 20px;
-                    margin-right: 0;
+                    font-size: 18px;
+                    margin-right: 2px;
+                    position: relative;
+                    top: 2px;
                 }
-                span {
-                    height: 25px;
+    
+                .info {
                     display: flex;
                     flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
-                    padding: 0 5px;
-                    border-radius: 4px;
-                    font-size: 14px;
-                    font-weight: 500;
+                }
+                .extra {
+                    margin-left: auto;
+                    display: flex;
+                    mat-icon {
+                        font-size: 20px;
+                        margin-right: 0;
+                    }
+                    span {
+                        height: 25px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        padding: 0 5px;
+                        border-radius: 4px;
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
                 }
             }
-        }
-        .bottom {
-            margin-top: auto;
-            padding-bottom: 8px;
+            .bottom {
+                margin-top: auto;
+                padding-bottom: 8px;
+            }
         }
 
         .clickable {

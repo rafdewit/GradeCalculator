@@ -1,0 +1,31 @@
+:host {
+    .bar-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: left;
+        align-items: center;
+        width: 100%;
+
+        .navigation-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
+
+        .content {
+            margin-left: 8px;
+        }
+    }
+
+    h2 {
+        margin-left: 4px;
+        margin-right: 4px;
+    }
+
+    .clickable {
+        cursor: pointer;
+        &:hover {
+            opacity: .9;
+        }
+    }
+}

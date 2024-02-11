@@ -8,6 +8,7 @@ import { GridListComponent } from './grid/grid-list/grid-list.component';
 import { GridTileBlobTemplateRefComponent } from './grid/grid-tile-blob-template-ref/grid-tile-blob-template-ref.component';
 import { ThemeContainerComponent } from './theme/theme-container/theme-container.component';
 import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.component';
+import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.co
         GridListComponent,
         GridTileBlobTemplateRefComponent,
         ThemeContainerComponent,
-        ThemeSelectorComponent
+        ThemeSelectorComponent,
+        NavigatorBarComponent
     ],
     imports: [
         CommonModule,
@@ -28,7 +30,8 @@ import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.co
         GridListComponent,
         GridTileBlobTemplateRefComponent,
         ThemeContainerComponent,
-        ThemeSelectorComponent
+        ThemeSelectorComponent,
+        NavigatorBarComponent
     ],
     providers: [
 
