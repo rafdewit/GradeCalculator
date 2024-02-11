@@ -1,0 +1,15 @@
+<!-- <button mat-raised-button (click)="backToScores()">Return</button> -->
+
+@if(classStudentInfo$ | async; as info) {
+
+<app-navigator-bar [partsNav]="[1, 2]"
+    [parts]="['Classes', info.classInfo?.class?.name ?? 'Class Unknown', info.studentInfo?.student?.name ?? 'Student Unknown']"></app-navigator-bar>
+
+@if(info.studentInfo; as student) {
+    <div>Year total: {{student.totalPercentage | percentage}}</div>
+    @for (item of student.gradePeriods; track $index) {
+        
+    }
+}
+
+}

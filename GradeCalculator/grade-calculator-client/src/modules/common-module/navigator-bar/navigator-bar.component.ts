@@ -8,6 +8,7 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 })
 export class NavigatorBarComponent {
   @Input() parts: string[];
+  @Input() partsNav: number[];
   @Input() routeTarget: string;
 
   constructor(private router: Router, private route: ActivatedRoute ) { }
@@ -17,7 +18,14 @@ export class NavigatorBarComponent {
       const navigateBackCount = this.parts.length - index -1;
       const navigateParams: string[] = [];
       for(let i = 0; i < navigateBackCount; i++) {
-        navigateParams.push('..');
+        if(this.partsNav && this.partsNav.length > i) {
+          for(let j = 0; j < this.partsNav[i]; j++) {
+            console.log("test");
+            navigateParams.push('..');
+          }
+        } else {
+          navigateParams.push('..');
+        }
       }
       
       const navigationExtras: NavigationExtras = { relativeTo: this.route };

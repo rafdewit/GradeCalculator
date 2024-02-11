@@ -1,5 +1,5 @@
-@if (class$ | async; as class) {
-    <app-navigator-bar [parts]="['Classes', class.name]">
+@if (info$ | async; as info) {
+    <app-navigator-bar [parts]="['Classes', info.navigationName]">
         <div actions>
         </div>
     </app-navigator-bar>
@@ -14,16 +14,16 @@
 
     <div class="periods-content">
         <app-grid-list>
-            @for (gradePeriod of class.gradePeriods; track gradePeriod) {
+            @for (gradePeriod of info.class.gradePeriods; track gradePeriod) {
             <app-grid-tile-blob-template-ref [clickable]="false" [title]="gradePeriod.name" [clickable]="true" [showMenu]="true"
                 (clickRequest)="periodClicked(gradePeriod)">
     
                 <div menu-items>
-                    <button mat-menu-item (click)="copyPeriod(gradePeriod, class)">
+                    <button mat-menu-item (click)="copyPeriod(gradePeriod, info.class)">
                         <mat-icon>copy_all</mat-icon>
                         <span>Copy period</span>
                     </button>
-                    <button mat-menu-item (click)="deletePeriod(gradePeriod, class)">
+                    <button mat-menu-item (click)="deletePeriod(gradePeriod, info.class)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete period</span>
                     </button>
@@ -49,11 +49,11 @@
 
     <div class="students-content">
         <app-grid-list>
-            @for (student of class.students; track student) {
+            @for (student of info.class.students; track student) {
             <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true" [showMenu]="true">
     
                 <div menu-items>
-                    <button mat-menu-item (click)="deleteStudent(student, class)">
+                    <button mat-menu-item (click)="deleteStudent(student, info.class)">
                         <mat-icon>delete</mat-icon>
                         <span>Delete student</span>
                     </button>

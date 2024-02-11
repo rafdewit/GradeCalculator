@@ -1,51 +1,55 @@
 @if(classScoreInfo$ | async; as classScoreInfo) {
 
-<h1>{{classScoreInfo.class.name}}</h1>
+<app-navigator-bar [partsNav]="[2]" [parts]="['Classes', classScoreInfo.class.name]"></app-navigator-bar>
 
 <div class="students-content">
     <app-grid-list>
         @for (studentInfo of classScoreInfo.studentInfos; track studentInfo) {
         <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentInfo.student.name"
-            [clickable]="true" [showMenu]="true">
+            [clickable]="true" [showMenu]="true" (clickRequest)="studentNavigate(studentInfo)">
 
-            <div menu-items>
-                <!-- <button mat-menu-item (click)="deleteStudent(student, class)">
-                        <mat-icon>delete</mat-icon>
-                        <span>Delete student</span>
-                    </button> -->
-            </div>
-
-            <div content class="grade-periods">
-                @for (gradePeriodInfo of studentInfo.gradePeriods; track $index) {
-                <div class="grade-period">
-                    <div class="grade-period-title">
-                        <div class="grade-period-title-text">
-                            {{gradePeriodInfo.gradePeriod.name}}
-                        </div>
-                        <div class="grade-period-percentage">
-                            ({{gradePeriodInfo.totalPercentage | percentage}})
-                        </div>
-                    </div>
-
-                    <div class="top-level-grades">
-                        <table>
-                            @for (singleInfo of gradePeriodInfo.studentSingleGradeInfos; track $index) {
-                            <tr>
-                                <th><div class="grade-name">{{singleInfo.single.name}}:</div></th>
-                                <th>{{singleInfo.percentage | percentage}}</th>
-                            </tr>
-                            }
-
-                            @for (multiInfo of gradePeriodInfo.studentMultiGradeInfos; track $index) {
-                            <tr>
-                                <th><div class="grade-name">{{multiInfo.multi.name}}:</div></th>
-                                <th>{{multiInfo.percentage | percentage}}</th>
-                            </tr>
-                            }
-                        </table>
-                    </div>
+            <div content>
+                <div class="total-header">
+                    <div class="total-title">Total:</div>
+                    <div>({{studentInfo.totalPercentage | percentage}})</div>
                 </div>
-                }
+
+                <div class="grade-periods">
+                    @for (gradePeriodInfo of studentInfo.gradePeriods; track $index) {
+                    <div class="grade-period">
+                        <div class="grade-period-title">
+                            <div class="grade-period-title-text">
+                                {{gradePeriodInfo.gradePeriod.name}}
+                            </div>
+                            <div class="grade-period-percentage">
+                                ({{gradePeriodInfo.totalPercentage | percentage}})
+                            </div>
+                        </div>
+
+                        <div class="top-level-grades">
+                            <table>
+                                @for (singleInfo of gradePeriodInfo.studentSingleGradeInfos; track $index) {
+                                <tr>
+                                    <th>
+                                        <div class="grade-name">{{singleInfo.single.name}}:</div>
+                                    </th>
+                                    <th>{{singleInfo.percentage | percentage}}</th>
+                                </tr>
+                                }
+
+                                @for (multiInfo of gradePeriodInfo.studentMultiGradeInfos; track $index) {
+                                <tr>
+                                    <th>
+                                        <div class="grade-name">{{multiInfo.multi.name}}:</div>
+                                    </th>
+                                    <th>{{multiInfo.percentage | percentage}}</th>
+                                </tr>
+                                }
+                            </table>
+                        </div>
+                    </div>
+                    }
+                </div>
             </div>
 
         </app-grid-tile-blob-template-ref>

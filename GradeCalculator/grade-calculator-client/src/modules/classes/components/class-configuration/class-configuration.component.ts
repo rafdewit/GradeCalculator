@@ -14,9 +14,17 @@ import { Student } from 'src/services/dtos/students/student.model';
 export class ClassConfigurationComponent { 
 
   public class$: Observable<StudentCollection>;
+  public info$: Observable<ClassConfigurationInfo>;
 
   constructor(activatedRoute: ActivatedRoute) {
     this.class$ = activatedRoute.data.pipe(map(d => d['class']));
+    this.info$ = this.class$.pipe(map(c => {
+      const result: ClassConfigurationInfo = {
+        class: c,
+        navigationName: `Configuration(${c.name})`
+      };
+      return result;
+    }))
   }
 
   public openCreatePeriodDialog(): void {
@@ -42,4 +50,9 @@ export class ClassConfigurationComponent {
   public deleteStudent(student: Student, studentCollection: StudentCollection): void {
 
   }
+}
+
+export interface ClassConfigurationInfo {
+  class: StudentCollection;
+  navigationName: string;
 }

@@ -2,6 +2,14 @@
   display: block;
 
   .students-content {
+    .total-header {
+      display: flex;
+      flex-direction: row;
+      .total-title {
+        text-decoration: underline;
+      }
+    }
+
     .grade-periods {
       width: 100%;
       display: flex;

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
-import { ClassScoreInfo } from 'src/services/stores/models/score';
+import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 
 @Component({
   selector: 'app-class-score',
@@ -12,9 +12,11 @@ import { ClassScoreInfo } from 'src/services/stores/models/score';
 export class ClassScoreComponent {
   public classScoreInfo$: Observable<ClassScoreInfo>;
 
-  constructor(activatedRoute: ActivatedRoute) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     this.classScoreInfo$ = activatedRoute.data.pipe(map(d => d['classScore']));
+  }
 
-    
+  public studentNavigate(studentInfo: StudentInfo) {
+    this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
   }
 }
