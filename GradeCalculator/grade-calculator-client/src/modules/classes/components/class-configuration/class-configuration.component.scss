@@ -2,6 +2,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  overflow: hidden;
+
+  .students-content {
+    overflow-y: hidden;
+  }
+
+  .grades-content {
+    overflow-y: hidden;
+  }
 
   .collection-header {
     display: flex;

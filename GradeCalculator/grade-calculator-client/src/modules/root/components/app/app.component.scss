@@ -3,7 +3,9 @@
     .grid-container {
         display: flex;
         height: 100%;
+        overflow: hidden;
         flex-direction: column;
+
         mat-toolbar {
             flex-shrink: 0;
         }
@@ -27,8 +29,15 @@
         .router-out {
             display: flex;
             flex-direction: column;
-            margin: 20px auto 0 auto;
+            margin: 0 auto 0 auto;
             width: 80%;
+            height: 100%;
+            overflow: hidden;
+
+            .router-out-content {
+                margin-top: 20px;
+                height: calc(100% - 20px);
+            }
         }
 
         .center-info {

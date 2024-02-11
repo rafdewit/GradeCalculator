@@ -21,7 +21,9 @@
 
   @if (gradeHubClient.connectedState$ | async) {
   <div class="router-out">
-    <router-outlet></router-outlet>
+    <div class="router-out-content">
+      <router-outlet></router-outlet>
+    </div>
   </div>
   } @else {
   <div class="center-info">

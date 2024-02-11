@@ -8,40 +8,36 @@
         <h2>Periods</h2>
         <button (click)="openCreatePeriodDialog()" mat-raised-button>
             <mat-icon>add</mat-icon>
-            Create Period
+            Create
         </button>
     </div>
-    <app-grid-list>
-        @for (gradePeriod of class.gradePeriods; track gradePeriod) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [title]="gradePeriod.name" [clickable]="true" [showMenu]="true"
-            (clickRequest)="periodClicked(gradePeriod)">
 
-            <div menu-items>
-                <button mat-menu-item (click)="copyPeriod(gradePeriod, class)">
-                    <mat-icon>copy_all</mat-icon>
-                    <span>Copy period</span>
-                </button>
-                <button mat-menu-item (click)="deletePeriod(gradePeriod, class)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete period</span>
-                </button>
-            </div>
+    <div class="periods-content">
+        <app-grid-list>
+            @for (gradePeriod of class.gradePeriods; track gradePeriod) {
+            <app-grid-tile-blob-template-ref [clickable]="false" [title]="gradePeriod.name" [clickable]="true" [showMenu]="true"
+                (clickRequest)="periodClicked(gradePeriod)">
     
-            <div content>
-                <div>Multi Configurations: {{gradePeriod.multiGradeConfigurations.length}}</div>
-                <div>Single Configurations: {{gradePeriod.singleGradeConfigurations.length}}</div>
-            </div>
-           
-            <div bottom-content>
-                <!-- <div class="actions">
-                    <button class="action" mat-raised-button>Start</button>
-                    <button class="action" mat-raised-button>Start</button>
-                </div> -->
-            </div>
-    
-        </app-grid-tile-blob-template-ref>
-        }
-    </app-grid-list>
+                <div menu-items>
+                    <button mat-menu-item (click)="copyPeriod(gradePeriod, class)">
+                        <mat-icon>copy_all</mat-icon>
+                        <span>Copy period</span>
+                    </button>
+                    <button mat-menu-item (click)="deletePeriod(gradePeriod, class)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete period</span>
+                    </button>
+                </div>
+        
+                <div content>
+                    <div>Multi Configurations: {{gradePeriod.multiGradeConfigurations.length}}</div>
+                    <div>Single Configurations: {{gradePeriod.singleGradeConfigurations.length}}</div>
+                </div>
+               
+            </app-grid-tile-blob-template-ref>
+            }
+        </app-grid-list>
+    </div>
 
     <div class="collection-header">
         <h2>Students</h2>
@@ -50,27 +46,24 @@
             Create
         </button>
     </div>
-    <app-grid-list>
-        @for (student of class.students; track student) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true" [showMenu]="true">
 
-            <div menu-items>
-                <button mat-menu-item (click)="deleteStudent(student, class)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete student</span>
-                </button>
-            </div>
+    <div class="students-content">
+        <app-grid-list>
+            @for (student of class.students; track student) {
+            <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true" [showMenu]="true">
     
-            <div bottom-content>
-                <!-- <div class="actions">
-                    <button class="action" mat-raised-button>Start</button>
-                    <button class="action" mat-raised-button>Start</button>
-                </div> -->
-            </div>
-    
-        </app-grid-tile-blob-template-ref>
-        }
-    </app-grid-list>
+                <div menu-items>
+                    <button mat-menu-item (click)="deleteStudent(student, class)">
+                        <mat-icon>delete</mat-icon>
+                        <span>Delete student</span>
+                    </button>
+                </div>
+        
+            </app-grid-tile-blob-template-ref>
+            }
+        </app-grid-list>
+    </div>
+
 }
 
 
