@@ -2,11 +2,22 @@
   display: block;
 
   .students-content {
-    .grades {
+    .grade-periods {
       width: 100%;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
+
+      .grade-period {
+        .grade-period-title {
+          text-decoration: underline;
+        }
+
+        .top-level-grades {
+          display: flex;
+          flex-direction: column;
+        }
+      }
     }
   }
 }

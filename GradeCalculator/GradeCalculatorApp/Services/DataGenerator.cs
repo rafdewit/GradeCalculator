@@ -98,7 +98,7 @@ namespace GradeCalculator.Tests
             return new MultiGradeConfiguration()
             {
                 Id = Guid.NewGuid().ToString(),
-                Name = "Tests",
+                Name = "Daily Work",
                 SingleGradeConfigurations = GetDailyWorkSingleGradeConfigurations().ToList(),
                 MultiGradeConfigurations = new List<MultiGradeConfiguration>() { GetTestsMultiConfig() },
                 Weight = 60

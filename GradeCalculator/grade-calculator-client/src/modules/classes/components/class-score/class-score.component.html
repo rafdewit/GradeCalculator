@@ -12,14 +12,24 @@
                     </button> -->
             </div>
 
-            <div content class="grades">
+            <div content class="grade-periods">
                 @for (gradePeriod of class.gradePeriods; track $index) {
-                <div>
-                    {{gradePeriod.name}}
+                <div class="grade-period">
+                    <div class="grade-period-title">
+                        {{gradePeriod.name}}
+                    </div>
 
-                    <div>
+                    <div class="top-level-grades">
                         @for (single of gradePeriod.singleGradeConfigurations; track $index) {
-                        {{single.name}}
+                            <div>
+                                {{single.name}} - {{single.totalScore}}
+                            </div>
+                        }
+
+                        @for (multi of gradePeriod.multiGradeConfigurations; track $index) {
+                            <div>
+                                {{multi.name}}
+                            </div>
                         }
                     </div>
                 </div>
