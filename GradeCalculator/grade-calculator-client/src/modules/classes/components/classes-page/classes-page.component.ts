@@ -29,4 +29,8 @@ export class ClassesPageComponent {
   public editClicked(studentCollection: StudentCollection): void {
     this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
   }
+
+  public openCreateClassDialog(): void {
+    
+  }
 }

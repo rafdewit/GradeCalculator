@@ -1,4 +1,11 @@
-<app-navigator-bar [parts]="['Classes']"></app-navigator-bar>
+<app-navigator-bar [parts]="['Classes']">
+    <div actions>
+        <button (click)="openCreateClassDialog()" mat-raised-button>
+            <mat-icon>add</mat-icon>
+            Create
+        </button>
+    </div>
+</app-navigator-bar>
 
 <app-grid-list>
     @for (studentCollection of gradeStore.classes$ | async; track studentCollection) {

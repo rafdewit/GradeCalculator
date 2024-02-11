@@ -16,9 +16,27 @@ namespace GradeCalculator.Tests
                 GetGradePeriod("semester2")
             };
 
-            var students = new List<Student>();
+            var students = new List<Student>()
+            {
+                GetStudent("Gerard"),
+                GetStudent("Herman"),
+                GetStudent("Alfons"),
+                GetStudent("Josef"),
+                GetStudent("Raf"),
+                GetStudent("Theresa"),
+                GetStudent("Lisa"),
+                GetStudent("Victoria"),
+                GetStudent("Barbara"),
+            };
 
             return new StudentCollection(Guid.NewGuid().ToString(), name, periods, students);
+        }
+
+        private static Student GetStudent(string name)
+        {
+            return new Student(Guid.NewGuid().ToString(),
+                name,
+                new List<StudentSingleGrade>());
         }
 
         private static GradePeriod GetGradePeriod(string name)

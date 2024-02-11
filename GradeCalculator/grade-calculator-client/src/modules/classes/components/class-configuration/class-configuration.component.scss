@@ -1,4 +1,13 @@
 :host {
   display: flex;
   flex-direction: column;
+  height: 100%;
+
+  .collection-header {
+    display: flex;
+    flex-direction: row;
+    h2 {
+      margin-right: 8px;
+    }
+  }
 }
