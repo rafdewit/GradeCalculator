@@ -1,8 +1,12 @@
 <app-navigator-bar [parts]="['Classes']">
-    <div actions>
-        <button (click)="openCreateClassDialog()" mat-raised-button>
+    <div actions class="nav-bar-actions">
+        <button (click)="openClassDialog()" mat-raised-button>
             <mat-icon>add</mat-icon>
             Create
+        </button>
+        <button (click)="openClassDialog()" mat-raised-button>
+            <mat-icon>upload</mat-icon>
+            Import
         </button>
     </div>
 </app-navigator-bar>
@@ -12,9 +16,17 @@
     <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" [clickable]="true" 
         (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
         <div menu-items>
+            <button mat-menu-item (click)="updateClass(studentCollection)">
+                <mat-icon>edit</mat-icon>
+                <span>Edit class</span>
+            </button>
             <button mat-menu-item (click)="copyClass(studentCollection)">
                 <mat-icon>copy_all</mat-icon>
                 <span>Copy class</span>
+            </button>
+            <button mat-menu-item (click)="downloadClass(studentCollection)">
+                <mat-icon>download</mat-icon>
+                <span>Download backup</span>
             </button>
             <button mat-menu-item (click)="deleteClass(studentCollection)">
                 <mat-icon>delete</mat-icon>

@@ -10,6 +10,7 @@ import { ThemeContainerComponent } from './theme/theme-container/theme-container
 import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.component';
 import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
 import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
+import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 
 @NgModule({
     declarations: [
@@ -20,6 +21,7 @@ import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
         ThemeSelectorComponent,
         NavigatorBarComponent,
         BlobColorBorderPipe,
+        ConfirmationDialogComponent,
     ],
     imports: [
         CommonModule,
@@ -33,7 +35,8 @@ import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
         GridTileBlobTemplateRefComponent,
         ThemeContainerComponent,
         ThemeSelectorComponent,
-        NavigatorBarComponent
+        NavigatorBarComponent,
+        ConfirmationDialogComponent
     ],
     providers: [
 
