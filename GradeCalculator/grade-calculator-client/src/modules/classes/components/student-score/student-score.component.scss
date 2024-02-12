@@ -1,6 +1,11 @@
 :host {
   display: block;
 
+  .year-total {
+    display: flex;
+    flex-direction: row;
+  }
+
   .periods-container {
     display: flex;
     flex-direction: row;

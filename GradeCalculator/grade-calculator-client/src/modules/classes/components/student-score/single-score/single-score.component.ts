@@ -11,4 +11,5 @@ import { StudentSingleGradeInfo } from 'src/services/stores/models/score';
 export class SingleScoreComponent { 
   @Input() singleInfo: StudentSingleGradeInfo;
   @Input() rootScore: boolean;
+  @Input() depth: number;
 }

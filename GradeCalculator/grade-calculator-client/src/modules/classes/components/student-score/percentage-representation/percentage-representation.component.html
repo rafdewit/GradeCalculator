@@ -1,7 +1,11 @@
 <div>
     <div class="single-percentage">{{percentage | percentage}}</div>
 
-    <div class="progress-bar">
-        <div class="progress-bar-fill" [style.background-color]="percentage | percentageToColor" [ngStyle]="{'width.%': percentage | percentageToHundred}"></div>
+    <div class="progress-bar-representation">
+        <span [style.background-color]="percentage | percentageToColor: { colors: colors }" class="dot"></span>
+        <div class="progress-bar">
+            <div class="progress-bar-fill" [style.background-color]="percentage | percentageToColor: { colors: colors }"
+                [ngStyle]="{'width.%': percentage | percentageToHundred}"></div>
+        </div>
     </div>
 </div>

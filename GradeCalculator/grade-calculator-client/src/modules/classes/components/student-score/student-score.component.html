@@ -3,7 +3,10 @@
     [parts]="['Classes', info.classInfo?.class?.name ?? 'Class Unknown', info.studentInfo?.student?.name ?? 'Student Unknown']"></app-navigator-bar>
 
 @if(info.studentInfo; as student) {
-<div>Year total: {{ student.totalPercentage | percentage }}</div>
+<div class="year-total">
+    <div>Year total:</div>
+    <app-percentage-representation [percentage]="student.totalPercentage"></app-percentage-representation>
+</div>
 
 <div class="periods-container">
     @for (studentGradePeriodInfo of student.gradePeriods; track $index) {
@@ -18,13 +21,13 @@
 
         @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
             <div>
-                <app-single-score [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+                <app-single-score [depth]="0" [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
             </div>
         }
 
         @for (multiInfo of studentGradePeriodInfo.studentMultiGradeInfos; track $index) {
             <div>
-                <app-multi-score [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+                <app-multi-score [depth]="0" [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
             </div>
         }
     </div>

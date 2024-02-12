@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 @Component({
   selector: 'app-percentage-representation',
   templateUrl: './percentage-representation.component.html',
@@ -8,7 +9,9 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 export class PercentageRepresentationComponent {
   @Input() percentage: number | null;
 
-  constructor() {
+  public colors = PERCENTAGE_GRADIENT_COLORS;
 
+  constructor() {
+    
   }
 }

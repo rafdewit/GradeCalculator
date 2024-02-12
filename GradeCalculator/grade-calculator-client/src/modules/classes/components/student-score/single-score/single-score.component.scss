@@ -1,24 +1,13 @@
 :host {
   display: block;
 
-  .root {
-    margin: 8px;
-  }
-
-  .sub {
-    margin: 2px;
-  }
-
   .single-container {
     display: flex;
     flex-direction: row;
 
     .root-score {
       text-decoration: underline;
-    }
-
-    .sub-score {
-      margin-left: 8px;
+      font-weight: 800;
     }
 
     .single-title {

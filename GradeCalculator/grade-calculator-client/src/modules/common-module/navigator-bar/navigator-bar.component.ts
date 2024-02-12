@@ -20,7 +20,6 @@ export class NavigatorBarComponent {
       for(let i = 0; i < navigateBackCount; i++) {
         if(this.partsNav && this.partsNav.length > i) {
           for(let j = 0; j < this.partsNav[i]; j++) {
-            console.log("test");
             navigateParams.push('..');
           }
         } else {

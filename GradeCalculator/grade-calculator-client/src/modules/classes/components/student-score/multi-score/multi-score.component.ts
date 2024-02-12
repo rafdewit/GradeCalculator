@@ -11,4 +11,5 @@ import { StudentMultiGradeInfo } from 'src/services/stores/models/score';
 export class MultiScoreComponent {
   @Input() multiInfo: StudentMultiGradeInfo;
   @Input() rootScore: boolean;
+  @Input() depth: number;
 }

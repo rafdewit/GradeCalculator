@@ -1,22 +1,24 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { colorsBetween } from '../generation/color.generation';
 
-export const PERCENTAGE_GRADIENT_COLORS = colorsBetween('#FF01000', '#00FF00', 98);
+export const PERCENTAGE_GRADIENT_COLORS = colorsBetween('#FF0100', '#00FF00', 98);
 
 @Pipe({ name: 'percentageToColor' })
 export class PercentageToColorPipe implements PipeTransform {
-  public transform(n: number | null): string {
+  public transform(n: number | null, info: { colors: string[] }): string {
     if (n === null) {
       return '';
     }
 
-    if (n < 0) {
-      return PERCENTAGE_GRADIENT_COLORS[0];
-    } else if (n >= 100) {
-      return PERCENTAGE_GRADIENT_COLORS[99];
+    const index = Math.trunc(n*100);
+
+    if (index <= 0) {
+      console.log(info.colors[0]);
+      return info.colors[0];
+    } else if (index >= 100) {
+      return info.colors[99];
     } else {
-      const index = Math.trunc(n*100);
-      return PERCENTAGE_GRADIENT_COLORS[index];
+      return info.colors[index];
     }
 
     return '';
