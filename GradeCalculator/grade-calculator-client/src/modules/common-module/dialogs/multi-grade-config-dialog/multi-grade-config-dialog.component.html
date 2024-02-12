@@ -1,0 +1,21 @@
+<app-theme-container>
+    <h2 mat-dialog-title>{{data.title}}</h2>
+<!-- 
+    <mat-dialog-content class="mat-typography">
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input matInput [formControl]="valueFormControl">
+                @if(valueFormControl.hasError('required')) {<mat-error>Required</mat-error>}
+            </mat-form-field>
+        </form>
+    </mat-dialog-content> -->
+
+    <mat-dialog-actions align="end">
+        <button mat-raised-button (click)="cancel()">Cancel</button>
+        <div class="right-buttons">
+            @if(data.isUpdate) {<button mat-raised-button color="warn" (click)="deleteItem()">Delete</button>}
+            <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.multiGradeConfigFormGroup.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
+        </div>
+    </mat-dialog-actions>
+</app-theme-container>

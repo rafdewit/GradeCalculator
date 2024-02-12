@@ -11,6 +11,8 @@ import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.co
 import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
 import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
+import { MultiGradeConfigDialogComponent } from './dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
+import { SingleGradeConfigDialogComponent } from './dialogs/single-grade-config-dialog/single-grade-config-dialog.component';
 
 @NgModule({
     declarations: [
@@ -22,6 +24,8 @@ import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confi
         NavigatorBarComponent,
         BlobColorBorderPipe,
         ConfirmationDialogComponent,
+        MultiGradeConfigDialogComponent,
+        SingleGradeConfigDialogComponent
     ],
     imports: [
         CommonModule,
@@ -36,7 +40,9 @@ import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confi
         ThemeContainerComponent,
         ThemeSelectorComponent,
         NavigatorBarComponent,
-        ConfirmationDialogComponent
+        ConfirmationDialogComponent,
+        MultiGradeConfigDialogComponent,
+        SingleGradeConfigDialogComponent
     ],
     providers: [
 
