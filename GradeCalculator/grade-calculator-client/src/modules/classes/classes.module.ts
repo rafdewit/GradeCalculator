@@ -18,6 +18,7 @@ import { MultiScoreComponent } from './components/student-score/multi-score/mult
 import { PercentageToHundredPipe } from 'src/services/pipes/percentage-to-hundred.pipe';
 import { PercentageRepresentationComponent } from './components/student-score/percentage-representation/percentage-representation.component';
 import { ProgressBarColor } from 'src/services/directives/progress-bar-color';
+import { PercentageToColorPipe } from 'src/services/pipes/percentage-to-color.pipe';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },
@@ -35,6 +36,7 @@ const routes: Routes = [
     ClassScoreComponent,
     PercentagePipe,
     PercentageToHundredPipe,
+    PercentageToColorPipe,
     StudentScoreComponent,
     MultiScoreComponent,
     SingleScoreComponent,

@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-
 @Component({
   selector: 'app-percentage-representation',
   templateUrl: './percentage-representation.component.html',
@@ -8,4 +7,8 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 })
 export class PercentageRepresentationComponent {
   @Input() percentage: number | null;
+
+  constructor() {
+
+  }
 }
