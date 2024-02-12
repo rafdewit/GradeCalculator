@@ -17,6 +17,7 @@
     .period-container {
       width: 400px;
       display: flex;
+      flex-shrink: 0;
       flex-direction: column;
       margin: 32px;
 

@@ -4,6 +4,7 @@
         <app-percentage-representation class="percentage-representation" [percentage]="multiInfo.percentage"></app-percentage-representation>
         <div class="score-representation"></div>
         <div class="weight-representation">{{multiInfo.multi.weight}}</div>
+        <div class="score-category-representation">{{multiInfo.percentage | gradeCategory}}</div>
     </div>
 
     @for (single of multiInfo.singleConfigurations; track $index) {
