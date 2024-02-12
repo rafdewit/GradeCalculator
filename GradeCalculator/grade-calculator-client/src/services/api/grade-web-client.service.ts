@@ -16,27 +16,27 @@ export class GradeWebClient {
 
     constructor(private httpClient: HttpClient, private base: BaseUrlProvider) { }
 
-    public getAll(): Observable<StudentCollection[]> {
+    public getAllClasses(): Observable<StudentCollection[]> {
         return this.httpClient.get<StudentCollection[]>(this.base.baseUrl + `${this.proxyName}`);
     }
 
-    public get(classId: string): Observable<StudentCollection> {
+    public getClass(classId: string): Observable<StudentCollection> {
         return this.httpClient.get<StudentCollection>(this.base.baseUrl + `${this.proxyName}?id=${classId}`);
     }
 
-    public update(request: UpdateStudentCollectionDto): Observable<void> {
+    public updateClass(request: UpdateStudentCollectionDto): Observable<void> {
         return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/update`, request);
     }
     
-    public copy(request: CopyStudentCollectionDto): Observable<void> {
+    public copyClass(request: CopyStudentCollectionDto): Observable<void> {
         return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/copy`, request);
     }
     
-    public create(request: CreateStudentCollectionDto): Observable<void> {
+    public createClass(request: CreateStudentCollectionDto): Observable<void> {
         return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}`, request);
     }
 
-    public delete(id: string): Observable<void> {
+    public deleteClass(id: string): Observable<void> {
         return this.httpClient.delete<void>(this.base.baseUrl + `${this.proxyName}?id=${id}`);
     }
 }

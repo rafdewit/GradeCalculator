@@ -26,14 +26,14 @@ export class ClassesPageComponent {
   public async updateClass(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openClassDialog();
     if (result) {
-      await firstValueFrom(this.gradeWebClient.update({ id: studentCollection?.id, className: result }));
+      await firstValueFrom(this.gradeWebClient.updateClass({ id: studentCollection?.id, className: result }));
     }
   }
 
   public async createClass(): Promise<void> {
     const result = await this.openClassDialog();
     if (result) {
-      await firstValueFrom(this.gradeWebClient.create({ className: result }));
+      await firstValueFrom(this.gradeWebClient.createClass({ className: result }));
     }
   }
 
@@ -52,14 +52,14 @@ export class ClassesPageComponent {
   public async copyClass(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openClassDialog();
     if (result) {
-      await firstValueFrom(this.gradeWebClient.copy({ id: studentCollection?.id, className: result }));
+      await firstValueFrom(this.gradeWebClient.copyClass({ id: studentCollection?.id, className: result }));
     }
   }
 
   public async deleteClass(studentCollection: StudentCollection): Promise<void> {
     const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Class: ${studentCollection.name}?`, `Are you sure you want to delete class: ${studentCollection.name}`);
     if(dialogResult) {
-      await firstValueFrom(this.gradeWebClient.delete(studentCollection.id));
+      await firstValueFrom(this.gradeWebClient.deleteClass(studentCollection.id));
     }
   }
 

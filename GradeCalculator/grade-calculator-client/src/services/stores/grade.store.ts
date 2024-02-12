@@ -20,7 +20,7 @@ export class GradeStore {
     }
 
     private get(): Observable<StudentCollection[]> {
-        const initialClasses$ = this.gradeWebClient.getAll();
+        const initialClasses$ = this.gradeWebClient.getAllClasses();
 
         const attachCreate$ = initialClasses$.pipe(switchMap(r => {
             return this.gradeHubClient.studentCollectionUpdateEvent$.pipe(startWith(null), scan((acc, value) => {
