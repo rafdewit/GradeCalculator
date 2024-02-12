@@ -45,7 +45,7 @@ public class GradePeriodController : ControllerBase
             return NotFound();
 
         var periods = studentCollection.GradePeriods.ToList();
-        var period = periods.FirstOrDefault(p => p.Id == update.PeriodId);
+        var period = periods.FirstOrDefault(p => p.Id == update.GradePeriodId);
         if (period == null)
             return NotFound();
 
@@ -92,7 +92,7 @@ public class GradePeriodController : ControllerBase
             return NotFound();
 
         var periods = studentCollection.GradePeriods.ToList();
-        var period = periods.FindIndex(p => p.Id == update.PeriodId);
+        var period = periods.FindIndex(p => p.Id == update.GradePeriodId);
         if (period < 0)
             return NotFound();
 

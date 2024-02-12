@@ -6,7 +6,7 @@
 
     <div class="collection-header">
         <h2>Periods</h2>
-        <button (click)="openCreatePeriodDialog()" mat-raised-button>
+        <button (click)="openCreatePeriodDialog(info.class)" mat-raised-button>
             <mat-icon>add</mat-icon>
             Create
         </button>
@@ -19,6 +19,10 @@
                 (clickRequest)="periodClicked(gradePeriod)">
     
                 <div menu-items>
+                    <button mat-menu-item (click)="updatePeriod(gradePeriod, info.class)">
+                        <mat-icon>copy_all</mat-icon>
+                        <span>Update period</span>
+                    </button>
                     <button mat-menu-item (click)="copyPeriod(gradePeriod, info.class)">
                         <mat-icon>copy_all</mat-icon>
                         <span>Copy period</span>

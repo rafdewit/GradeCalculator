@@ -9,6 +9,8 @@ import { CreatePeriodDialogData } from './create-period-dialog/create-period-dia
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreatePeriodDialogComponent } from './create-period-dialog/create-period-dialog.component';
 import { StudentCollectionWebClient } from 'src/services/api/student-collection-web-client.service';
+import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/api/grade-period-web-client.service';
+import { DialogService } from 'src/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-class-configuration',
@@ -21,7 +23,8 @@ export class ClassConfigurationComponent {
   public class$: Observable<StudentCollection>;
   public info$: Observable<ClassConfigurationInfo>;
 
-  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private studentCollectionWebClient: StudentCollectionWebClient) {
+  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: GradePeriodWebClient,
+    private dialogService: DialogService) {
     this.class$ = this.activatedRoute.data.pipe(map(d => d['class']));
     this.info$ = this.class$.pipe(map(c => {
       const result: ClassConfigurationInfo = {
@@ -32,23 +35,36 @@ export class ClassConfigurationComponent {
     }))
   }
 
-  public async openCreatePeriodDialog(): Promise<void> {
-    const result = await this.openPeriodDialog();
+  public async openCreatePeriodDialog(studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openPeriodDialog("Create Grade Period");
     if (result) {
-      await firstValueFrom(this.studentCollectionWebClient.createClass({ className: result }));
+      await firstValueFrom(this.gradePeriodWebClient.createGradePeriod({ studentCollectionId: studentCollection.id, name: result }));
     }
   }
 
   public periodClicked(gradePeriod: GradePeriod): void {
-
+    
   }
 
-  public copyPeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): void {
-
+  public async copyPeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openPeriodDialog(`Copy Grade Period: ${gradePeriod.name}`);
+    if (result) {
+      await firstValueFrom(this.gradePeriodWebClient.copyGradePeriod({ studentCollectionId: studentCollection.id, name: result, gradePeriodId: gradePeriod.id }));
+    }
   }
 
-  public deletePeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): void {
+  public async updatePeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openPeriodDialog(`Update Grade Period: ${gradePeriod.name}`, gradePeriod);
+    if (result) {
+      await firstValueFrom(this.gradePeriodWebClient.updateGradePeriod({ studentCollectionId: studentCollection.id, name: result, gradePeriodId: gradePeriod.id }));
+    }
+  }
 
+  public async deletePeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
+    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Class: ${studentCollection.name}?`, `Are you sure you want to delete class: ${studentCollection.name}`);
+    if(dialogResult) {
+      await firstValueFrom(this.gradePeriodWebClient.deleteGradePeriod({ studentCollectionId: studentCollection.id, gradePeriodId: gradePeriod.id }));
+    }
   }
 
   public openCreateStudentDialog(): void {
@@ -59,16 +75,15 @@ export class ClassConfigurationComponent {
 
   }
 
-  public async openPeriodDialog(period: GradePeriod | null = null): Promise<string | null> {
-    const isEdit = period !== null;
+  public async openPeriodDialog(title: string, period: GradePeriod | null = null): Promise<string | null> {
     const data: DefaultCrudDialogData<CreatePeriodDialogData> = {
       object: {
         name: period?.name ?? 'GradeName'
       },
       deleteFlag: false,
-      title: isEdit ? 'Update GradePeriod' : 'Create GradePeriod',
+      title: title,
       cancelFlag: false,
-      isUpdate: isEdit,
+      isUpdate: period !== null,
     }
 
     const input = new MatDialogConfig<DefaultCrudDialogData<CreatePeriodDialogData>>();
