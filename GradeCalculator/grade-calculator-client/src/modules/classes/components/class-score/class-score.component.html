@@ -5,13 +5,13 @@
 <div class="students-content">
     <app-grid-list>
         @for (studentInfo of classScoreInfo.studentInfos; track studentInfo) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentInfo.student.name"
-            [clickable]="true" [showMenu]="true" (clickRequest)="studentNavigate(studentInfo)">
+        <app-grid-tile-blob-template-ref [clickable]="false" [title]="studentInfo.student.name"
+            [clickable]="true" (clickRequest)="studentNavigate(studentInfo)" [specificColor]="studentInfo.totalPercentage | percentageToColor: { colors: colors }">
 
             <div content>
                 <div class="total-header">
                     <div class="total-title">Total:</div>
-                    <div>({{studentInfo.totalPercentage | percentage}})</div>
+                    <app-percentage-representation [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
                 </div>
 
                 <div class="grade-periods">

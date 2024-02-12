@@ -1,12 +1,12 @@
 <div class="blob-container" (click)="emitClickRequest()">
-    <div class="grid-tile-blob" [ngClass]="colorClass" [class.success]="!colorClass" [class.clickable]="clickable" [style.border-left]="specificColor ? '' : '7px solid ' + specificColor">
+    <div class="grid-tile-blob" [style.border-left]="specificColor | blobColorBorder" [ngClass]="colorClass" [class.success]="!colorClass" [class.clickable]="clickable">
 
         <div class="header">
             <h3>{{title}}</h3>
-    
+            
             <span>
                 @if(canEdit) { <mat-icon class="edit-icon" (click)="triggerEditRequest($event)">settings</mat-icon> }
-                @if(showMenu) { <mat-icon class="edit-icon" [matMenuTriggerFor]="menu">more_vert</mat-icon> }
+                @if(showMenu) { <mat-icon class="edit-icon" (click)="menuClick($event)" [matMenuTriggerFor]="menu">more_vert</mat-icon> }
             </span>
     
             <mat-menu #menu="matMenu">

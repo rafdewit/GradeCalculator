@@ -21,6 +21,7 @@ import { ProgressBarColor } from 'src/services/directives/progress-bar-color';
 import { PercentageToColorPipe } from 'src/services/pipes/percentage-to-color.pipe';
 import { MarginLeftPipe } from 'src/services/pipes/margin-left.pipe';
 import { GradeCategoryPipe } from 'src/services/pipes/grade-category.pipe';
+import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },

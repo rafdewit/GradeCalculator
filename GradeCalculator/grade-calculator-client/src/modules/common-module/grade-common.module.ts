@@ -9,6 +9,7 @@ import { GridTileBlobTemplateRefComponent } from './grid/grid-tile-blob-template
 import { ThemeContainerComponent } from './theme/theme-container/theme-container.component';
 import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.component';
 import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
+import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
         GridTileBlobTemplateRefComponent,
         ThemeContainerComponent,
         ThemeSelectorComponent,
-        NavigatorBarComponent
+        NavigatorBarComponent,
+        BlobColorBorderPipe,
     ],
     imports: [
         CommonModule,

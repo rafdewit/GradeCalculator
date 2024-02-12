@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map } from 'rxjs';
+import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 
 @Component({
@@ -11,6 +12,7 @@ import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 })
 export class ClassScoreComponent {
   public classScoreInfo$: Observable<ClassScoreInfo>;
+  public colors = PERCENTAGE_GRADIENT_COLORS;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router) {
     this.classScoreInfo$ = activatedRoute.data.pipe(map(d => d['classScore']));

@@ -26,6 +26,10 @@ export class GridTileBlobComponent {
     this.editRequest.emit();
   }
 
+  menuClick(e: MouseEvent) {
+    e.stopPropagation();
+  }
+
   emitClickRequest(): void {
     if(this.clickable) {
       this.clickRequest.emit();
