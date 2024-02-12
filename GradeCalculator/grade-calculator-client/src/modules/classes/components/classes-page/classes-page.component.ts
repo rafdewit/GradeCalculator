@@ -9,6 +9,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { GradeWebClient } from 'src/services/api/grade-web-client.service';
 import { saveAs } from 'file-saver';
+import { DialogService } from 'src/services/dialog/dialog.service';
 
 @Component({
   selector: 'app-classes-page',
@@ -18,7 +19,7 @@ import { saveAs } from 'file-saver';
 })
 export class ClassesPageComponent {
   constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute, private matDialog: MatDialog,
-    public gradeWebClient: GradeWebClient) {
+    public gradeWebClient: GradeWebClient, private dialogService: DialogService) {
 
   }
 
@@ -48,41 +49,44 @@ export class ClassesPageComponent {
     );
   }
 
-  public async copyClass(studentCollection: StudentCollection): Promise < void> {
-  const result = await this.openClassDialog();
-  if(result) {
-    await firstValueFrom(this.gradeWebClient.copy({ id: studentCollection?.id, className: result }));
+  public async copyClass(studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openClassDialog();
+    if (result) {
+      await firstValueFrom(this.gradeWebClient.copy({ id: studentCollection?.id, className: result }));
+    }
   }
-}
 
-  public async deleteClass(studentCollection: StudentCollection): Promise < void> {
-  await firstValueFrom(this.gradeWebClient.delete(studentCollection.id));
-}
+  public async deleteClass(studentCollection: StudentCollection): Promise<void> {
+    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Class: ${studentCollection.name}?`, `Are you sure you want to delete class: ${studentCollection.name}`);
+    if(dialogResult) {
+      await firstValueFrom(this.gradeWebClient.delete(studentCollection.id));
+    }
+  }
 
   public classClicked(studentCollection: StudentCollection): void {
-  this.router.navigate([studentCollection.id, "score-overview"], { relativeTo: this.activatedRoute })
-}
+    this.router.navigate([studentCollection.id, "score-overview"], { relativeTo: this.activatedRoute })
+  }
 
   public editClicked(studentCollection: StudentCollection): void {
-  this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
-}
+    this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
+  }
 
-  public async openClassDialog(studentCollection: StudentCollection | null = null): Promise < string | null > {
-  const isEdit = studentCollection !== null;
-  const data: DefaultCrudDialogData<CreateClassDialogData> = {
-  object: {
-    name: studentCollection?.name ?? 'ClassName'
-  },
-  deleteFlag: false,
-    title: isEdit ? 'Update Class' : 'Create Class',
+  public async openClassDialog(studentCollection: StudentCollection | null = null): Promise<string | null> {
+    const isEdit = studentCollection !== null;
+    const data: DefaultCrudDialogData<CreateClassDialogData> = {
+      object: {
+        name: studentCollection?.name ?? 'ClassName'
+      },
+      deleteFlag: false,
+      title: isEdit ? 'Update Class' : 'Create Class',
       cancelFlag: false,
-        isUpdate: isEdit,
+      isUpdate: isEdit,
     }
 
-const input = new MatDialogConfig<DefaultCrudDialogData<CreateClassDialogData>>();
-input.data = data;
+    const input = new MatDialogConfig<DefaultCrudDialogData<CreateClassDialogData>>();
+    input.data = data;
 
-const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, string>(CreateClassDialogComponent, input);
-return await firstValueFrom(dialogRef.afterClosed()) ?? null;
+    const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, string>(CreateClassDialogComponent, input);
+    return await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 }
