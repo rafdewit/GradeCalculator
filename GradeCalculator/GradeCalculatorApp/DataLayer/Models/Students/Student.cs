@@ -1,23 +1,22 @@
-﻿namespace GradeCalculator.DataLayer.Models.Students
+﻿namespace GradeCalculator.DataLayer.Models.Students;
+
+public class Student
 {
-    public class Student
-    {
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        public Student()
+    public Student()
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-        {
+    {
 
-        }
-
-        public Student(string id, string name, IEnumerable<StudentSingleGrade> studentSingleGrades)
-        {
-            Id = id;
-            Name = name;
-            StudentSingleGrades = studentSingleGrades;
-        }
-
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public IEnumerable<StudentSingleGrade> StudentSingleGrades { get; }
     }
+
+    public Student(string id, string name, IEnumerable<StudentSingleGrade> studentSingleGrades)
+    {
+        Id = id;
+        Name = name;
+        StudentSingleGrades = studentSingleGrades;
+    }
+
+    public string Id { get; set; }
+    public string Name { get; set; }
+    public IEnumerable<StudentSingleGrade> StudentSingleGrades { get; }
 }

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GradeHubClient } from "../signalr/grade-hub.client";
 import { StudentCollection } from "../dtos/student-collection.model";
-import { GradeWebClient } from "../api/grade-web-client.service";
+import { StudentCollectionWebClient } from "../api/student-collection-web-client.service";
 import { Observable, map, scan, startWith, switchMap } from "rxjs";
 import { bufferOneRef } from "../rxjs/buffer-one-ref";
 import { ClassScoreInfo } from "./models/score";
@@ -14,13 +14,13 @@ export class GradeStore {
     public classes$: Observable<StudentCollection[]>;
     public classScoreInfos$: Observable<ClassScoreInfo[]>;
 
-    constructor(private gradeWebClient: GradeWebClient, private gradeHubClient: GradeHubClient) {
+    constructor(private studentCollectionWebClient: StudentCollectionWebClient, private gradeHubClient: GradeHubClient) {
         this.classes$ = this.get();
         this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item)))).pipe(bufferOneRef());
     }
 
     private get(): Observable<StudentCollection[]> {
-        const initialClasses$ = this.gradeWebClient.getAllClasses();
+        const initialClasses$ = this.studentCollectionWebClient.getAllClasses();
 
         const attachCreate$ = initialClasses$.pipe(switchMap(r => {
             return this.gradeHubClient.studentCollectionUpdateEvent$.pipe(startWith(null), scan((acc, value) => {

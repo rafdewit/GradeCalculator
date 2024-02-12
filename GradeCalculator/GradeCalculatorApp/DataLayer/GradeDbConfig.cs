@@ -1,7 +1,6 @@
-﻿namespace GradeCalculator.DataLayer
+﻿namespace GradeCalculator.DataLayer;
+
+public class GradeDbConfig(string databaseName = @"GradeDb.db")
 {
-    public class GradeDbConfig(string databaseName = @"GradeDb.db")
-    {
-        public string DatabaseName { get; set; } = databaseName;
-    }
+    public string DatabaseName { get; set; } = databaseName;
 }

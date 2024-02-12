@@ -6,73 +6,72 @@ using GradeCalculatorApp.Hubs;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
 
-namespace GradeCalculatorApp
+namespace GradeCalculatorApp;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
-            ConfigureServices(builder.Services);
-            ConfigureApplicationSpecificServices(builder.Services);
-            var app = builder.Build();
+        var builder = WebApplication.CreateBuilder(args);
+        ConfigureServices(builder.Services);
+        ConfigureApplicationSpecificServices(builder.Services);
+        var app = builder.Build();
 
-            Configure(app);
-        }
+        Configure(app);
+    }
 
-        public static void ConfigureServices(IServiceCollection services)
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen(c =>
         {
-            services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen(c =>
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Avant", Version = "v1" });
+        });
+
+        services.AddCors(options =>
+        {
+            options.AddPolicy("CorsPolicy", builder => builder
+            .WithOrigins("http://localhost:4200", "https://localhost:4200")
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials());
+        });
+
+        services.AddSignalR()
+            .AddJsonProtocol(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Avant", Version = "v1" });
+                options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
             });
+    }
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy("CorsPolicy", builder => builder
-                .WithOrigins("http://localhost:4200", "https://localhost:4200")
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials());
-            });
+    public static void ConfigureApplicationSpecificServices(IServiceCollection services)
+    {
+        services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
+        services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
+        services.AddTransient<IGradeLiteDb, GradeLiteDb>();
+        services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
+    }
 
-            services.AddSignalR()
-                .AddJsonProtocol(options =>
-                {
-                    options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                });
-        }
-
-        public static void ConfigureApplicationSpecificServices(IServiceCollection services)
+    public static void Configure(WebApplication app)
+    {
+        if (app.Environment.IsDevelopment())
         {
-            services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
-            services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
-            services.AddTransient<IGradeLiteDb, GradeLiteDb>();
-            services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
-        public static void Configure(WebApplication app)
-        {
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+        app.UseCors("CorsPolicy");
+        app.UseHttpsRedirection();
+        app.UseRouting();
+        app.UseAuthorization();
+        app.UseStaticFiles();
+        app.UseAuthorization();
 
-            app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
-            app.UseRouting();
-            app.UseAuthorization();
-            app.UseStaticFiles();
-            app.UseAuthorization();
+        app.MapControllers();
+        app.MapHub<GradeHub>("/hubs/grades");
+        app.UseAppFileServer();
 
-            app.MapControllers();
-            app.MapHub<GradeHub>("/hubs/grades");
-            app.UseAppFileServer();
-
-            app.Run();
-        }
+        app.Run();
     }
 }

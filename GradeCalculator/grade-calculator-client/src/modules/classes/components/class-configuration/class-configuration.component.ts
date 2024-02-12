@@ -8,7 +8,7 @@ import { Student } from 'src/services/dtos/students/student.model';
 import { CreatePeriodDialogData } from './create-period-dialog/create-period-dialog.data';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreatePeriodDialogComponent } from './create-period-dialog/create-period-dialog.component';
-import { GradeWebClient } from 'src/services/api/grade-web-client.service';
+import { StudentCollectionWebClient } from 'src/services/api/student-collection-web-client.service';
 
 @Component({
   selector: 'app-class-configuration',
@@ -21,7 +21,7 @@ export class ClassConfigurationComponent {
   public class$: Observable<StudentCollection>;
   public info$: Observable<ClassConfigurationInfo>;
 
-  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradeWebClient: GradeWebClient) {
+  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private studentCollectionWebClient: StudentCollectionWebClient) {
     this.class$ = this.activatedRoute.data.pipe(map(d => d['class']));
     this.info$ = this.class$.pipe(map(c => {
       const result: ClassConfigurationInfo = {
@@ -35,7 +35,7 @@ export class ClassConfigurationComponent {
   public async openCreatePeriodDialog(): Promise<void> {
     const result = await this.openPeriodDialog();
     if (result) {
-      await firstValueFrom(this.gradeWebClient.createClass({ className: result }));
+      await firstValueFrom(this.studentCollectionWebClient.createClass({ className: result }));
     }
   }
 

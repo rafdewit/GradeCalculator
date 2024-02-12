@@ -1,31 +1,30 @@
 ﻿using GradeCalculator.DataLayer.Models;
 using Microsoft.AspNetCore.SignalR;
 
-namespace GradeCalculatorApp.Hubs
+namespace GradeCalculatorApp.Hubs;
+
+public interface IGradeHubMessenger
 {
-    public interface IGradeHubMessenger
+    Task SendDeletedStudentCollection(string id);
+    Task SendUpdatedStudentCollection(StudentCollection studentCollection);
+}
+
+public class GradeHubMessenger : IGradeHubMessenger
+{
+    private readonly IHubContext<GradeHub> _hubContext;
+
+    public GradeHubMessenger(IHubContext<GradeHub> hubContext)
     {
-        Task SendDeletedStudentCollection(string id);
-        Task SendUpdatedStudentCollection(StudentCollection studentCollection);
+        _hubContext = hubContext;
     }
 
-    public class GradeHubMessenger : IGradeHubMessenger
+    public async Task SendUpdatedStudentCollection(StudentCollection studentCollection)
     {
-        private readonly IHubContext<GradeHub> _hubContext;
+        await _hubContext.Clients.All.SendAsync("studentcollectionupdated", studentCollection);
+    }
 
-        public GradeHubMessenger(IHubContext<GradeHub> hubContext)
-        {
-            _hubContext = hubContext;
-        }
-
-        public async Task SendUpdatedStudentCollection(StudentCollection studentCollection)
-        {
-            await _hubContext.Clients.All.SendAsync("studentcollectionupdated", studentCollection);
-        }
-
-        public async Task SendDeletedStudentCollection(string id)
-        {
-            await _hubContext.Clients.All.SendAsync("studentcollectiondeleted", id);
-        }
+    public async Task SendDeletedStudentCollection(string id)
+    {
+        await _hubContext.Clients.All.SendAsync("studentcollectiondeleted", id);
     }
 }
