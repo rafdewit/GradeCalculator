@@ -1,11 +1,10 @@
-<div class="single-container" [style.margin-left]="depth | marginLeft">
-    <div [class.root-score]="depth === 0" class="title">{{singleInfo.single.name}}:</div>   
+<div class="single-container">
+    <div class="title">
+        <div [style.margin-left]="depth | marginLeft" [class.root-score]="depth === 0">{{singleInfo.single.name}}:</div>   
+    </div>
 
     <app-percentage-representation class="percentage-representation" [percentage]="singleInfo.percentage"></app-percentage-representation>
-
     <div class="score-representation">({{singleInfo.score?.score}}/{{singleInfo.single.totalScore}})</div>
-
     <div class="weight-representation">{{singleInfo.single.weight}}</div>
-
     <div class="score-category-representation">{{singleInfo.percentage | gradeCategory}}</div>
 </div>

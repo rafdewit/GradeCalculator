@@ -1,6 +1,8 @@
 <div class="multi-container">
     <div class="multi-score-title-container">
-        <div class="title" [style.margin-left]="depth | marginLeft" [class.root-score]="depth === 0">{{multiInfo.multi.name}}:</div>
+        <div class="title">
+            <div [style.margin-left]="depth | marginLeft" [class.root-score]="depth === 0">{{multiInfo.multi.name}}:</div>
+        </div>
         <app-percentage-representation class="percentage-representation" [percentage]="multiInfo.percentage"></app-percentage-representation>
         <div class="score-representation"></div>
         <div class="weight-representation">{{multiInfo.multi.weight}}</div>

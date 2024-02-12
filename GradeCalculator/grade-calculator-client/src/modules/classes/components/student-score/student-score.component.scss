@@ -15,11 +15,41 @@
     flex-direction: row;
 
     .period-container {
-      width: 400px;
+      width: 500px;
       display: flex;
       flex-shrink: 0;
       flex-direction: column;
       margin: 32px;
+
+      .headers {
+        display: flex;
+        flex-direction: row;
+        
+        .title {
+          width: 40%;
+          font-weight: bold;
+        }
+
+        .percentage-representation {
+          width: 18%;
+          font-weight: bold;
+        }
+
+        .score-representation {
+          width: 18%;
+          font-weight: bold;
+        }
+
+        .weight-representation {
+          width: 12%;
+          font-weight: bold;
+        }
+
+        .score-category-representation {
+          width: 12%;
+          font-weight: bold;
+        }
+      }
 
       .period-title-container {
         display: flex;

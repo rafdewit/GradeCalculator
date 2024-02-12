@@ -6,6 +6,7 @@
 <div class="year-total">
     <h1 class="year-total-title">Year total:</h1>
     <app-percentage-representation [percentage]="student.totalPercentage"></app-percentage-representation>
+    <div>({{student.totalPercentage | gradeCategory}})</div>
 </div>
 
 <div class="periods-container">
@@ -17,8 +18,18 @@
             </h2>
 
             <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
+
+            <div>({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
         </div>
 
+        <div class="headers">
+            <div class="title">Name</div>
+            <div class="percentage-representation">Percentage</div>
+            <div class="score-representation">Score</div>
+            <div class="weight-representation">Weight</div>
+            <div class="score-category-representation">Category</div>
+        </div>
+        
         @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
             <div>
                 <app-single-score [depth]="0" [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
