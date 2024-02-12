@@ -1,9 +1,9 @@
 <div class="single-container" [style.margin-left]="depth | marginLeft">
-    <div [class.root-score]="depth === 0" class="single-title">{{singleInfo.single.name}}:</div>   
+    <div [class.root-score]="depth === 0" class="title">{{singleInfo.single.name}}:</div>   
 
-    <app-percentage-representation [percentage]="singleInfo.percentage"></app-percentage-representation>
+    <app-percentage-representation class="percentage-representation" [percentage]="singleInfo.percentage"></app-percentage-representation>
 
-    <div>({{singleInfo.score?.score}}/{{singleInfo.single.totalScore}})</div>
+    <div class="score-representation">({{singleInfo.score?.score}}/{{singleInfo.single.totalScore}})</div>
 
-    <div>{{singleInfo.single.weight}}</div>
+    <div class="weight-representation">{{singleInfo.single.weight}}</div>
 </div>

@@ -4,6 +4,10 @@
   .year-total {
     display: flex;
     flex-direction: row;
+
+    .year-total-title {
+      margin-right: 8px;
+    }
   }
 
   .periods-container {
@@ -11,6 +15,7 @@
     flex-direction: row;
 
     .period-container {
+      width: 400px;
       display: flex;
       flex-direction: column;
       margin: 32px;

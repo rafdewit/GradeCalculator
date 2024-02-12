@@ -5,13 +5,26 @@
     display: flex;
     flex-direction: row;
 
+    .title {
+      margin-right: 8px;
+      width: 50%;
+    }
+
+    .percentage-representation {
+      width: 20%;
+    }
+
+    .score-representation {
+      width: 20%;
+    }
+
+    .weight-representation {
+      width: 10%;
+    }
+
     .root-score {
       text-decoration: underline;
       font-weight: 800;
-    }
-
-    .single-title {
-      margin-right: 8px;
     }
 
     .single-percentage {
