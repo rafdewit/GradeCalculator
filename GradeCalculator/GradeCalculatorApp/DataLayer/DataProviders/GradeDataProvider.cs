@@ -1,11 +1,13 @@
 ﻿using GradeCalculator.DataLayer.Models;
 using GradeCalculator.Tests;
+using System.Security.Cryptography;
 
 namespace GradeCalculator.DataLayer.DataProviders
 {
     public interface IGradeDataProvider
     {
         void CreateOrUpdate(StudentCollection studentCollection);
+        void Delete(string id);
         StudentCollection? Get(string id);
         List<StudentCollection> GetAll();
         StudentCollection? GetByName(string name);
@@ -19,11 +21,10 @@ namespace GradeCalculator.DataLayer.DataProviders
         public List<StudentCollection> GetAll()
         {
             if (_studentCollections == null)
-                _studentCollections = new List<StudentCollection>() {
+                _studentCollections = _gradeLiteDb.GetAll().ToList().Concat(new List<StudentCollection>() {
                     DataGenerator.CreateClass("Class1"), 
                     DataGenerator.CreateClass("Class2") 
-                };
-            // _gradeLiteDb.GetAll().ToList();
+                }).ToList();
 
             return _studentCollections;
         }
@@ -51,6 +52,16 @@ namespace GradeCalculator.DataLayer.DataProviders
                 studentCollections.Add(studentCollection);
 
             _gradeLiteDb.CreateOrUpdate(studentCollection);
+        }
+
+        public void Delete(string id)
+        {
+            var studentCollections = GetAll();
+            var index = studentCollections.FindIndex(c => c.Id == id);
+            if (index >= 0)
+                studentCollections.RemoveAt(index);
+
+            _gradeLiteDb.Delete(id);
         }
     }
 }

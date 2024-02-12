@@ -50,6 +50,7 @@ namespace GradeCalculatorApp
             services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
             services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
             services.AddTransient<IGradeLiteDb, GradeLiteDb>();
+            services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
         }
 
         public static void Configure(WebApplication app)

@@ -22,6 +22,6 @@ export class GradeCategoryPipe implements PipeTransform {
         }
     }
 
-    return 'NaN';
+    return '';
   }
 }

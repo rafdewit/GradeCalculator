@@ -7,6 +7,6 @@ export class PercentagePipe implements PipeTransform {
         return `${(n*100).toFixed(2)}%`;
     }
 
-    return 'NaN';
+    return '';
   }
 }

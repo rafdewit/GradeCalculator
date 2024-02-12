@@ -46,7 +46,7 @@ export function calculatePercentage(gradePeriods: StudentGradePeriodInfo[]): num
 
 export function createGradeMap(grades: StudentSingleGrade[]): { [key: string]: StudentSingleGrade } {
     const gradeMap: { [key: string]: StudentSingleGrade } = {};
-    grades.forEach(g => gradeMap[g.singleGradeConfigurationId] = g);
+    grades?.forEach(g => gradeMap[g.singleGradeConfigurationId] = g);
     return gradeMap;
 }
 

@@ -1,4 +1,9 @@
 ﻿using GradeCalculator.DataLayer.DataProviders;
+using GradeCalculator.DataLayer.Models;
+using GradeCalculator.DataLayer.Models.Configurations;
+using GradeCalculator.DataLayer.Models.Students;
+using GradeCalculatorApp.Controllers.Requests;
+using GradeCalculatorApp.Hubs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GradeCalculatorApp.Controllers
@@ -8,10 +13,12 @@ namespace GradeCalculatorApp.Controllers
     public class GradeController : ControllerBase
     {
         private readonly IGradeDataProvider _gradeDataProvider;
+        private readonly IGradeHubMessenger _gradeHubMessenger;
 
-        public GradeController(IGradeDataProvider gradeDataProvider)
+        public GradeController(IGradeDataProvider gradeDataProvider, IGradeHubMessenger gradeHubMessenger)
         {
             _gradeDataProvider = gradeDataProvider;
+            _gradeHubMessenger = gradeHubMessenger;
         }
 
         [HttpGet]
@@ -33,6 +40,68 @@ namespace GradeCalculatorApp.Controllers
 
                 return Ok(gradeData);
             }
+        }
+
+        [HttpPost]
+        [Route("")]
+        public IActionResult Create(CreateStudentCollectionDto create)
+        {
+            var studentCollection = new StudentCollection(
+                Guid.NewGuid().ToString(),
+                create.ClassName,
+                new List<GradePeriod>(),
+                new List<Student>());
+
+            _gradeDataProvider.CreateOrUpdate(studentCollection);
+            _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("update")]
+        public IActionResult Update(UpdateStudentCollectionDto update)
+        {
+            var studentCollection = _gradeDataProvider.Get(update.Id);
+            if (studentCollection == null)
+                return NotFound();
+
+            studentCollection.Name = update.ClassName;
+            _gradeDataProvider.CreateOrUpdate(studentCollection);
+            _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);
+
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("copy")]
+        public IActionResult Copy(CopyStudentCollectionDto update)
+        {
+            var studentCollection = _gradeDataProvider.Get(update.Id);
+            if (studentCollection == null)
+                return NotFound();
+
+            studentCollection.Name = update.ClassName;
+            studentCollection.Id = Guid.NewGuid().ToString();
+
+            _gradeDataProvider.CreateOrUpdate(studentCollection);
+            _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);
+
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("")]
+        public IActionResult Delete(string id)
+        {
+            var studentCollection = _gradeDataProvider.Get(id);
+            if (studentCollection == null)
+                return NotFound();
+
+            _gradeDataProvider.Delete(id);
+            _gradeHubMessenger.SendDeletedStudentCollection(id);
+
+            return Ok();
         }
     }
 }

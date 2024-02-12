@@ -22,6 +22,8 @@ import { PercentageToColorPipe } from 'src/services/pipes/percentage-to-color.pi
 import { MarginLeftPipe } from 'src/services/pipes/margin-left.pipe';
 import { GradeCategoryPipe } from 'src/services/pipes/grade-category.pipe';
 import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
+import { CreateClassDialogComponent } from './components/classes-page/create-class-dialog/create-class-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },
@@ -46,12 +48,16 @@ const routes: Routes = [
     MultiScoreComponent,
     SingleScoreComponent,
     PercentageRepresentationComponent,
-    ProgressBarColor
+    ProgressBarColor,
+    CreateClassDialogComponent
   ],
   imports: [
     MaterialModule,
     CommonModule,
     GradeCommonModule,
+    GradeCommonModule,
+    ReactiveFormsModule,
+    FormsModule,
     RouterModule.forChild(routes),
   ],
   providers: []

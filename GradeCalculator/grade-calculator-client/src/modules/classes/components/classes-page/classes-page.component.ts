@@ -7,6 +7,7 @@ import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default
 import { CreateClassDialogComponent } from './create-class-dialog/create-class-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
+import { GradeWebClient } from 'src/services/api/grade-web-client.service';
 
 @Component({
   selector: 'app-classes-page',
@@ -15,24 +16,38 @@ import { firstValueFrom } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassesPageComponent {
-  constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute, private matDialog: MatDialog) {
+  constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute, private matDialog: MatDialog,
+    public gradeWebClient: GradeWebClient) {
     
   }
 
-  public updateClass(studentCollection: StudentCollection): void {
-    //
+  public async updateClass(studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openClassDialog();
+    if(result) {
+      await firstValueFrom(this.gradeWebClient.update({id: studentCollection?.id, className: result}));
+    }
+  }
+
+  public async createClass(): Promise<void> {
+    const result = await this.openClassDialog();
+    if(result) {
+      await firstValueFrom(this.gradeWebClient.create({className: result}));
+    }
   }
 
   public downloadClass(studentCollection: StudentCollection): void {
     //
   }
 
-  public copyClass(studentCollection: StudentCollection): void {
-    //
+  public async copyClass(studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openClassDialog();
+    if(result) {
+      await firstValueFrom(this.gradeWebClient.copy({id: studentCollection?.id, className: result}));
+    }
   }
 
-  public deleteClass(studentCollection: StudentCollection): void {
-    //
+  public async deleteClass(studentCollection: StudentCollection): Promise<void> {
+    await firstValueFrom(this.gradeWebClient.delete(studentCollection.id));
   }
 
   public classClicked(studentCollection: StudentCollection): void {
@@ -43,9 +58,8 @@ export class ClassesPageComponent {
     this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
   }
 
-  public async openClassDialog(studentCollection: StudentCollection | null = null): Promise<void> {
+  public async openClassDialog(studentCollection: StudentCollection | null = null): Promise<string | null> {
     const isEdit = studentCollection !== null;
-
     const data: DefaultCrudDialogData<CreateClassDialogData> = {
       object: {
         name: studentCollection?.name ?? 'ClassName'
@@ -59,7 +73,7 @@ export class ClassesPageComponent {
     const input = new MatDialogConfig<DefaultCrudDialogData<CreateClassDialogData>>();
     input.data = data;
 
-    const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, DefaultCrudDialogData<CreateClassDialogData>>(CreateClassDialogComponent, input);
-    const result = await firstValueFrom(dialogRef.afterClosed());
+    const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, string>(CreateClassDialogComponent, input);
+    return await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 }

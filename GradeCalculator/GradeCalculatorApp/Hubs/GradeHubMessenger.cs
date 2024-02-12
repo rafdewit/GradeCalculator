@@ -5,6 +5,7 @@ namespace GradeCalculatorApp.Hubs
 {
     public interface IGradeHubMessenger
     {
+        Task SendDeletedStudentCollection(string id);
         Task SendUpdatedStudentCollection(StudentCollection studentCollection);
     }
 

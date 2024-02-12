@@ -6,7 +6,7 @@
 <div class="year-total">
     <h1 class="year-total-title">Year total:</h1>
     <app-percentage-representation [percentage]="student.totalPercentage"></app-percentage-representation>
-    <div>({{student.totalPercentage | gradeCategory}})</div>
+    <div *ngIf="student.totalPercentage !== null">({{student.totalPercentage | gradeCategory}})</div>
 </div>
 
 <div class="periods-container">
@@ -19,7 +19,7 @@
 
             <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
 
-            <div>({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
+            <div *ngIf="studentGradePeriodInfo.totalPercentage !== null">({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
         </div>
 
         <div class="headers">
