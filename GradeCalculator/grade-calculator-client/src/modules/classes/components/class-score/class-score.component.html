@@ -19,9 +19,9 @@
                     <div class="grade-period">
                         <div class="grade-period-title">
                             <div class="grade-period-title-text">
-                                {{gradePeriodInfo.gradePeriod.name}}
+                                {{gradePeriodInfo.gradePeriod.name}}:
                             </div>
-                            <div class="grade-period-percentage">
+                            <div class="grade-period-percentage" *ngIf="gradePeriodInfo.totalPercentage !== null">
                                 ({{gradePeriodInfo.totalPercentage | percentage}})
                             </div>
                         </div>

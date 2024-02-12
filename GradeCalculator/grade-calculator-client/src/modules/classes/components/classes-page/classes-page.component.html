@@ -1,51 +1,63 @@
-<app-navigator-bar [parts]="['Classes']">
-    <div actions class="nav-bar-actions">
-        <button (click)="createClass()" mat-raised-button>
-            <mat-icon>add</mat-icon>
-            Create
-        </button>
-        <button mat-raised-button>
-            <mat-icon>upload</mat-icon>
-            Import
-        </button>
-    </div>
-</app-navigator-bar>
-
-<app-grid-list>
-    @for (studentCollection of gradeStore.classes$ | async; track studentCollection) {
-    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" [clickable]="true" 
-        (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
-        <div menu-items>
-            <button mat-menu-item (click)="updateClass(studentCollection)">
-                <mat-icon>edit</mat-icon>
-                <span>Edit class</span>
+@if(gradeStore.classes$ | async; as classes) {
+    <app-navigator-bar [parts]="['Classes']">
+        <div actions class="nav-bar-actions">
+            <button (click)="createClass()" mat-raised-button>
+                <mat-icon>add</mat-icon>
+                Create Class
             </button>
-            <button mat-menu-item (click)="copyClass(studentCollection)">
-                <mat-icon>copy_all</mat-icon>
-                <span>Copy class</span>
+            <button mat-raised-button>
+                <mat-icon>upload</mat-icon>
+                Import Class
             </button>
-            <button mat-menu-item (click)="downloadClass(studentCollection)">
+    
+            <button (click)="downloadClasses(classes)" mat-raised-button>
                 <mat-icon>download</mat-icon>
-                <span>Download backup</span>
+                Download Classes
             </button>
-            <button mat-menu-item (click)="deleteClass(studentCollection)">
-                <mat-icon>delete</mat-icon>
-                <span>Delete class</span>
+    
+            <button mat-raised-button>
+                <mat-icon>upload</mat-icon>
+                Import Classes
             </button>
         </div>
-
-        <div content>
-            <div>Periods: {{studentCollection.gradePeriods.length}}</div>
-            <div>Students: {{studentCollection.students.length}}</div>
-        </div>
-       
-        <div bottom-content>
-            <!-- <div class="actions">
-                <button class="action" mat-raised-button>Start</button>
-                <button class="action" mat-raised-button>Start</button>
-            </div> -->
-        </div>
-
-    </app-grid-tile-blob-template-ref>
-    }
-</app-grid-list>
+    </app-navigator-bar>
+    
+    <app-grid-list>
+        @for (studentCollection of classes; track studentCollection) {
+        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" [clickable]="true" 
+            (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
+            <div menu-items>
+                <button mat-menu-item (click)="updateClass(studentCollection)">
+                    <mat-icon>edit</mat-icon>
+                    <span>Edit class</span>
+                </button>
+                <button mat-menu-item (click)="copyClass(studentCollection)">
+                    <mat-icon>copy_all</mat-icon>
+                    <span>Copy class</span>
+                </button>
+                <button mat-menu-item (click)="downloadClass(studentCollection)">
+                    <mat-icon>download</mat-icon>
+                    <span>Download backup</span>
+                </button>
+                <button mat-menu-item (click)="deleteClass(studentCollection)">
+                    <mat-icon>delete</mat-icon>
+                    <span>Delete class</span>
+                </button>
+            </div>
+    
+            <div content>
+                <div>Periods: {{studentCollection.gradePeriods.length}}</div>
+                <div>Students: {{studentCollection.students.length}}</div>
+            </div>
+           
+            <div bottom-content>
+                <!-- <div class="actions">
+                    <button class="action" mat-raised-button>Start</button>
+                    <button class="action" mat-raised-button>Start</button>
+                </div> -->
+            </div>
+    
+        </app-grid-tile-blob-template-ref>
+        }
+    </app-grid-list>
+}

@@ -18,7 +18,6 @@
             </h2>
 
             <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
-
             <div *ngIf="studentGradePeriodInfo.totalPercentage !== null">({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
         </div>
 
