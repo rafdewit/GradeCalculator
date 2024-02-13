@@ -22,6 +22,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePeriodDialogComponent } from './components/class-configuration/create-period-dialog/create-period-dialog.component';
 import { CreateStudentDialogComponent } from './components/class-configuration/create-student-dialog/create-student-dialog.component';
 import { ClassScoreTableComponent } from './components/class-score-table/class-score-table.component';
+import { ScoreRepresentationComponent } from './components/common/score-representation/score-representation.component';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent },
@@ -51,7 +52,8 @@ const routes: Routes = [
     CreateClassDialogComponent,
     CreatePeriodDialogComponent,
     CreateStudentDialogComponent,
-    ClassScoreTableComponent
+    ClassScoreTableComponent,
+    ScoreRepresentationComponent
   ],
   imports: [
     MaterialModule,

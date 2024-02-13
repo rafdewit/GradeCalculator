@@ -80,23 +80,22 @@
         </td>
 
         <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
-            <app-percentage-representation class="center-content" [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
+            <app-score-representation [percentage]="studentInfo.totalPercentage" [mode]="info.scoreDisplayType"></app-score-representation>
         </td>
 
         <!--GradePeriods-->
         @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
         <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
-            <app-percentage-representation class="center-content"
-                [percentage]="gradePeriodInfo.totalPercentage"></app-percentage-representation>
+            <app-score-representation [percentage]="gradePeriodInfo.totalPercentage" [mode]="info.scoreDisplayType"></app-score-representation>
         </td>
 
         @for(single of gradePeriodInfo.studentSingleGradeInfos; track single) {
-            <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single, root: true}">
+            <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single, root: true, scoreDisplayType: info.scoreDisplayType}">
             </ng-container>
         }
 
         @for(multi of gradePeriodInfo.studentMultiGradeInfos; track multi) {
-            <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi, root: true}">
+            <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi, root: true, scoreDisplayType: info.scoreDisplayType}">
             </ng-container>
         }
         }
@@ -106,24 +105,25 @@
 }
 }
 
-<ng-template #singleLink let-link='link' let-root='root'>
+<ng-template #singleLink let-link='link' let-root='root' let-scoreDisplayType='scoreDisplayType'>
     <td [class.border-left-right]="root">
-        <app-percentage-representation class="center-content" [percentage]="link.percentage"></app-percentage-representation>
+        <app-score-representation [percentage]="link.percentage" [mode]="scoreDisplayType" [total]="link.single?.totalScore" [score]="link.score?.score"></app-score-representation>
+        <!-- <app-percentage-representation class="center-content" [percentage]="link.percentage"></app-percentage-representation> -->
     </td>
 </ng-template>
 
-<ng-template #multiLink let-link='link' let-root='root'>
+<ng-template #multiLink let-link='link' let-root='root' let-scoreDisplayType='scoreDisplayType'>
     <td [class.border-left-right]="root">
         <app-percentage-representation class="center-content" [percentage]="link.percentage"></app-percentage-representation>
     </td>
 
     @for(single of link.singleConfigurations; track single) {
-        <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single}">
+        <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single, scoreDisplayType: scoreDisplayType}">
         </ng-container>
     }
 
     @for(multi of link.multiConfigurations; track multi) {
-        <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi}">
+        <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi, scoreDisplayType: scoreDisplayType}">
         </ng-container>
     }
 </ng-template>

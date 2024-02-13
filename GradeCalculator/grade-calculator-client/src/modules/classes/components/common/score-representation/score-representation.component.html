@@ -1,0 +1,7 @@
+@if(mode === 'percentage' || (mode === 'score' && !score && !total)) {
+    <app-percentage-representation class="center-content" [percentage]="percentage"></app-percentage-representation>
+} @else if(mode === 'score') {
+    <div class="center-content">{{score}}/{{total}}</div>
+} @else if(mode === 'category') {
+    <div class="center-content">{{percentage | gradeCategory}}</div>
+}
