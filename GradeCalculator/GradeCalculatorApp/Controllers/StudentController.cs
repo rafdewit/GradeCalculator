@@ -8,12 +8,12 @@ namespace GradeCalculatorApp.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ConfigurationController : ControllerBase
+public class StudentController : ControllerBase
 {
     private readonly IGradeDataProvider _gradeDataProvider;
     private readonly IGradeHubMessenger _gradeHubMessenger;
 
-    public ConfigurationController(IGradeDataProvider gradeDataProvider, IGradeHubMessenger gradeHubMessenger)
+    public StudentController(IGradeDataProvider gradeDataProvider, IGradeHubMessenger gradeHubMessenger)
     {
         _gradeDataProvider = gradeDataProvider;
         _gradeHubMessenger = gradeHubMessenger;

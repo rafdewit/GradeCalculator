@@ -1,19 +1,19 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, map, combineLatest } from 'rxjs';
 import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 
 @Component({
-  selector: 'app-class-score',
-  templateUrl: './class-score.component.html',
-  styleUrl: './class-score.component.scss',
+  selector: 'app-class-score-table',
+  templateUrl: './class-score-table.component.html',
+  styleUrl: './class-score-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClassScoreComponent {
+export class ClassScoreTableComponent {
   public classScoreInfo$: Observable<ClassScoreInfo | null>;
-  public info$: Observable<ClassScoreComponentInfo>;
+  public info$: Observable<ClassTableComponentInfo>;
   public colors = PERCENTAGE_GRADIENT_COLORS;
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore) {
@@ -25,9 +25,9 @@ export class ClassScoreComponent {
       }));
 
     this.info$ = this.classScoreInfo$.pipe(map(c => {
-      const result: ClassScoreComponentInfo = {
+      const result: ClassTableComponentInfo = {
         classScoreInfo: c,
-        navigationName: `Students(${c?.class?.name})`
+        navigationName: `Table(${c?.class?.name})`
       };
       return result;
     }));
@@ -38,7 +38,7 @@ export class ClassScoreComponent {
   }
 }
 
-export interface ClassScoreComponentInfo {
+export interface ClassTableComponentInfo {
   classScoreInfo: ClassScoreInfo | null;
   navigationName: string;
 }

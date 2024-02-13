@@ -67,6 +67,10 @@ export class ClassesPageComponent {
     this.router.navigate([studentCollection.id, "score-overview"], { relativeTo: this.activatedRoute })
   }
 
+  public tableClicked(studentCollection: StudentCollection): void {
+    this.router.navigate([studentCollection.id, "score-table"], { relativeTo: this.activatedRoute })
+  }
+
   public editClicked(studentCollection: StudentCollection): void {
     this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
   }

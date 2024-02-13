@@ -1,17 +1,19 @@
-@if(classScoreInfo$ | async; as classScoreInfo) {
-
-<app-navigator-bar [partsNav]="[2]" [parts]="['Classes', classScoreInfo.class.name]"></app-navigator-bar>
+@if(info$ | async; as info) {
+@if(info.classScoreInfo; as classScoreInfo) {
+<app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
 
 <div class="students-content">
     <app-grid-list>
         @for (studentInfo of classScoreInfo.studentInfos; track studentInfo) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [title]="studentInfo.student.name"
-            [clickable]="true" (clickRequest)="studentNavigate(studentInfo)" [specificColor]="studentInfo.totalPercentage | percentageToColor: { colors: colors }">
+        <app-grid-tile-blob-template-ref [clickable]="false" [title]="studentInfo.student.name" [clickable]="true"
+            (clickRequest)="studentNavigate(studentInfo)"
+            [specificColor]="studentInfo.totalPercentage | percentageToColor: { colors: colors }">
 
             <div content>
                 <div class="total-header">
                     <div class="total-title">Total:</div>
-                    <app-percentage-representation [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
+                    <app-percentage-representation
+                        [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
                 </div>
 
                 <div class="grade-periods">
@@ -56,4 +58,5 @@
         }
     </app-grid-list>
 </div>
+}
 }

@@ -24,7 +24,7 @@
     
     <app-grid-list>
         @for (studentCollection of classes; track studentCollection) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="studentCollection.name" [showMenu]="true" [clickable]="true" 
+        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="false" [title]="studentCollection.name" [showMenu]="true" [clickable]="false" 
             (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
             <div menu-items>
                 <button mat-menu-item (click)="updateClass(studentCollection)">
@@ -51,10 +51,11 @@
             </div>
            
             <div bottom-content>
-                <!-- <div class="actions">
-                    <button class="action" mat-raised-button>Start</button>
-                    <button class="action" mat-raised-button>Start</button>
-                </div> -->
+                <div class="actions">
+                    <button class="action" (click)="classClicked(studentCollection)" mat-raised-button>Students</button>
+                    <button class="action" (click)="tableClicked(studentCollection)" mat-raised-button>Table</button>
+                    <button class="action" (click)="editClicked(studentCollection)" mat-raised-button>Configuration</button>
+                </div>
             </div>
     
         </app-grid-tile-blob-template-ref>

@@ -25,9 +25,11 @@ import { CreateClassDialogComponent } from './components/classes-page/create-cla
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePeriodDialogComponent } from './components/class-configuration/create-period-dialog/create-period-dialog.component';
 import { CreateStudentDialogComponent } from './components/class-configuration/create-student-dialog/create-student-dialog.component';
+import { ClassScoreTableComponent } from './components/class-score-table/class-score-table.component';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent },
+  { path: ':classId/score-table', component: ClassScoreTableComponent },
   { path: ':classId/score-overview/:studentId', component: StudentScoreComponent },
   { path: ':classId', component: ClassConfigurationComponent },
   { path: ':classId/periods/:periodId', component: PeriodPageComponent },
@@ -52,7 +54,8 @@ const routes: Routes = [
     ProgressBarColor,
     CreateClassDialogComponent,
     CreatePeriodDialogComponent,
-    CreateStudentDialogComponent
+    CreateStudentDialogComponent,
+    ClassScoreTableComponent
   ],
   imports: [
     MaterialModule,

@@ -114,7 +114,7 @@ export class ClassConfigurationComponent {
   public async openPeriodDialog(title: string, period: GradePeriod | null = null): Promise<string | null> {
     const data: DefaultCrudDialogData<CreatePeriodDialogData> = {
       object: {
-        name: period?.name ?? 'GradeName'
+        name: period?.name ?? 'GradePeriodName'
       },
       deleteFlag: false,
       title: title,

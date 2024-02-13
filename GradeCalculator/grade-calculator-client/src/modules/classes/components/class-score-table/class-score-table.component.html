@@ -1,0 +1,7 @@
+@if(info$ | async; as info) {
+@if(info.classScoreInfo; as classScoreInfo) {
+
+<app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
+
+}
+}
