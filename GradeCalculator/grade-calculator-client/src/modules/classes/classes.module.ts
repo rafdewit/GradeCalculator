@@ -24,6 +24,7 @@ import { GradeCategoryPipe } from 'src/services/pipes/grade-category.pipe';
 import { CreateClassDialogComponent } from './components/classes-page/create-class-dialog/create-class-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePeriodDialogComponent } from './components/class-configuration/create-period-dialog/create-period-dialog.component';
+import { CreateStudentDialogComponent } from './components/class-configuration/create-student-dialog/create-student-dialog.component';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent },
@@ -50,7 +51,8 @@ const routes: Routes = [
     PercentageRepresentationComponent,
     ProgressBarColor,
     CreateClassDialogComponent,
-    CreatePeriodDialogComponent
+    CreatePeriodDialogComponent,
+    CreateStudentDialogComponent
   ],
   imports: [
     MaterialModule,

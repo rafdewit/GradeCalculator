@@ -3,6 +3,7 @@ using GradeCalculator.DataLayer.Models.Configurations;
 using GradeCalculatorApp.Controllers.Requests.Periods;
 using GradeCalculatorApp.Hubs;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace GradeCalculatorApp.Controllers;
 
@@ -68,6 +69,8 @@ public class GradePeriodController : ControllerBase
 
         gradePeriod.Name = update.Name;
         gradePeriod.Id = Guid.NewGuid().ToString();
+        UpdateIdConfigurations(gradePeriod.MultiGradeConfigurations);
+        UpdateIdConfigurations(gradePeriod.SingleGradeConfigurations);
 
         var studentCollection = _gradeDataProvider.Get(update.StudentCollectionId);
         if (studentCollection == null)
@@ -81,6 +84,24 @@ public class GradePeriodController : ControllerBase
         _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);
 
         return Ok();
+    }
+
+    private void UpdateIdConfigurations(IEnumerable<MultiGradeConfiguration> multis)
+    {
+        foreach (var multi in multis)
+        {
+            multi.Id = Guid.NewGuid().ToString();
+            UpdateIdConfigurations(multi.MultiGradeConfigurations);
+            UpdateIdConfigurations(multi.SingleGradeConfigurations);
+        }
+    }
+
+    private void UpdateIdConfigurations(IEnumerable<SingleGradeConfiguration> singles)
+    {
+        foreach(var single in singles)
+        {
+            single.Id = Guid.NewGuid().ToString();
+        }
     }
 
     [HttpPost]

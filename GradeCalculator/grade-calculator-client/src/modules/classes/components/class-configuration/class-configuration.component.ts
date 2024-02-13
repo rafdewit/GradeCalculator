@@ -12,6 +12,9 @@ import { StudentCollectionWebClient } from 'src/services/api/student-collection-
 import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/api/grade-period-web-client.service';
 import { DialogService } from 'src/services/dialog/dialog.service';
 import { GradeStore } from 'src/services/stores/grade.store';
+import { CreateStudentDialogData } from './create-student-dialog/create-student-dialog.data';
+import { CreateStudentDialogComponent } from './create-student-dialog/create-student-dialog.component';
+import { StudentWebClient } from 'src/services/api/student-web-client.service';
 
 @Component({
   selector: 'app-class-configuration',
@@ -25,7 +28,7 @@ export class ClassConfigurationComponent {
   public info$: Observable<ClassConfigurationInfo>;
 
   constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: GradePeriodWebClient,
-    private dialogService: DialogService, private gradeStore: GradeStore) {
+    private dialogService: DialogService, private gradeStore: GradeStore, private studentWebClient: StudentWebClient) {
     const class$ = this.activatedRoute.params.pipe(map(p => p['classId'])).pipe(switchMap(i => this.gradeStore.getClass(i)));
     
     this.info$ = class$.pipe(map(c => {
@@ -49,7 +52,7 @@ export class ClassConfigurationComponent {
   }
 
   public async copyPeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
-    const result = await this.openPeriodDialog(`Copy Grade Period: ${gradePeriod.name}`);
+    const result = await this.openPeriodDialog(`Copy Grade Period: ${gradePeriod.name}`, gradePeriod);
     if (result) {
       await firstValueFrom(this.gradePeriodWebClient.copyGradePeriod({ studentCollectionId: studentCollection.id, name: result, gradePeriodId: gradePeriod.id }));
     }
@@ -63,18 +66,49 @@ export class ClassConfigurationComponent {
   }
 
   public async deletePeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
-    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Class: ${studentCollection.name}?`, `Are you sure you want to delete class: ${studentCollection.name}`);
+    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete period: ${gradePeriod.name}?`, `Are you sure you want to delete period: ${gradePeriod.name}`);
     if(dialogResult) {
       await firstValueFrom(this.gradePeriodWebClient.deleteGradePeriod({ studentCollectionId: studentCollection.id, gradePeriodId: gradePeriod.id }));
     }
   }
 
-  public openCreateStudentDialog(): void {
-
+  public async createStudent(studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openStudentDialog("Create Student");
+    if (result) {
+      await firstValueFrom(this.studentWebClient.createStudent({ studentCollectionId: studentCollection.id, name: result }));
+    }
   }
 
-  public deleteStudent(student: Student, studentCollection: StudentCollection): void {
+  public async updateStudent(student: Student, studentCollection: StudentCollection): Promise<void> {
+    const result = await this.openStudentDialog(`Update Student: ${student.name}`, student);
+    if (result) {
+      await firstValueFrom(this.studentWebClient.updateStudent({ studentCollectionId: studentCollection.id, name: result, studentId: student.id }));
+    }
+  }
 
+  public async deleteStudent(student: Student, studentCollection: StudentCollection): Promise<void> {
+    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete student: ${student.name}?`, `Are you sure you want to delete student: ${student.name}`);
+    if(dialogResult) {
+      await firstValueFrom(this.studentWebClient.deleteStudent({ studentCollectionId: studentCollection.id, studentId: student.id }));
+    }
+  }
+
+  public async openStudentDialog(title: string, student: Student | null = null): Promise<string | null> {
+    const data: DefaultCrudDialogData<CreateStudentDialogData> = {
+      object: {
+        name: student?.name ?? 'StudentName'
+      },
+      deleteFlag: false,
+      title: title,
+      cancelFlag: false,
+      isUpdate: student !== null,
+    }
+
+    const input = new MatDialogConfig<DefaultCrudDialogData<CreateStudentDialogData>>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<CreateStudentDialogComponent, DefaultCrudDialogData<CreateStudentDialogData>, string>(CreateStudentDialogComponent, input);
+    return await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 
   public async openPeriodDialog(title: string, period: GradePeriod | null = null): Promise<string | null> {

@@ -46,7 +46,7 @@
     
         <div class="collection-header students-header">
             <h2>Students</h2>
-            <button (click)="openCreateStudentDialog()" mat-raised-button>
+            <button (click)="createStudent(info.class)" mat-raised-button>
                 <mat-icon>add</mat-icon>
                 Create
             </button>
@@ -55,9 +55,13 @@
         <div class="students-content">
             <app-grid-list>
                 @for (student of info.class.students; track student) {
-                <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="true" [title]="student.name" [clickable]="true" [showMenu]="true">
+                <app-grid-tile-blob-template-ref [clickable]="false" [title]="student.name" [clickable]="true" [showMenu]="true">
         
                     <div menu-items>
+                        <button mat-menu-item (click)="updateStudent(student, info.class)">
+                            <mat-icon>update</mat-icon>
+                            <span>Update student</span>
+                        </button>
                         <button mat-menu-item (click)="deleteStudent(student, info.class)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete student</span>
