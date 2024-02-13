@@ -23,6 +23,8 @@
             }
         </mat-select>
     </mat-form-field>
+
+    <mat-checkbox class="control-panel-item" [formControl]="showButtonsFormControl">Buttons</mat-checkbox>
 </div>
 
 <table class="table styled-scrollbars">
@@ -50,15 +52,15 @@
         }
     </tr>
 
+    <!--Weights row-->
     <tr *ngIf="info.enableWeight">
         <!--Student name and total score-->
-        <th class="table-header cell-margin">Weight:</th>
+        <th class="table-header cell-margin">Weights:</th>
         <th></th>
 
         <!--GradePeriods-->
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
         <th>
-            
         </th>
 
         @for(single of gradePeriod.singleGradeConfigurations; track single) {
@@ -70,7 +72,28 @@
             <ng-container [ngTemplateOutlet]="multiLinkWeightHeader" [ngTemplateOutletContext]="{link: multi, root: true, rootOnly: info.rootOnly}">
             </ng-container>
         }
+        }
+    </tr>
 
+    <tr *ngIf="info.showButtons">
+        <!--Student name and total score-->
+        <th class="table-header cell-margin">Buttons:</th>
+        <th></th>
+
+        <!--GradePeriods-->
+        @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
+        <th>
+        </th>
+
+        @for(single of gradePeriod.singleGradeConfigurations; track single) {
+            <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: true, rootOnly: info.rootOnly}">
+            </ng-container>
+        }
+
+        @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: true, rootOnly: info.rootOnly}">
+            </ng-container>
+        }
         }
     </tr>
 
@@ -170,6 +193,28 @@
 
     @for(multi of link.multiGradeConfigurations; track multi) {
         <ng-container [ngTemplateOutlet]="multiLinkWeightHeader" [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly}">
+        </ng-container>
+    }
+</ng-template>
+
+<ng-template #singleLinkButtonHeader let-link='link' let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Edit Student Scores" (click)="editSingle(link)">edit</mat-icon>
+    </th>
+</ng-template>
+
+<ng-template #multiLinkButtonHeader let-link='link' let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Add New Single Score" (click)="addSingle(link)">add</mat-icon>
+    </th>
+
+    @for(single of link.singleGradeConfigurations; track single) {
+        <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: false, rootOnly: rootOnly}">
+        </ng-container>
+    }
+
+    @for(multi of link.multiGradeConfigurations; track multi) {
+        <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly}">
         </ng-container>
     }
 </ng-template>

@@ -38,4 +38,14 @@
       margin-right: 16px;
     }
   }
+
+  .icon-button {
+    cursor: pointer;
+    margin: 4px;
+    vertical-align:middle;
+  }
+
+  .icon-button:hover {
+    background-color: gray;
+  }
 }
