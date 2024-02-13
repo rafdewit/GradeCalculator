@@ -13,7 +13,6 @@ export class PercentageToColorPipe implements PipeTransform {
     const index = Math.trunc(n*100);
 
     if (index <= 0) {
-      console.log(info.colors[0]);
       return info.colors[0];
     } else if (index >= 100) {
       return info.colors[99];
