@@ -4,13 +4,15 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, combineLatest, startWith, firstValueFrom } from 'rxjs';
 import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
-import { ClassScoreInfo, StudentInfo, StudentMultiGradeInfo, StudentSingleGradeInfo } from 'src/services/stores/models/score';
+import { ClassScoreInfo, StudentInfo, StudentMultiGradeInfo } from 'src/services/stores/models/score';
 import { EditStudentsSingleScoreDialogData } from './edit-students-single-score-dialog/edit-students-single-score-dialog.data';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { EditStudentsSingleScoreDialogComponent } from './edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
+import { SingleGradeUpdateDto } from 'src/services/api/request/grade-update/single-grade-update';
+import { SingleGradesUpdateDto } from 'src/services/api/request/grade-update/single-grades-update';
+import { SingleGradeWebClient } from 'src/services/api/single-grade-web-client';
 
 @Component({
   selector: 'app-class-score-table',
@@ -32,7 +34,7 @@ export class ClassScoreTableComponent {
   public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog) {
+    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient) {
     this.studentNameFilterFormControl = this.formBuilder.control('');
     this.enableWeightFormControl = this.formBuilder.control(true);
     this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
@@ -90,8 +92,18 @@ export class ClassScoreTableComponent {
     const input = new MatDialogConfig<DefaultCrudDialogData<EditStudentsSingleScoreDialogData>>();
     input.data = data;
 
-    const dialogRef = this.matDialog.open<EditStudentsSingleScoreDialogComponent, DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, string>(EditStudentsSingleScoreDialogComponent, input);
+    const dialogRef = this.matDialog.open<EditStudentsSingleScoreDialogComponent, DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, SingleGradeUpdateDto[]>(EditStudentsSingleScoreDialogComponent, input);
     const result = await firstValueFrom(dialogRef.afterClosed()) ?? null;
+
+    if(result) {
+      const request: SingleGradesUpdateDto = {
+        singleGradeConfigurationId: single.id,
+        singleGradeUpdates: result,
+        studentCollectionId: classScoreInfo.class.id
+      };
+
+      await firstValueFrom(this.singleGradeWebClient.updateSingleGrades(request));
+    }
   }
 
   public addSingle(multi: StudentMultiGradeInfo): void {

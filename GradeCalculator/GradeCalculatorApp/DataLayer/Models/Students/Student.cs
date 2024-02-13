@@ -9,7 +9,7 @@ public class Student
 
     }
 
-    public Student(string id, string name, IEnumerable<StudentSingleGrade> studentSingleGrades)
+    public Student(string id, string name, List<StudentSingleGrade> studentSingleGrades)
     {
         Id = id;
         Name = name;
@@ -18,5 +18,5 @@ public class Student
 
     public string Id { get; set; }
     public string Name { get; set; }
-    public IEnumerable<StudentSingleGrade> StudentSingleGrades { get; }
+    public List<StudentSingleGrade> StudentSingleGrades { get; }
 }
