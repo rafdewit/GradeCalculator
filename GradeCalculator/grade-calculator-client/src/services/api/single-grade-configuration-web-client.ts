@@ -1,0 +1,29 @@
+import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { BaseUrlProvider } from "./base-url.provider";
+import { CreateSingleGradeConfigurationDto } from "./request/grade-configuration/single/create-single-grade-configuration";
+import { DeleteSingleGradeConfigurationDto } from "./request/grade-configuration/single/delete-single-grade-configuration";
+import { UpdateSingleGradeConfigurationDto } from "./request/grade-configuration/single/update-single-grade-configuration";
+
+@Injectable({
+    providedIn: 'root'
+})
+export class SingleGradeConfigurationWebClient {
+
+    private proxyName: string = 'SingleGradeConfiguration';
+
+    constructor(private httpClient: HttpClient, private base: BaseUrlProvider) { }
+
+    public updateSingleGradeConfiguration(request: UpdateSingleGradeConfigurationDto): Observable<void> {
+        return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/update`, request);
+    }
+        
+    public createSingleGradeConfiguration(request: CreateSingleGradeConfigurationDto): Observable<void> {
+        return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}`, request);
+    }
+
+    public deleteSingleGradeConfiguration(request: DeleteSingleGradeConfigurationDto): Observable<void> {
+        return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/delete`, request);
+    }
+}
