@@ -20,13 +20,15 @@ export class ClassScoreTableComponent {
   public studentNameFilterFormControl: FormControl<string>;
   public scoreDisplayTypeFormControl: FormControl<'percentage' | 'category' | 'score'>;
   public enableWeightFormControl: FormControl<boolean>;
+  public rootOnlyFormControl: FormControl<boolean>;
 
   public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder) {
     this.studentNameFilterFormControl = this.formBuilder.control('');
     this.enableWeightFormControl = this.formBuilder.control(true);
-    this.scoreDisplayTypeFormControl = this.formBuilder.control('percentage');
+    this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
+    this.rootOnlyFormControl = this.formBuilder.control(true);
 
     const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
 
@@ -39,8 +41,9 @@ export class ClassScoreTableComponent {
       const studentNameFilter$ = this.studentNameFilterFormControl.valueChanges.pipe(startWith(''), map(() => this.studentNameFilterFormControl.value));
       const enableWeight$ = this.enableWeightFormControl.valueChanges.pipe(startWith(''), map(() => this.enableWeightFormControl.value));
       const scoreDisplayType$ = this.scoreDisplayTypeFormControl.valueChanges.pipe(startWith(''), map(() => this.scoreDisplayTypeFormControl.value));
+      const rootOnly$ = this.rootOnlyFormControl.valueChanges.pipe(startWith(''), map(() => this.rootOnlyFormControl.value));
 
-    this.info$ = combineLatest([this.classScoreInfo$, studentNameFilter$, enableWeight$, scoreDisplayType$]).pipe(map(([classInfo, studentNameFilter, enableWeight, scoreDisplayType]) => {
+    this.info$ = combineLatest([this.classScoreInfo$, studentNameFilter$, enableWeight$, scoreDisplayType$, rootOnly$]).pipe(map(([classInfo, studentNameFilter, enableWeight, scoreDisplayType, rootOnly]) => {
 
       const studentNameFilterLow = studentNameFilter.toLowerCase();
       const filteredStudentInfos = classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
@@ -50,7 +53,8 @@ export class ClassScoreTableComponent {
         navigationName: `Table(${classInfo?.class?.name})`,
         filteredStudentInfos: filteredStudentInfos,
         enableWeight: enableWeight,
-        scoreDisplayType: scoreDisplayType
+        scoreDisplayType: scoreDisplayType,
+        rootOnly: rootOnly
       };
       return result;
     }));
@@ -67,4 +71,5 @@ export interface ClassTableComponentInfo {
   filteredStudentInfos: StudentInfo[]
   enableWeight: boolean;
   scoreDisplayType: 'percentage' | 'category' | 'score';
+  rootOnly: boolean;
 }

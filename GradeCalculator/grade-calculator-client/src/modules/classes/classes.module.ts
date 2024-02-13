@@ -12,7 +12,7 @@ import { StudentScoreComponent } from './components/student-score/student-score.
 import { SingleScoreComponent } from './components/student-score/single-score/single-score.component';
 import { MultiScoreComponent } from './components/student-score/multi-score/multi-score.component';
 import { PercentageToHundredPipe } from 'src/services/pipes/percentage-to-hundred.pipe';
-import { PercentageRepresentationComponent } from './components/student-score/percentage-representation/percentage-representation.component';
+import { PercentageRepresentationComponent } from './components/common/percentage-representation/percentage-representation.component';
 import { ProgressBarColor } from 'src/services/directives/progress-bar-color';
 import { PercentageToColorPipe } from 'src/services/pipes/percentage-to-color.pipe';
 import { MarginLeftPipe } from 'src/services/pipes/margin-left.pipe';
