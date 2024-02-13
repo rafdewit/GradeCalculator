@@ -1,10 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormBuilder, FormControl, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map, combineLatest, startWith } from 'rxjs';
+import { Observable, map, combineLatest, startWith, firstValueFrom } from 'rxjs';
 import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo, StudentMultiGradeInfo, StudentSingleGradeInfo } from 'src/services/stores/models/score';
+import { EditStudentsSingleScoreDialogData } from './edit-students-single-score-dialog/edit-students-single-score-dialog.data';
+import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
+import { EditStudentsSingleScoreDialogComponent } from './edit-students-single-score-dialog/edit-students-single-score-dialog.component';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { StudentCollection } from 'src/services/dtos/student-collection.model';
+import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
 
 @Component({
   selector: 'app-class-score-table',
@@ -25,7 +31,8 @@ export class ClassScoreTableComponent {
 
   public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder) {
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
+    private matDialog: MatDialog) {
     this.studentNameFilterFormControl = this.formBuilder.control('');
     this.enableWeightFormControl = this.formBuilder.control(true);
     this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
@@ -68,8 +75,23 @@ export class ClassScoreTableComponent {
     this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
   }
 
-  public editSingle(single: StudentSingleGradeInfo): void {
-    console.log(single);
+  public async editSingle(single: SingleGradeConfiguration, classScoreInfo: ClassScoreInfo): Promise<void> {
+    const data: DefaultCrudDialogData<EditStudentsSingleScoreDialogData> = {
+      object: {
+        single: single,
+        studentCollection: classScoreInfo.class
+      },
+      deleteFlag: false,
+      title: `Update Score: ${single.name}`,
+      cancelFlag: false,
+      isUpdate: true
+    }
+
+    const input = new MatDialogConfig<DefaultCrudDialogData<EditStudentsSingleScoreDialogData>>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<EditStudentsSingleScoreDialogComponent, DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, string>(EditStudentsSingleScoreDialogComponent, input);
+    const result = await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 
   public addSingle(multi: StudentMultiGradeInfo): void {

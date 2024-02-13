@@ -1,1 +1,22 @@
-<p>edit-students-single-score-dialog works!</p>,
+<app-theme-container>
+    <h2 mat-dialog-title>{{data.title}}</h2>
+
+    @for(group of studentGradesFormArray.controls; track group) {
+        {{group.value}}
+    }
+
+    <!-- <mat-dialog-content class="mat-typography">
+        <form class="example-form">
+            <mat-form-field class="example-full-width">
+                <mat-label>Name</mat-label>
+                <input matInput [formControl]="valueFormControl">
+                @if(valueFormControl.hasError('required')) {<mat-error>Required</mat-error>}
+            </mat-form-field>
+        </form>
+    </mat-dialog-content> -->
+
+    <mat-dialog-actions align="end">
+        <button mat-raised-button (click)="cancel()">Cancel</button>
+        <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.studentGradesFormArray.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
+    </mat-dialog-actions>
+</app-theme-container>

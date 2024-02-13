@@ -23,6 +23,7 @@ import { CreatePeriodDialogComponent } from './components/class-configuration/cr
 import { CreateStudentDialogComponent } from './components/class-configuration/create-student-dialog/create-student-dialog.component';
 import { ClassScoreTableComponent } from './components/class-score-table/class-score-table.component';
 import { ScoreRepresentationComponent } from './components/common/score-representation/score-representation.component';
+import { EditStudentsSingleScoreDialogComponent } from './components/class-score-table/edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent },
@@ -53,7 +54,8 @@ const routes: Routes = [
     CreatePeriodDialogComponent,
     CreateStudentDialogComponent,
     ClassScoreTableComponent,
-    ScoreRepresentationComponent
+    ScoreRepresentationComponent,
+    EditStudentsSingleScoreDialogComponent
   ],
   imports: [
     MaterialModule,
