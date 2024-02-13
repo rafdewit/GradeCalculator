@@ -5,49 +5,104 @@
 
 <table>
     <tr>
-        <th class="table-header">Student Name</th>
-        <th class="table-header">Total</th>
+        <!--Student name and total score-->
+        <th class="table-header cell-margin">Student Name</th>
+        <th class="table-header cell-margin">Total</th>
 
+        <!--GradePeriods-->
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
-        <th class="table-header">
+        <th class="table-header cell-margin">
             <div>{{gradePeriod.name}}</div>
         </th>
+
+        @for(single of gradePeriod.singleGradeConfigurations; track single) {
+            <ng-container [ngTemplateOutlet]="singleLinkHeader" [ngTemplateOutletContext]="{link: single}">
+            </ng-container>
+        }
+
+        @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLinkHeader" [ngTemplateOutletContext]="{link: multi}">
+            </ng-container>
+        }
+
         }
         <th></th>
     </tr>
 
     @for(studentInfo of classScoreInfo.studentInfos; track studentInfo; let first = $first, last = $last) {
     <tr>
+        <!--Student name and total score-->
         <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
-            <div>{{studentInfo.student.name}}</div>
+            <div class="student-name">{{studentInfo.student.name}}</div>
         </td>
 
-        <td><app-percentage-representation [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
+        <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
+            <app-percentage-representation class="center-content" [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
         </td>
 
-        <div class="grade-periods-container">
-            @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
-            <div class="grade-period-container">
-                <td>
-                    <app-percentage-representation
-                        [percentage]="gradePeriodInfo.totalPercentage"></app-percentage-representation>
-                </td>
+        <!--GradePeriods-->
+        @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
+        <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
+            <app-percentage-representation class="center-content"
+                [percentage]="gradePeriodInfo.totalPercentage"></app-percentage-representation>
+        </td>
 
-                <div class="grades-container">
-                    @for(single of gradePeriodInfo.studentSingleGradeInfos; track single) {
+        @for(single of gradePeriodInfo.studentSingleGradeInfos; track single) {
+            <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single}">
+            </ng-container>
+        }
 
-                    }
-
-                    @for(multi of gradePeriodInfo.studentMultiGradeInfos; track multi) {
-                        
-                    }
-                </div>
-            </div>
-            }
-        </div>
+        @for(multi of gradePeriodInfo.studentMultiGradeInfos; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi}">
+            </ng-container>
+        }
+        }
     </tr>
     }
 </table>
 }
-
 }
+
+<ng-template #singleLink let-link='link'>
+    <td>
+        <app-percentage-representation class="center-content" [percentage]="link.percentage"></app-percentage-representation>
+    </td>
+</ng-template>
+
+<ng-template #multiLink let-link='link'>
+    <td>
+        <app-percentage-representation class="center-content" [percentage]="link.percentage"></app-percentage-representation>
+    </td>
+
+    @for(single of link.singleConfigurations; track single) {
+        <ng-container [ngTemplateOutlet]="singleLink" [ngTemplateOutletContext]="{link: single}">
+        </ng-container>
+    }
+
+    @for(multi of link.multiConfigurations; track multi) {
+        <ng-container [ngTemplateOutlet]="multiLink" [ngTemplateOutletContext]="{link: multi}">
+        </ng-container>
+    }
+</ng-template>
+
+<ng-template #singleLinkHeader let-link='link'>
+    <th>
+        <div>{{link.name}}</div>
+    </th>
+</ng-template>
+
+<ng-template #multiLinkHeader let-link='link'>
+    <th>
+        <div>{{link.name}}</div>
+    </th>
+
+    @for(single of link.singleGradeConfigurations; track single) {
+        <ng-container [ngTemplateOutlet]="singleLinkHeader" [ngTemplateOutletContext]="{link: single}">
+        </ng-container>
+    }
+
+    @for(multi of link.multiGradeConfigurations; track multi) {
+        <ng-container [ngTemplateOutlet]="multiLinkHeader" [ngTemplateOutletContext]="{link: multi}">
+        </ng-container>
+    }
+</ng-template>

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { GradeStore } from 'src/services/stores/grade.store';
@@ -18,6 +18,9 @@ import { DialogService } from 'src/services/dialog/dialog.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassesPageComponent {
+  @ViewChild('uploadclass') uploadClassInput: ElementRef;
+  @ViewChild('uploadclasses') uploadClassesInput: ElementRef;
+
   constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute, private matDialog: MatDialog,
     public studentCollectionWebClient: StudentCollectionWebClient, private dialogService: DialogService) {
 
@@ -47,6 +50,40 @@ export class ClassesPageComponent {
     return saveAs(
       new Blob([JSON.stringify(studentCollections, null, 2)], { type: 'JSON' }), `all_classes_backup.json`
     );
+  }
+
+  public triggerUploadClasses() {
+    this.uploadClassesInput.nativeElement.click();
+  }
+
+  public uploadClasses(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const result = JSON.parse(fileReader.result as string) as StudentCollection[];
+      if(result) {
+        console.log(result);
+      }
+    }
+    fileReader.readAsText(files[0])
+  }
+
+  public triggerUploadClass() {
+    this.uploadClassInput.nativeElement.click();
+  }
+
+  public uploadClass(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+    const fileReader = new FileReader();
+    fileReader.onload = (e) => {
+      const result = JSON.parse(fileReader.result as string) as StudentCollection;
+      if(result) {
+        console.log(result);
+      }
+    }
+    fileReader.readAsText(files[0])
   }
 
   public async copyClass(studentCollection: StudentCollection): Promise<void> {

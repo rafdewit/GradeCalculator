@@ -21,4 +21,19 @@
     border-left: 1px solid;
     border-right: 1px solid;
   }
+
+  .cell-margin {
+    padding: 4px 24px 4px 24px;
+  }
+
+  .student-name {
+    margin-left: 8px;
+    margin-top: 8px;
+    margin-bottom: 8px;
+  }
+
+  .center-content {
+    display: flex;
+    justify-content: center;
+  }
 }
