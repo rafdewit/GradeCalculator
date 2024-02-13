@@ -3,10 +3,25 @@
 
 <app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
 
-<mat-form-field>
-    <mat-label>Student Name Filter</mat-label>
-    <input matInput [formControl]="studentNameFilterFormControl">
-</mat-form-field>
+<div class="control-panel">
+    <mat-form-field class="control-panel-item">
+        <mat-label>Student Name Filter</mat-label>
+        <input matInput [formControl]="studentNameFilterFormControl">
+    </mat-form-field>
+    
+    <mat-checkbox class="control-panel-item" [formControl]="enableWeightFormControl">Show Weights</mat-checkbox>
+
+    <mat-form-field class="control-panel-item">
+        <mat-label>Score Display Type</mat-label>
+        <mat-select [formControl]="scoreDisplayTypeFormControl">
+            @for (scoreDisplayTypeOption of scoreDisplayTypeOptions; track scoreDisplayTypeOption) {
+            <mat-option [value]="scoreDisplayTypeOption">
+                {{scoreDisplayTypeOption}}
+            </mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+</div>
 
 <table class="table styled-scrollbars">
     <tr>
@@ -31,7 +46,30 @@
         }
 
         }
+    </tr>
+
+    <tr *ngIf="info.enableWeight">
+        <!--Student name and total score-->
+        <th class="table-header cell-margin">Weight:</th>
         <th></th>
+
+        <!--GradePeriods-->
+        @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
+        <th>
+            
+        </th>
+
+        @for(single of gradePeriod.singleGradeConfigurations; track single) {
+            <ng-container [ngTemplateOutlet]="singleLinkWeightHeader" [ngTemplateOutletContext]="{link: single, root: true}">
+            </ng-container>
+        }
+
+        @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLinkWeightHeader" [ngTemplateOutletContext]="{link: multi, root: true}">
+            </ng-container>
+        }
+
+        }
     </tr>
 
     @for(studentInfo of info.filteredStudentInfos; track studentInfo; let first = $first, last = $last) {
@@ -94,6 +132,7 @@
     <th [class.root]="root">
         <div>{{link.name}}</div>
     </th>
+
 </ng-template>
 
 <ng-template #multiLinkHeader let-link='link' let-root='root'>
@@ -108,6 +147,28 @@
 
     @for(multi of link.multiGradeConfigurations; track multi) {
         <ng-container [ngTemplateOutlet]="multiLinkHeader" [ngTemplateOutletContext]="{link: multi}">
+        </ng-container>
+    }
+</ng-template>
+
+<ng-template #singleLinkWeightHeader let-link='link' let-root='root'>
+    <th [class.root]="root">
+        <div>{{link.weight}}</div>
+    </th>
+</ng-template>
+
+<ng-template #multiLinkWeightHeader let-link='link' let-root='root'>
+    <th [class.root]="root">
+        <div>{{link.weight}}</div>
+    </th>
+
+    @for(single of link.singleGradeConfigurations; track single) {
+        <ng-container [ngTemplateOutlet]="singleLinkWeightHeader" [ngTemplateOutletContext]="{link: single}">
+        </ng-container>
+    }
+
+    @for(multi of link.multiGradeConfigurations; track multi) {
+        <ng-container [ngTemplateOutlet]="multiLinkWeightHeader" [ngTemplateOutletContext]="{link: multi}">
         </ng-container>
     }
 </ng-template>
