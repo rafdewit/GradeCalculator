@@ -3,5 +3,51 @@
 
 <app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
 
+<table>
+    <tr>
+        <th class="table-header">Student Name</th>
+        <th class="table-header">Total</th>
+
+        @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
+        <th class="table-header">
+            <div>{{gradePeriod.name}}</div>
+        </th>
+        }
+        <th></th>
+    </tr>
+
+    @for(studentInfo of classScoreInfo.studentInfos; track studentInfo; let first = $first, last = $last) {
+    <tr>
+        <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
+            <div>{{studentInfo.student.name}}</div>
+        </td>
+
+        <td><app-percentage-representation [percentage]="studentInfo.totalPercentage"></app-percentage-representation>
+        </td>
+
+        <div class="grade-periods-container">
+            @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
+            <div class="grade-period-container">
+                <td>
+                    <app-percentage-representation
+                        [percentage]="gradePeriodInfo.totalPercentage"></app-percentage-representation>
+                </td>
+
+                <div class="grades-container">
+                    @for(single of gradePeriodInfo.studentSingleGradeInfos; track single) {
+
+                    }
+
+                    @for(multi of gradePeriodInfo.studentMultiGradeInfos; track multi) {
+                        
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </tr>
+    }
+</table>
 }
+
 }

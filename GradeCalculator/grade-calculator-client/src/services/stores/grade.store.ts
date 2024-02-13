@@ -16,7 +16,8 @@ export class GradeStore {
 
     constructor(private studentCollectionWebClient: StudentCollectionWebClient, private gradeHubClient: GradeHubClient) {
         this.classes$ = this.get();
-        this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item)))).pipe(bufferOneRef());
+        this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item))))
+            .pipe(bufferOneRef());
     }
 
     public getClass(id: string): Observable<StudentCollection | null> {

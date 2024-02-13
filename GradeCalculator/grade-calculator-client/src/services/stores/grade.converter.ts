@@ -9,14 +9,37 @@ import { ClassScoreInfo, StudentInfo, StudentGradePeriodInfo, StudentSingleGrade
 export function convertClass(c: StudentCollection): ClassScoreInfo {
     const result: ClassScoreInfo = {
         class: c,
-        studentInfos: c.students.map(s => convertStudent(s, c))
+        studentInfos: c.students.map(s => convertStudent(s, c)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage))
     };
 
     return result;
 }
 
+export function alphabetically(ascending: boolean, a: number | null, b: number | null): number {
+    // equal items sort equally
+    if (a === b) {
+        return 0;
+    }
+
+    // nulls sort after anything else
+    if (a === null) {
+        return 1;
+    }
+    if (b === null) {
+        return -1;
+    }
+
+    // otherwise, if we're ascending, lowest sorts first
+    if (ascending) {
+        return a < b ? -1 : 1;
+    }
+
+    // if descending, highest sorts first
+    return a < b ? 1 : -1;
+}
+
 export function convertStudent(s: Student, c: StudentCollection): StudentInfo {
-    const gradeMap= createGradeMap(s.studentSingleGrades);
+    const gradeMap = createGradeMap(s.studentSingleGrades);
     const gradePeriods = c.gradePeriods.map(p => convertGradePeriod(p, gradeMap));
     const result: StudentInfo = {
         student: s,
@@ -28,14 +51,14 @@ export function convertStudent(s: Student, c: StudentCollection): StudentInfo {
 }
 
 export function calculatePercentage(gradePeriods: StudentGradePeriodInfo[]): number | null {
-    if(!gradePeriods.some(p => p.totalPercentage)) {
+    if (!gradePeriods.some(p => p.totalPercentage)) {
         return null;
     }
 
     let total = 0;
     let totalItems = 0;
     gradePeriods.forEach(p => {
-        if(p.totalPercentage) {
+        if (p.totalPercentage) {
             total += p.totalPercentage;
             totalItems++;
         }
@@ -51,8 +74,8 @@ export function createGradeMap(grades: StudentSingleGrade[]): { [key: string]: S
 }
 
 export function convertGradePeriod(p: GradePeriod, gradeMap: { [key: string]: StudentSingleGrade }): StudentGradePeriodInfo {
-    
-    const singleInfos = p.singleGradeConfigurations.map(g => mapSingleGradeInfos(g,gradeMap ));
+
+    const singleInfos = p.singleGradeConfigurations.map(g => mapSingleGradeInfos(g, gradeMap));
     const multiInfos = p.multiGradeConfigurations.map(g => mapMultiGradeInfos(g, gradeMap));
     const result: StudentGradePeriodInfo = {
         gradePeriod: p,
@@ -89,22 +112,22 @@ export function mapMultiGradeInfos(config: MultiGradeConfiguration, gradeMap: { 
 }
 
 export function calculateMultiPercentage(singles: StudentSingleGradeInfo[], multis: StudentMultiGradeInfo[]): number | null {
-    if(!singles.some(s => s.percentage) && !multis.some(m => m.percentage)) {
+    if (!singles.some(s => s.percentage) && !multis.some(m => m.percentage)) {
         return null;
     }
 
-    let total = 0; 
+    let total = 0;
     let totalWeight = 0;
 
     singles.forEach(s => {
-        if(s.percentage) {
+        if (s.percentage) {
             total += s.percentage * s.single.weight;
             totalWeight += s.single.weight;
         }
     });
 
     multis.forEach(m => {
-        if(m.percentage) {
+        if (m.percentage) {
             total += m.percentage * m.multi.weight;
             totalWeight += m.multi.weight;
         }
