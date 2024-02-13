@@ -13,7 +13,7 @@ public class StudentCollection
         
     }
 
-    public StudentCollection(string id, string name, IEnumerable<GradePeriod> gradePeriods, IEnumerable<Student> students)
+    public StudentCollection(string id, string name, List<GradePeriod> gradePeriods, List<Student> students)
     {
         Id = id;
         Name = name;
@@ -24,6 +24,6 @@ public class StudentCollection
     [BsonId]
     public string Id { get; set; }
     public string Name { get; set; }
-    public IEnumerable<GradePeriod> GradePeriods { get; set; }
-    public IEnumerable<Student> Students { get; set; }
+    public List<GradePeriod> GradePeriods { get; set; }
+    public List<Student> Students { get; set; }
 }

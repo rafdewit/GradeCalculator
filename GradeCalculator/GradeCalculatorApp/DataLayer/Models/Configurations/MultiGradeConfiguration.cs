@@ -9,9 +9,9 @@ public class MultiGradeConfiguration
 
     }
 
-    public MultiGradeConfiguration(string id, string name, double weight, 
-        IEnumerable<SingleGradeConfiguration> singleGradeConfigurations,
-        IEnumerable<MultiGradeConfiguration> multiGradeConfigurations)
+    public MultiGradeConfiguration(string id, string name, double weight,
+        List<SingleGradeConfiguration> singleGradeConfigurations,
+        List<MultiGradeConfiguration> multiGradeConfigurations)
     {
         Id = id;
         Name = name;
@@ -23,6 +23,6 @@ public class MultiGradeConfiguration
     public string Id { get; set; }
     public string Name { get; set; }
     public double Weight { get; set; }
-    public IEnumerable<SingleGradeConfiguration> SingleGradeConfigurations { get; set; }
-    public IEnumerable<MultiGradeConfiguration> MultiGradeConfigurations { get; set; }
+    public List<SingleGradeConfiguration> SingleGradeConfigurations { get; set; }
+    public List<MultiGradeConfiguration> MultiGradeConfigurations { get; set; }
 }

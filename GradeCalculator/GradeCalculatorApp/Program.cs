@@ -5,6 +5,7 @@ using GradeCalculatorApp.Extensions;
 using GradeCalculatorApp.Hubs;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using GradeCalculatorApp.Services;
 
 namespace GradeCalculatorApp;
 
@@ -49,6 +50,7 @@ public class Program
     {
         services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
         services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
+        services.AddSingleton<IGradeConfigurationTracker, GradeConfigurationTracker>();
         services.AddTransient<IGradeLiteDb, GradeLiteDb>();
         services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
     }

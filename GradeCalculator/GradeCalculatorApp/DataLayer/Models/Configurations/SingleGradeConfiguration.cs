@@ -9,7 +9,7 @@ public class SingleGradeConfiguration
 
     }
 
-    public SingleGradeConfiguration(string id, string name, int totalScore, double weight)
+    public SingleGradeConfiguration(string id, string name, double totalScore, double weight)
     {
         Id = id;
         Name = name;
@@ -19,6 +19,6 @@ public class SingleGradeConfiguration
 
     public string Id { get; set; }
     public string Name { get; set; }
-    public int TotalScore { get; set; }
+    public double TotalScore { get; set; }
     public double Weight { get; set; }
 }
