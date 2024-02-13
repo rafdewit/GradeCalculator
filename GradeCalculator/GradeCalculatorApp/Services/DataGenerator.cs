@@ -61,7 +61,7 @@ public static class DataGenerator
 
     private static StudentSingleGrade GenerateSingleGrade(SingleGradeConfiguration single)
     {
-        return new StudentSingleGrade(Guid.NewGuid().ToString(), single.Id, _random.Next(0, single.TotalScore + 1));
+        return new StudentSingleGrade(Guid.NewGuid().ToString(), single.Id, _random.Next(0, (int)Math.Floor(single.TotalScore) + 1));
     }
 
     private static IEnumerable<StudentSingleGrade> GenerateMultiGrades(MultiGradeConfiguration multi)
