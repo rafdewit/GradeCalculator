@@ -1,25 +1,16 @@
 :host {
   display: block;
 
-  table, th {
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th {
+    padding-left: 6px;
+    padding-right: 6px;
     border: 1px solid;
-  }
-
-  .table-header {
-    border: 1px solid;
-  }
-
-  .border-top {
-    border-top: 1px solid;
-  }
-
-  .border-bottom {
-    border-bottom: 1px solid;
-  }
-
-  .border-left-right {
-    border-left: 1px solid;
-    border-right: 1px solid;
   }
 
   .cell-margin {

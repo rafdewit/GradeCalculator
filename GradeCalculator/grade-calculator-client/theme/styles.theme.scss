@@ -4,6 +4,7 @@
 @use "style-scrollbar.theme.scss" as scrollbar;
 @use "../src/modules/common-module/theme/theme-selector/theme-selector.theme.scss" as theme-selector;
 @use "../src/modules/common-module/grid/grid-tile-blob/grid-tile-blob.theme.scss" as grid-tile-blob;
+@use "../src/modules/classes/components/class-score-table/class-score-table.theme.scss" as class-score-table;
 @include mat.core();
 
 
@@ -36,6 +37,7 @@ $dark-theme: mat.define-dark-theme((
 
 @include scrollbar.theme(custom-palettes.$internal-theme);
 @include grid-tile-blob.theme(custom-palettes.$internal-theme);
+@include class-score-table.theme(custom-palettes.$internal-theme);
 
 @include theme-selector.theme(custom-palettes.$dark-internal-theme, custom-palettes.$internal-theme);
 
@@ -44,6 +46,7 @@ $dark-theme: mat.define-dark-theme((
     @include mat.all-component-themes($dark-theme);
     @include scrollbar.theme(custom-palettes.$dark-internal-theme);
     @include grid-tile-blob.theme(custom-palettes.$dark-internal-theme);
+    @include class-score-table.theme(custom-palettes.$dark-internal-theme);
     
     color: white;
     background-color: #303030;
