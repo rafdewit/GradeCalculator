@@ -1,7 +1,7 @@
 import { SingleGradeConfiguration } from "src/services/dtos/grade-config/single-grade-configuration.model";
-import { StudentCollection } from "src/services/dtos/student-collection.model";
+import { ClassScoreInfo } from "src/services/stores/models/score";
 
 export interface EditStudentsSingleScoreDialogData {
     single: SingleGradeConfiguration;
-    studentCollection: StudentCollection;
+    classScoreInfo: ClassScoreInfo;
 }

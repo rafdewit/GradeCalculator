@@ -1,22 +1,64 @@
 <app-theme-container>
     <h2 mat-dialog-title>{{data.title}}</h2>
 
-    @for(group of studentGradesFormArray.controls; track group) {
-        {{group.value}}
-    }
-
-    <!-- <mat-dialog-content class="mat-typography">
+    <mat-dialog-content class="mat-typography">
         <form class="example-form">
-            <mat-form-field class="example-full-width">
-                <mat-label>Name</mat-label>
-                <input matInput [formControl]="valueFormControl">
-                @if(valueFormControl.hasError('required')) {<mat-error>Required</mat-error>}
-            </mat-form-field>
+            <table class="edit-table">
+                <tr>
+                    <th>
+                        <div class="table-header">Student Name</div>
+                    </th>
+                    <th>
+                        <div class="table-header">Score</div>
+                    </th>
+                    <th>
+                        <div class="table-header">Total</div>
+                    </th>
+                    <th>
+                        <div class="table-header">Percentage</div>
+                    </th>
+                    <th>
+                        <div class="table-header">Category</div>
+                    </th>
+                </tr>
+
+                @for(group of studentGradesFormArray.controls; track group) {
+                <tr>
+                    <td>
+                        <div>{{group.controls.studentName.value}}:</div>
+                    </td>
+
+                    <td>
+                        <mat-form-field class="input-field">
+                            <mat-label>Score</mat-label>
+                            <input min="0" [max]="data.object.single.totalScore" matInput [formControl]="group.controls.score"
+                                type="number">
+                        </mat-form-field>
+                    </td>
+
+                    <td>
+                        <div class="center-content">/{{data.object.single.totalScore}}</div>
+                    </td>
+
+                    <td>
+                        <app-percentage-representation class="center-content"
+                            [percentage]="group.controls.score.value !== null ? group.controls.score.value / data.object.single.totalScore : null"></app-percentage-representation>
+                    </td>
+
+                    <td>
+                        <div class="center-content">{{(group.controls.score.value !== null ? group.controls.score.value /
+                            data.object.single.totalScore : null) | gradeCategory}}</div>
+                    </td>
+                </tr>
+                }
+            </table>
         </form>
-    </mat-dialog-content> -->
+    </mat-dialog-content>
 
     <mat-dialog-actions align="end">
         <button mat-raised-button (click)="cancel()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.studentGradesFormArray.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
+        <button mat-raised-button color="primary" (click)="acceptChanges()"
+            [disabled]="this.studentGradesFormArray.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' :
+            'Create'}}</button>
     </mat-dialog-actions>
 </app-theme-container>

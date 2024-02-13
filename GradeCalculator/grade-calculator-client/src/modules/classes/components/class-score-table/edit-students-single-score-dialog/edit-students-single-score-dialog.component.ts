@@ -17,16 +17,18 @@ export class EditStudentsSingleScoreDialogComponent {
   constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, private dialogRef: MatDialogRef<EditStudentsSingleScoreDialogComponent>, private formBuilder: NonNullableFormBuilder) {
     this.studentGradesFormArray = this.formBuilder.array<StudentSingleScoreFormGroup>([]);
 
-    data.object.studentCollection.students.forEach(s => {
-      const studentGrade = s.studentSingleGrades.find(g => g.singleGradeConfigurationId === data.object.single.id);
+    let i = 0;
+    data.object.classScoreInfo.studentInfos.forEach(s => {
+      const studentGrade = s.student.studentSingleGrades.find(g => g.singleGradeConfigurationId === data.object.single.id);
 
       const studentSingleScoreFormGroup: StudentSingleScoreFormGroup = this.formBuilder.group({
-        studentId: this.formBuilder.control(s.id),
-        studentName: this.formBuilder.control(s.name),
+        studentId: this.formBuilder.control(s.student.id),
+        studentName: this.formBuilder.control(s.student.name),
         score: this.formBuilder.control(studentGrade?.score ?? null)
       });
 
-      this.studentGradesFormArray.insert(0, studentSingleScoreFormGroup);
+      this.studentGradesFormArray.insert(i, studentSingleScoreFormGroup);
+      i++;
     });
   }
 

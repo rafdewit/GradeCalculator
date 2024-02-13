@@ -79,7 +79,7 @@ export class ClassScoreTableComponent {
     const data: DefaultCrudDialogData<EditStudentsSingleScoreDialogData> = {
       object: {
         single: single,
-        studentCollection: classScoreInfo.class
+        classScoreInfo: classScoreInfo
       },
       deleteFlag: false,
       title: `Update Score: ${single.name}`,

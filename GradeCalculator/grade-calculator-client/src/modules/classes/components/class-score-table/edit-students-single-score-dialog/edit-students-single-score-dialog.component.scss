@@ -1,3 +1,21 @@
 :host {
   display: block;
+
+  .edit-table {
+    margin: 32px;
+  }
+
+  .table-header {
+    margin: 8px;
+  }
+
+  .center-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .input-field {
+    width: 100px;
+  }
 }
