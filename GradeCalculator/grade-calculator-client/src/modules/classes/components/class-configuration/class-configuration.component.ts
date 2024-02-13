@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, firstValueFrom, map } from 'rxjs';
+import { Observable, firstValueFrom, map, switchMap } from 'rxjs';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { StudentCollection } from 'src/services/dtos/student-collection.model';
@@ -11,6 +11,7 @@ import { CreatePeriodDialogComponent } from './create-period-dialog/create-perio
 import { StudentCollectionWebClient } from 'src/services/api/student-collection-web-client.service';
 import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/api/grade-period-web-client.service';
 import { DialogService } from 'src/services/dialog/dialog.service';
+import { GradeStore } from 'src/services/stores/grade.store';
 
 @Component({
   selector: 'app-class-configuration',
@@ -20,19 +21,20 @@ import { DialogService } from 'src/services/dialog/dialog.service';
 })
 export class ClassConfigurationComponent { 
 
-  public class$: Observable<StudentCollection>;
+  // private class$: Observable<StudentCollection>;
   public info$: Observable<ClassConfigurationInfo>;
 
   constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: GradePeriodWebClient,
-    private dialogService: DialogService) {
-    this.class$ = this.activatedRoute.data.pipe(map(d => d['class']));
-    this.info$ = this.class$.pipe(map(c => {
+    private dialogService: DialogService, private gradeStore: GradeStore) {
+    const class$ = this.activatedRoute.params.pipe(map(p => p['classId'])).pipe(switchMap(i => this.gradeStore.getClass(i)));
+    
+    this.info$ = class$.pipe(map(c => {
       const result: ClassConfigurationInfo = {
         class: c,
-        navigationName: `Configuration(${c.name})`
+        navigationName: `Configuration(${c?.name})`
       };
       return result;
-    }))
+    }));
   }
 
   public async openCreatePeriodDialog(studentCollection: StudentCollection): Promise<void> {
@@ -95,6 +97,6 @@ export class ClassConfigurationComponent {
 }
 
 export interface ClassConfigurationInfo {
-  class: StudentCollection;
+  class: StudentCollection | null;
   navigationName: string;
 }

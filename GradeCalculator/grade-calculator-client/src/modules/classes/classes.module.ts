@@ -26,10 +26,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePeriodDialogComponent } from './components/class-configuration/create-period-dialog/create-period-dialog.component';
 
 const routes: Routes = [
-  { path: ':classId/score-overview', component: ClassScoreComponent, resolve: { classScore: ClassScoreInfoResolver } },
-  { path: ':classId/score-overview/:studentId', component: StudentScoreComponent, resolve: { classStudentInfo: StudentScoreInfoResolver } },
-  { path: ':classId', component: ClassConfigurationComponent, resolve: { class: ClassResolver } },
-  { path: ':classId/periods/:periodId', component: PeriodPageComponent, resolve: { class: ClassResolver, period: PeriodResolver } },
+  { path: ':classId/score-overview', component: ClassScoreComponent },
+  { path: ':classId/score-overview/:studentId', component: StudentScoreComponent },
+  { path: ':classId', component: ClassConfigurationComponent },
+  { path: ':classId/periods/:periodId', component: PeriodPageComponent },
   { path: '**', component: ClassesPageComponent },
 ];
 

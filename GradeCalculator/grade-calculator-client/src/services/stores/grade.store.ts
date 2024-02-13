@@ -19,6 +19,10 @@ export class GradeStore {
         this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item)))).pipe(bufferOneRef());
     }
 
+    public getClass(id: string): Observable<StudentCollection | null> {
+        return this.classes$.pipe(map(classes => classes.find(c => c.id === id) ?? null));
+    }
+
     private get(): Observable<StudentCollection[]> {
         const initialClasses$ = this.studentCollectionWebClient.getAllClasses();
 

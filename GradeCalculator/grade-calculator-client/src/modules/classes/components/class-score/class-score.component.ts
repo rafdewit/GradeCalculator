@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
+import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 
 @Component({
@@ -11,11 +12,16 @@ import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassScoreComponent {
-  public classScoreInfo$: Observable<ClassScoreInfo>;
+  public classScoreInfo$: Observable<ClassScoreInfo | null>;
   public colors = PERCENTAGE_GRADIENT_COLORS;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router) {
-    this.classScoreInfo$ = activatedRoute.data.pipe(map(d => d['classScore']));
+  constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore) {
+    const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
+    this.classScoreInfo$ = combineLatest(([classId$, this.gradeStore.classScoreInfos$]))
+      .pipe(map(([classId, classScoreInfos]) => {
+        const classInfo = classScoreInfos.find(c => c.class.id === classId) ?? null;
+        return classInfo;
+      }));
   }
 
   public studentNavigate(studentInfo: StudentInfo) {
