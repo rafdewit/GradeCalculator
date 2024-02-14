@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseUrlProvider } from "./base-url.provider";
+import { BaseUrlProvider } from "../base-url.provider";
 import { CreateStudentPeriodDto } from "../request/students/create-student-period";
 import { DeleteStudentPeriodDto } from "../request/students/delete-student-period";
 import { UpdateStudentPeriodDto } from "../request/students/update-student-period";
 import { IStudentClient } from "../base/student-client";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class StudentWebClient extends IStudentClient {
 
     private proxyName: string = 'Student';

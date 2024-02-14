@@ -5,9 +5,7 @@ import { CreateSingleGradeConfigurationDto } from "../request/single/create-sing
 import { DeleteSingleGradeConfigurationDto } from "../request/single/delete-single-grade-configuration";
 import { UpdateSingleGradeConfigurationDto } from "../request/single/update-single-grade-configuration";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SingleGradeConfigurationElectronClient extends ISingleGradeConfigurationClient {
     constructor() { 
         super();

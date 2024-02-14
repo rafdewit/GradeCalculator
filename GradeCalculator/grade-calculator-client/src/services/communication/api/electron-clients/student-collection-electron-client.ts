@@ -5,9 +5,7 @@ import { UpdateStudentCollectionDto } from "../request/student-collection/update
 import { CreateStudentCollectionDto } from "../request/student-collection/create-class-request";
 import { CopyStudentCollectionDto } from "../request/student-collection/copy-class-request";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class StudentCollectionElectronClient {
     public getAllClasses(): Observable<StudentCollection[]> {
         return of();

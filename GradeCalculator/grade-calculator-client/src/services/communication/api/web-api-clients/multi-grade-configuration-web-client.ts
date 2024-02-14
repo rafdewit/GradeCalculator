@@ -1,15 +1,13 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseUrlProvider } from "./base-url.provider";
+import { BaseUrlProvider } from "../base-url.provider";
 import { CreateMultiGradeConfigurationDto } from "../request/multi/create-multi-grade-configuration";
 import { UpdateMultiGradeConfigurationDto } from "../request/multi/update-multi-grade-configuration";
 import { DeleteMultiGradeConfigurationDto } from "../request/multi/delete-multi-grade-configuration";
 import { IMultiGradeConfigurationClient } from "../base/multi-grade-configuration-client";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MultiGradeConfigurationWebClient extends IMultiGradeConfigurationClient {
 
     private proxyName: string = 'MultiGradeConfiguration';

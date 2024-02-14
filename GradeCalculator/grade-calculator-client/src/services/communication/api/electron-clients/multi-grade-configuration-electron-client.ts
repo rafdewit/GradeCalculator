@@ -5,9 +5,7 @@ import { UpdateMultiGradeConfigurationDto } from "../request/multi/update-multi-
 import { DeleteMultiGradeConfigurationDto } from "../request/multi/delete-multi-grade-configuration";
 import { IMultiGradeConfigurationClient } from "../base/multi-grade-configuration-client";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class MultiGradeConfigurationElectronClient extends IMultiGradeConfigurationClient {
     constructor() { 
         super();

@@ -5,14 +5,12 @@ import { DeleteStudentPeriodDto } from "../request/students/delete-student-perio
 import { UpdateStudentPeriodDto } from "../request/students/update-student-period";
 import { IStudentClient } from "../base/student-client";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class StudentElectronClient extends IStudentClient {
     public updateStudent(request: UpdateStudentPeriodDto): Observable<void> {
         return of();
     }
-    
+
     public createStudent(request: CreateStudentPeriodDto): Observable<void> {
         return of();
     }

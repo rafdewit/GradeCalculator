@@ -1,13 +1,11 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { BaseUrlProvider } from "./base-url.provider";
+import { BaseUrlProvider } from "../base-url.provider";
 import { SingleGradesUpdateDto } from "../request/grade-update/single-grades-update";
 import { ISingleGradeClient } from "../base/single-grade-client.interface";
 
-@Injectable({
-    providedIn: 'root'
-})
+@Injectable()
 export class SingleGradeWebClient extends ISingleGradeClient {
 
     private proxyName: string = 'SingleGrade';
