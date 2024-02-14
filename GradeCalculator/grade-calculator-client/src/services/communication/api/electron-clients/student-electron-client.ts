@@ -7,6 +7,10 @@ import { IStudentClient } from "../base/student-client";
 
 @Injectable()
 export class StudentElectronClient extends IStudentClient {
+    constructor() { 
+        super();
+    }
+    
     public updateStudent(request: UpdateStudentPeriodDto): Observable<void> {
         const ipcRenderer  = window.require('electron').ipcRenderer;
         ipcRenderer.send('updateStudent', request);

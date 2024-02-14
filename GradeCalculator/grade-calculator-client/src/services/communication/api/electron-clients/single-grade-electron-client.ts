@@ -5,6 +5,10 @@ import { ISingleGradeClient } from "../base/single-grade-client.interface";
 
 @Injectable()
 export class SingleGradeElectronClient extends ISingleGradeClient {
+    constructor() { 
+        super();
+    }
+    
     public updateSingleGrades(request: SingleGradesUpdateDto): Observable<void> {
         const ipcRenderer  = window.require('electron').ipcRenderer;
         ipcRenderer.send('updateSingleGrades', request);
