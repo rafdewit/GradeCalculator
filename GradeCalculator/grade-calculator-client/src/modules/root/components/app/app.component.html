@@ -7,7 +7,7 @@
 
     <span class="example-spacer"></span>
 
-    @if(gradeHubClient.connectedState$ | async;)
+    @if(gradeEventClient.connectedState$ | async;)
     {
     <mat-icon class="connected" fontIcon="bolt"></mat-icon>
     <div>Connected</div>
@@ -19,7 +19,7 @@
 
   </mat-toolbar>
 
-  @if (gradeHubClient.connectedState$ | async) {
+  @if (gradeEventClient.connectedState$ | async) {
   <div class="router-out">
     <div class="router-out-content">
       <router-outlet></router-outlet>

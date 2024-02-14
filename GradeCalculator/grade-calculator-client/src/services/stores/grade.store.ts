@@ -6,6 +6,7 @@ import { bufferOneRef } from "../rxjs/buffer-one-ref";
 import { ClassScoreInfo } from "./models/score";
 import { convertClass } from "./grade.converter";
 import { IStudentCollectionClient } from "../communication/api/base/student-collection-client";
+import { IEventClient } from "../communication/signalr/event-client";
 
 @Injectable({
     providedIn: 'root'
@@ -14,7 +15,7 @@ export class GradeStore {
     public classes$: Observable<StudentCollection[]>;
     public classScoreInfos$: Observable<ClassScoreInfo[]>;
 
-    constructor(private studentCollectionClient: IStudentCollectionClient, private gradeHubClient: GradeHubClient) {
+    constructor(private studentCollectionClient: IStudentCollectionClient, private gradeEventClient: IEventClient) {
         this.classes$ = this.get();
         this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item))))
             .pipe(bufferOneRef());
@@ -28,7 +29,7 @@ export class GradeStore {
         const initialClasses$ = this.studentCollectionClient.getAllClasses();
 
         const attachCreate$ = initialClasses$.pipe(switchMap(r => {
-            return this.gradeHubClient.studentCollectionUpdateEvent$.pipe(startWith(null), scan((acc, value) => {
+            return this.gradeEventClient.studentCollectionUpdateEvent$.pipe(startWith(null), scan((acc, value) => {
                 if (value) {
                     const index = acc.findIndex(i => i.id === value.id);
                     if (index >= 0) {
@@ -42,7 +43,7 @@ export class GradeStore {
         }));
 
         const attachDelete$ = attachCreate$.pipe(switchMap(r => {
-            return this.gradeHubClient.studentCollectionDeletedEvent$.pipe(startWith(null), scan((acc, id) => {
+            return this.gradeEventClient.studentCollectionDeletedEvent$.pipe(startWith(null), scan((acc, id) => {
                 if (id) {
                     const index = acc.findIndex(i => i.id === id);
                     if (index >= 0) {

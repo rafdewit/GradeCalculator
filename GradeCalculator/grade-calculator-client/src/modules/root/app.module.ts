@@ -27,6 +27,9 @@ import { IStudentClient } from 'src/services/communication/api/base/student-clie
 import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
 import { ISingleGradeConfigurationClient } from 'src/services/communication/api/base/single-grade-configuration-client';
 import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
+import { GradeHubClient } from 'src/services/communication/signalr/grade-hub.client';
+import { GradeElectronEventClient } from 'src/services/communication/signalr/grade-electron-event.client';
+import { IEventClient } from 'src/services/communication/signalr/event-client';
 
 const routes: Routes = [
   { path: 'classes', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
@@ -50,6 +53,10 @@ export const Student_ElectronClient = new InjectionToken<string>('Student_Electr
 
 export const StudentCollection_WebClient = new InjectionToken<string>('StudentCollection_WebClient');
 export const StudentCollection_ElectronClient = new InjectionToken<string>('StudentCollection_ElectronClient');
+
+
+export const Grade_HubEventClient = new InjectionToken<string>('Grade_HubEventClient');
+export const Grade_ElectronEventClient = new InjectionToken<string>('Grade_ElectronEventClient');
 
 @NgModule({
   declarations: [
@@ -88,6 +95,10 @@ export const StudentCollection_ElectronClient = new InjectionToken<string>('Stud
     { provide: StudentCollection_WebClient, useClass: StudentCollectionWebClient },
     { provide: StudentCollection_ElectronClient, useClass: StudentCollectionElectronClient },
     { provide: IStudentCollectionClient, useFactory: createStudentCollectionClient, deps: [Injector] },
+
+    { provide: Grade_HubEventClient, useClass: GradeHubClient },
+    { provide: Grade_ElectronEventClient, useClass: GradeElectronEventClient },
+    { provide: IEventClient, useFactory: createGradeEventClient, deps: [Injector] },
   ],
   bootstrap: [AppComponent]
 })
@@ -115,4 +126,8 @@ export function createStudentClient(injector: Injector) {
 
 export function createStudentCollectionClient(injector: Injector) {
   return !environment.electron ? injector.get(StudentCollection_WebClient) : injector.get(StudentCollection_ElectronClient);
+}
+
+export function createGradeEventClient(injector: Injector) {
+  return !environment.electron ? injector.get(Grade_HubEventClient) : injector.get(Grade_ElectronEventClient);
 }

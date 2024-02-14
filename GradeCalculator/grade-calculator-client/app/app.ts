@@ -53,8 +53,6 @@ export default class Main {
         gradePeriods: []
       };
       
-      console.log(studentCollection);
-
       const result = gradeDataProvider.createOrUpdate(studentCollection);
       return result;
     });

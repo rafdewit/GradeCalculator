@@ -3,19 +3,19 @@ import { HubConnection, HubConnectionBuilder, HubConnectionState, IRetryPolicy, 
 import { BehaviorSubject, Observable, Subject, takeUntil, timer } from "rxjs";
 import { environment } from "src/environments/environment";
 import { StudentCollection } from "../../dtos/student-collection.model";
+import { IEventClient } from "./event-client";
 
-@Injectable({
-    providedIn: 'root'
-})
-export class GradeHubClient implements OnDestroy {
+@Injectable()
+export class GradeHubClient extends IEventClient implements OnDestroy {
     private onDestroy$ = new Subject<void>();
 
     public connectedState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-    
     public studentCollectionUpdateEvent$: Observable<StudentCollection>;
     public studentCollectionDeletedEvent$: Observable<string>;
 
     constructor() {
+        super();
+
         const connection: HubConnection = new HubConnectionBuilder()
             .withAutomaticReconnect(new RetryEveryFiveSeconds())
             .configureLogging(LogLevel.None)

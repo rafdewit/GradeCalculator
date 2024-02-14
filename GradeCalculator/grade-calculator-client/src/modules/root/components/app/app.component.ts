@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
-import { GradeHubClient } from 'src/services/communication/signalr/grade-hub.client';
+import { IEventClient } from 'src/services/communication/signalr/event-client';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +12,11 @@ import { GradeHubClient } from 'src/services/communication/signalr/grade-hub.cli
 export class AppComponent {
   title = 'grade-calculator-client';
 
-  constructor(private router: Router, public gradeHubClient: GradeHubClient, public themeSelectorService: ThemeSelectorService, private client: IStudentCollectionClient) {
-    console.log("hello2");
+  constructor(private router: Router, public gradeEventClient: IEventClient, public themeSelectorService: ThemeSelectorService) {
+
   }
 
   public routeToHome(): void {
     this.router.navigateByUrl("");
-    this.client.createClass({className: 'test-name'});
   }
-
 }

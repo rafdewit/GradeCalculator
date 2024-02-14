@@ -1,6 +1,6 @@
 import { StudentCollection } from "../dtos/student-collection.model";
 import { GradePeriod } from "../dtos/grade-config/grade-period.model";
-import { mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "original-fs";
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "original-fs";
 
 export const classesStorageDirectory: string = "ClassesStorage";
 export class GradeDataProvider {
@@ -11,7 +11,10 @@ export class GradeDataProvider {
     }
 
     private getAllInternal(): Map<string, StudentCollection> {
-        mkdirSync(classesStorageDirectory)
+        if(!existsSync(classesStorageDirectory)) {
+            mkdirSync(classesStorageDirectory)
+        }
+        
         const jsonFiles = readdirSync(classesStorageDirectory).filter(file => file.endsWith('.json'));
         const studentCollections = jsonFiles.map(f => JSON.parse(readFileSync(`${classesStorageDirectory}/${f}`).toString()) as StudentCollection);
         const result = new Map<string, StudentCollection>();
