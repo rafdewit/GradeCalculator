@@ -6,16 +6,11 @@ import { SingleGradeConfigDialogData } from 'src/modules/common-module/dialogs/s
 import { SingleGradeConfiguration } from '../../dtos/grade-config/single-grade-configuration.model';
 import { SingleGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/single-grade-config-dialog/single-grade-config-dialog.component';
 import { SingleGradeConfigurationData } from '../../communication/api/request/single/single-grade-configuration.data';
-import { MultiGradeConfiguration } from '../../dtos/grade-config/multi-grade-configuration.model';
-import { MultiGradeConfigDialogData } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.data';
-import { MultiGradeConfigurationData } from '../../communication/api/request/multi/multi-grade-configuration.data';
-import { MultiGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
-import { SingleGradeConfigurationWebClient } from '../../communication/api/web-api-clients/single-grade-configuration-web-client';
-import { MultiGradeConfigurationWebClient } from '../../communication/api/web-api-clients/multi-grade-configuration-web-client';
 import { CreateSingleGradeConfigurationDto } from '../../communication/api/request/single/create-single-grade-configuration';
 import { UpdateSingleGradeConfigurationDto } from '../../communication/api/request/single/update-single-grade-configuration';
 import { DialogService } from './dialog.service';
 import { DeleteSingleGradeConfigurationDto } from '../../communication/api/request/single/delete-single-grade-configuration';
+import { ISingleGradeConfigurationClient } from 'src/services/communication/api/base/single-grade-configuration-client';
 
 @Injectable({
     providedIn: 'root'
@@ -23,8 +18,7 @@ import { DeleteSingleGradeConfigurationDto } from '../../communication/api/reque
 export class SingleGradeConfigDialogService {
 
     constructor(private matDialog: MatDialog, private dialogService: DialogService,
-        private singleGradeConfigurationWebClient: SingleGradeConfigurationWebClient,
-        private multiGradeConfigurationWebClient: MultiGradeConfigurationWebClient) { }
+        private singleGradeConfigurationClient: ISingleGradeConfigurationClient) { }
 
     public async createSingleGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
         const dialogResult = await this.openSingleGradeConfigDialog("Create Single Grade");
@@ -42,7 +36,7 @@ export class SingleGradeConfigDialogService {
             weight: dialogResult.weight,
         };
 
-        await firstValueFrom(this.singleGradeConfigurationWebClient.createSingleGradeConfiguration(request));
+        await firstValueFrom(this.singleGradeConfigurationClient.createSingleGradeConfiguration(request));
     }
 
     public async updateSingleGrade(studentCollectionId: string, single: SingleGradeConfiguration): Promise<void> {
@@ -60,7 +54,7 @@ export class SingleGradeConfigDialogService {
             weight: dialogResult.weight,
         };
 
-        await firstValueFrom(this.singleGradeConfigurationWebClient.updateSingleGradeConfiguration(request));
+        await firstValueFrom(this.singleGradeConfigurationClient.updateSingleGradeConfiguration(request));
     }
 
     public async deleteSingleGrade(studentCollectionId: string, single: SingleGradeConfiguration): Promise<void> {
@@ -71,7 +65,7 @@ export class SingleGradeConfigDialogService {
                 singleId: single.id,
             };
 
-            firstValueFrom(this.singleGradeConfigurationWebClient.deleteSingleGradeConfiguration(request));
+            firstValueFrom(this.singleGradeConfigurationClient.deleteSingleGradeConfiguration(request));
         }
     }
 

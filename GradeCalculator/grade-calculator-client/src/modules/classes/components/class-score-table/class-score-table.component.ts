@@ -12,11 +12,11 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
 import { SingleGradeUpdateDto } from 'src/services/communication/api/request/grade-update/single-grade-update';
 import { SingleGradesUpdateDto } from 'src/services/communication/api/request/grade-update/single-grades-update';
-import { SingleGradeWebClient } from 'src/services/communication/api/web-api-clients/single-grade-web-client';
 import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfigDialogService } from 'src/services/angular/dialog/single-grade-config-dialog.service';
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { MultiGradeConfigDialogService } from 'src/services/angular/dialog/multi-grade-config-dialog.service';
+import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
 
 @Component({
   selector: 'app-class-score-table',
@@ -45,7 +45,7 @@ export class ClassScoreTableComponent implements OnDestroy {
   public scoreDisplayTypeOptions: string[] = ['percentage', 'category', 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService,
+    private matDialog: MatDialog, private singleGradeClient: ISingleGradeClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService,
     private multiGradeConfigDialogService: MultiGradeConfigDialogService) {
 
     this.filterFormGroup = this.formBuilder.group({
@@ -169,7 +169,7 @@ export class ClassScoreTableComponent implements OnDestroy {
         studentCollectionId: classScoreInfo.class.id
       };
 
-      await firstValueFrom(this.singleGradeWebClient.updateSingleGrades(request));
+      await firstValueFrom(this.singleGradeClient.updateSingleGrades(request));
     }
   }
 }

@@ -22,6 +22,11 @@ import { StudentWebClient } from 'src/services/communication/api/web-api-clients
 import { StudentElectronClient } from 'src/services/communication/api/electron-clients/student-electron-client';
 import { StudentCollectionWebClient } from 'src/services/communication/api/web-api-clients/student-collection-web-client';
 import { StudentCollectionElectronClient } from 'src/services/communication/api/electron-clients/student-collection-electron-client';
+import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
+import { IStudentClient } from 'src/services/communication/api/base/student-client';
+import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
+import { ISingleGradeConfigurationClient } from 'src/services/communication/api/base/single-grade-configuration-client';
+import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
 
 const routes: Routes = [
   { path: 'classes', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
@@ -66,23 +71,23 @@ export const StudentCollection_ElectronClient = new InjectionToken<string>('Stud
 
     { provide: MultiGradeConfiguration_WebClient, useClass: MultiGradeConfigurationWebClient },
     { provide: MultiGradeConfiguration_ElectronClient, useClass: MultiGradeConfigurationElectronClient },
-    { provide: IGradePeriodClient, useFactory: createMultiGradeConfigurationClient, deps: [Injector] },
+    { provide: IMultiGradeConfigurationClient, useFactory: createMultiGradeConfigurationClient, deps: [Injector] },
 
     { provide: SingleGradeConfiguration_WebClient, useClass: SingleGradeConfigurationWebClient },
     { provide: SingleGradeConfiguration_ElectronClient, useClass: SingleGradeConfigurationElectronClient },
-    { provide: IGradePeriodClient, useFactory: createSingleGradeConfigurationClient, deps: [Injector] },
+    { provide: ISingleGradeConfigurationClient, useFactory: createSingleGradeConfigurationClient, deps: [Injector] },
 
     { provide: SingleGrade_WebClient, useClass: SingleGradeWebClient },
     { provide: SingleGrade_ElectronClient, useClass: SingleGradeElectronClient },
-    { provide: IGradePeriodClient, useFactory: createSingleGradeClient, deps: [Injector] },
+    { provide: ISingleGradeClient, useFactory: createSingleGradeClient, deps: [Injector] },
 
     { provide: Student_WebClient, useClass: StudentWebClient },
     { provide: Student_ElectronClient, useClass: StudentElectronClient },
-    { provide: IGradePeriodClient, useFactory: createStudentClient, deps: [Injector] },
+    { provide: IStudentClient, useFactory: createStudentClient, deps: [Injector] },
 
     { provide: StudentCollection_WebClient, useClass: StudentCollectionWebClient },
     { provide: StudentCollection_ElectronClient, useClass: StudentCollectionElectronClient },
-    { provide: IGradePeriodClient, useFactory: createStudentCollectionClient, deps: [Injector] },
+    { provide: IStudentCollectionClient, useFactory: createStudentCollectionClient, deps: [Injector] },
   ],
   bootstrap: [AppComponent]
 })

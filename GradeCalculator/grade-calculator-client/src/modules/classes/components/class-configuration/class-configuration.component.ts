@@ -12,8 +12,8 @@ import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { CreateStudentDialogData } from './create-student-dialog/create-student-dialog.data';
 import { CreateStudentDialogComponent } from './create-student-dialog/create-student-dialog.component';
-import { StudentWebClient } from 'src/services/communication/api/web-api-clients/student-web-client';
 import { IGradePeriodClient } from 'src/services/communication/api/base/grade-period-client.interface';
+import { IStudentClient } from 'src/services/communication/api/base/student-client';
 
 @Component({
   selector: 'app-class-configuration',
@@ -27,7 +27,7 @@ export class ClassConfigurationComponent {
   public info$: Observable<ClassConfigurationInfo>;
 
   constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: IGradePeriodClient,
-    private dialogService: DialogService, private gradeStore: GradeStore, private studentWebClient: StudentWebClient) {
+    private dialogService: DialogService, private gradeStore: GradeStore, private studentClient: IStudentClient) {
     const class$ = this.activatedRoute.params.pipe(map(p => p['classId'])).pipe(switchMap(i => this.gradeStore.getClass(i)));
     
     this.info$ = class$.pipe(map(c => {
@@ -74,21 +74,21 @@ export class ClassConfigurationComponent {
   public async createStudent(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openStudentDialog("Create Student");
     if (result) {
-      await firstValueFrom(this.studentWebClient.createStudent({ studentCollectionId: studentCollection.id, name: result }));
+      await firstValueFrom(this.studentClient.createStudent({ studentCollectionId: studentCollection.id, name: result }));
     }
   }
 
   public async updateStudent(student: Student, studentCollection: StudentCollection): Promise<void> {
     const result = await this.openStudentDialog(`Update Student: ${student.name}`, student);
     if (result) {
-      await firstValueFrom(this.studentWebClient.updateStudent({ studentCollectionId: studentCollection.id, name: result, studentId: student.id }));
+      await firstValueFrom(this.studentClient.updateStudent({ studentCollectionId: studentCollection.id, name: result, studentId: student.id }));
     }
   }
 
   public async deleteStudent(student: Student, studentCollection: StudentCollection): Promise<void> {
     const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete student: ${student.name}?`, `Are you sure you want to delete student: ${student.name}`);
     if(dialogResult) {
-      await firstValueFrom(this.studentWebClient.deleteStudent({ studentCollectionId: studentCollection.id, studentId: student.id }));
+      await firstValueFrom(this.studentClient.deleteStudent({ studentCollectionId: studentCollection.id, studentId: student.id }));
     }
   }
 

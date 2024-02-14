@@ -6,11 +6,11 @@ import { MultiGradeConfiguration } from '../../dtos/grade-config/multi-grade-con
 import { MultiGradeConfigDialogData } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.data';
 import { MultiGradeConfigurationData } from '../../communication/api/request/multi/multi-grade-configuration.data';
 import { MultiGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
-import { MultiGradeConfigurationWebClient } from '../../communication/api/web-api-clients/multi-grade-configuration-web-client';
 import { DialogService } from './dialog.service';
 import { CreateMultiGradeConfigurationDto } from '../../communication/api/request/multi/create-multi-grade-configuration';
 import { UpdateMultiGradeConfigurationDto } from '../../communication/api/request/multi/update-multi-grade-configuration';
 import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
+import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
 
 @Injectable({
     providedIn: 'root'
@@ -18,7 +18,7 @@ import { DeleteMultiGradeConfigurationDto } from '../../communication/api/reques
 export class MultiGradeConfigDialogService {
 
     constructor(private matDialog: MatDialog, private dialogService: DialogService,
-        private multiGradeConfigurationWebClient: MultiGradeConfigurationWebClient) { }
+        private multiGradeConfigurationClient: IMultiGradeConfigurationClient) { }
 
     public async createMultiGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
         const dialogResult = await this.openMultiGradeConfigDialog("Create Multi Grade");
@@ -35,7 +35,7 @@ export class MultiGradeConfigDialogService {
             weight: dialogResult.weight,
         };
 
-        await firstValueFrom(this.multiGradeConfigurationWebClient.createMultiGradeConfiguration(request));
+        await firstValueFrom(this.multiGradeConfigurationClient.createMultiGradeConfiguration(request));
     }
 
     public async updateMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
@@ -52,7 +52,7 @@ export class MultiGradeConfigDialogService {
             weight: dialogResult.weight,
         };
 
-        await firstValueFrom(this.multiGradeConfigurationWebClient.updateMultiGradeConfiguration(request));
+        await firstValueFrom(this.multiGradeConfigurationClient.updateMultiGradeConfiguration(request));
     }
 
     public async deleteMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
@@ -63,7 +63,7 @@ export class MultiGradeConfigDialogService {
                 multiId: multi.id,
             };
 
-            firstValueFrom(this.multiGradeConfigurationWebClient.deleteMultiGradeConfiguration(request));
+            firstValueFrom(this.multiGradeConfigurationClient.deleteMultiGradeConfiguration(request));
         }
     }
 
