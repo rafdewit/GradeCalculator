@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormBuilder, FormControl, NonNullableFormBuilder } from '@angular/forms';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, map, combineLatest, startWith, firstValueFrom } from 'rxjs';
+import { Observable, map, combineLatest, startWith, firstValueFrom, takeUntil, Subject } from 'rxjs';
 import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo, StudentMultiGradeInfo } from 'src/services/stores/models/score';
@@ -23,31 +23,46 @@ import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
   styleUrl: './class-score-table.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ClassScoreTableComponent {
+export class ClassScoreTableComponent implements OnDestroy {
   public classScoreInfo$: Observable<ClassScoreInfo | null>;
   public info$: Observable<ClassTableComponentInfo>;
   public colors = PERCENTAGE_GRADIENT_COLORS;
 
-  public studentNameFilterFormControl: FormControl<string>;
-  public scoreDisplayTypeFormControl: FormControl<'percentage' | 'category' | 'score'>;
-  public enableWeightFormControl: FormControl<boolean>;
-  public rootOnlyFormControl: FormControl<boolean>;
-  public showButtonsFormControl: FormControl<boolean>;
-  public gradePeriodFilterFormControl: FormControl<string[]>;
+  private _onDestroy = new Subject<void>();
 
-  public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
+  public filterFormGroup: FormGroup<{
+    studentNameFilter: FormControl<string>,
+    scoreDisplayType: FormControl<'percentage' | 'category' | 'score'>,
+    enableWeight: FormControl<boolean>,
+    rootOnly: FormControl<boolean>,
+    showButtons: FormControl<boolean>,
+    gradePeriodFilter: FormControl<string[]>
+  }>;
+
+  public scoreDisplayTypeOptions: string[] = ['percentage', 'category', 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
     private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService) {
 
-    this.studentNameFilterFormControl = this.formBuilder.control('');
-    this.enableWeightFormControl = this.formBuilder.control(true);
-    this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
-    this.rootOnlyFormControl = this.formBuilder.control(true);
-    this.showButtonsFormControl = this.formBuilder.control(true);
-    this.gradePeriodFilterFormControl = this.formBuilder.control([]);
+    this.filterFormGroup = this.formBuilder.group({
+      studentNameFilter: this.formBuilder.control<string>(''),
+      scoreDisplayType: this.formBuilder.control<'percentage' | 'category' | 'score'>('score'),
+      enableWeight: this.formBuilder.control<boolean>(true),
+      rootOnly: this.formBuilder.control<boolean>(true),
+      showButtons: this.formBuilder.control<boolean>(true),
+      gradePeriodFilter: this.formBuilder.control<string[]>([])
+    });
 
     const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
+    classId$.pipe(takeUntil(this._onDestroy)).subscribe(classId => {
+      const serializedFilter = localStorage.getItem(`filter-${classId}`);
+      if(serializedFilter) {
+        const filter = JSON.parse(serializedFilter) as TableFilter;
+        if(filter) {
+          this.filterFormGroup.setValue(filter);
+        }
+      }
+    })
 
     this.classScoreInfo$ = combineLatest(([classId$, this.gradeStore.classScoreInfos$]))
       .pipe(map(([classId, classScoreInfos]) => {
@@ -55,31 +70,34 @@ export class ClassScoreTableComponent {
         return classInfo;
       }));
 
-      const studentNameFilter$ = this.studentNameFilterFormControl.valueChanges.pipe(startWith(''), map(() => this.studentNameFilterFormControl.value));
-      const enableWeight$ = this.enableWeightFormControl.valueChanges.pipe(startWith(''), map(() => this.enableWeightFormControl.value));
-      const scoreDisplayType$ = this.scoreDisplayTypeFormControl.valueChanges.pipe(startWith(''), map(() => this.scoreDisplayTypeFormControl.value));
-      const rootOnly$ = this.rootOnlyFormControl.valueChanges.pipe(startWith(''), map(() => this.rootOnlyFormControl.value));
-      const showButtons$ = this.showButtonsFormControl.valueChanges.pipe(startWith(''), map(() => this.showButtonsFormControl.value));
-      const gradePeriodFilter$ = this.gradePeriodFilterFormControl.valueChanges.pipe(startWith(''), map(() => this.gradePeriodFilterFormControl.value));
+    const filter$ = this.filterFormGroup.valueChanges.pipe(startWith(''), map(() => this.filterFormGroup.value));
 
-    this.info$ = combineLatest([this.classScoreInfo$, studentNameFilter$, enableWeight$, scoreDisplayType$, rootOnly$, showButtons$, gradePeriodFilter$])
-      .pipe(map(([classInfo, studentNameFilter, enableWeight, scoreDisplayType, rootOnly, showButtons, gradePeriodFilter]) => {
+    this.info$ = combineLatest([this.classScoreInfo$, filter$])
+      .pipe(map(([classInfo, filter]) => {
 
-      const studentNameFilterLow = studentNameFilter.toLowerCase();
-      const filteredStudentInfos = classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
+        const tableFilter = filter as TableFilter;
+        localStorage.setItem(`filter-${classInfo?.class.id}`, JSON.stringify(tableFilter));
 
-      const result: ClassTableComponentInfo = {
-        classScoreInfo: classInfo,
-        navigationName: `Table(${classInfo?.class?.name})`,
-        filteredStudentInfos: filteredStudentInfos,
-        enableWeight: enableWeight,
-        scoreDisplayType: scoreDisplayType,
-        rootOnly: rootOnly,
-        showButtons: showButtons,
-        gradePeriodFilter: new Set<string>(gradePeriodFilter)
-      };
-      return result;
-    }));
+        const studentNameFilterLow = tableFilter.studentNameFilter.toLowerCase();
+        const filteredStudentInfos = classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
+
+        const result: ClassTableComponentInfo = {
+          classScoreInfo: classInfo,
+          navigationName: `Table(${classInfo?.class?.name})`,
+          filteredStudentInfos: filteredStudentInfos,
+          enableWeight: tableFilter.enableWeight,
+          scoreDisplayType: tableFilter.scoreDisplayType,
+          rootOnly: tableFilter.rootOnly,
+          showButtons: tableFilter.showButtons,
+          gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter)
+        };
+        return result;
+      }));
+  }
+
+  ngOnDestroy(): void {
+    this._onDestroy.next();
+    this._onDestroy.complete();
   }
 
   public studentNavigate(studentInfo: StudentInfo) {
@@ -108,7 +126,7 @@ export class ClassScoreTableComponent {
     const dialogRef = this.matDialog.open<EditStudentsSingleScoreDialogComponent, DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, SingleGradeUpdateDto[]>(EditStudentsSingleScoreDialogComponent, input);
     const result = await firstValueFrom(dialogRef.afterClosed()) ?? null;
 
-    if(result) {
+    if (result) {
       const request: SingleGradesUpdateDto = {
         singleGradeConfigurationId: single.id,
         singleGradeUpdates: result.filter(r => r.score !== null),
@@ -129,4 +147,13 @@ export interface ClassTableComponentInfo {
   rootOnly: boolean;
   showButtons: boolean;
   gradePeriodFilter: Set<string>;
+}
+
+export interface TableFilter {
+  studentNameFilter: string;
+  scoreDisplayType: "percentage" | "category" | "score";
+  enableWeight: boolean;
+  rootOnly: boolean;
+  showButtons: boolean;
+  gradePeriodFilter: string[];
 }

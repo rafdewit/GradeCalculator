@@ -6,16 +6,16 @@
 <div class="control-panel">
     <mat-form-field class="control-panel-item">
         <mat-label>Student Name Filter</mat-label>
-        <input matInput [formControl]="studentNameFilterFormControl">
+        <input matInput [formControl]="filterFormGroup.controls.studentNameFilter">
     </mat-form-field>
 
-    <mat-checkbox class="control-panel-item" [formControl]="enableWeightFormControl">Show Weights</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.enableWeight">Show Weights</mat-checkbox>
 
-    <mat-checkbox class="control-panel-item" [formControl]="rootOnlyFormControl">Main scores only</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.rootOnly">Main scores only</mat-checkbox>
 
     <mat-form-field class="control-panel-item">
         <mat-label>Score Display Type</mat-label>
-        <mat-select [formControl]="scoreDisplayTypeFormControl">
+        <mat-select [formControl]="filterFormGroup.controls.scoreDisplayType">
             @for (scoreDisplayTypeOption of scoreDisplayTypeOptions; track scoreDisplayTypeOption) {
             <mat-option [value]="scoreDisplayTypeOption">
                 {{scoreDisplayTypeOption}}
@@ -24,11 +24,11 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-checkbox class="control-panel-item" [formControl]="showButtonsFormControl">Buttons</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showButtons">Buttons</mat-checkbox>
 
     <mat-form-field>
         <mat-label>Grade Periods</mat-label>
-        <mat-select [formControl]="gradePeriodFilterFormControl" multiple>
+        <mat-select [formControl]="filterFormGroup.controls.gradePeriodFilter" multiple>
             @for (gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
             <mat-option [value]="gradePeriod.id">{{gradePeriod.name}}</mat-option>
             }
@@ -44,7 +44,7 @@
 
         <!--GradePeriods-->
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
-        <ng-container *ngIf="info.gradePeriodFilter.has(gradePeriod.id)">
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
             <th class="table-header cell-margin">
                 <div>{{gradePeriod.name}}</div>
             </th>
@@ -72,7 +72,7 @@
 
         <!--GradePeriods-->
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
-        <ng-container *ngIf="info.gradePeriodFilter.has(gradePeriod.id)">
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
             <th>
             </th>
 
@@ -98,7 +98,7 @@
 
         <!--GradePeriods-->
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
-        <ng-container *ngIf="info.gradePeriodFilter.has(gradePeriod.id)">
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
             <th>
             </th>
 
@@ -132,7 +132,7 @@
         <!--GradePeriods-->
         @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
 
-        <ng-container *ngIf="info.gradePeriodFilter.has(gradePeriodInfo.gradePeriod.id)">
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriodInfo.gradePeriod.id)">
             <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
                 <app-score-representation [percentage]="gradePeriodInfo.totalPercentage"
                     [mode]="info.scoreDisplayType"></app-score-representation>
