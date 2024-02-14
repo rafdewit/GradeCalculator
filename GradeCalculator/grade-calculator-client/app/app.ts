@@ -1,4 +1,5 @@
 import { BrowserWindow, app, ipcMain } from "electron";
+import { StudentCollection } from "src/services/dtos/student-collection.model";
 const path = require('node:path');
 
 export default class Main {
@@ -24,14 +25,13 @@ export default class Main {
     this.appWindow.on('closed', () => this.appWindow = null);
 
     ipcMain.handle('getAllClasses', () => {
-      console.log('test');
-
-      return [{
+      const studentCollection: StudentCollection = {
         id: 'test-id',
         name: 'test-name',
         gradePeriods: [],
         students: []
-      }];
+      };
+      return [studentCollection];
     });
 
     ipcMain.handle('ping', () => 'pong');
