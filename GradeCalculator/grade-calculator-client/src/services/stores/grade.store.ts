@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { GradeHubClient } from "../communication/signalr/grade-hub.client";
 import { StudentCollection } from "../dtos/student-collection.model";
-import { StudentCollectionWebClient } from "../communication/api/web-api-clients/student-collection-web-client.service";
+import { StudentCollectionWebClient } from "../communication/api/web-api-clients/student-collection-web-client";
 import { Observable, map, scan, startWith, switchMap } from "rxjs";
 import { bufferOneRef } from "../rxjs/buffer-one-ref";
 import { ClassScoreInfo } from "./models/score";

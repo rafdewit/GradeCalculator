@@ -5,15 +5,16 @@ import { BaseUrlProvider } from "./base-url.provider";
 import { CreateStudentPeriodDto } from "../request/students/create-student-period";
 import { DeleteStudentPeriodDto } from "../request/students/delete-student-period";
 import { UpdateStudentPeriodDto } from "../request/students/update-student-period";
+import { IStudentClient } from "../base/student-client";
 
 @Injectable({
     providedIn: 'root'
 })
-export class StudentWebClient {
+export class StudentWebClient extends IStudentClient {
 
     private proxyName: string = 'Student';
 
-    constructor(private httpClient: HttpClient, private base: BaseUrlProvider) { }
+    constructor(private httpClient: HttpClient, private base: BaseUrlProvider) { super() }
 
     public updateStudent(request: UpdateStudentPeriodDto): Observable<void> {
         return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/update`, request);

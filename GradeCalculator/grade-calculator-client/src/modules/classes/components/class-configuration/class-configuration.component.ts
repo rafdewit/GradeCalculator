@@ -8,13 +8,12 @@ import { Student } from 'src/services/dtos/students/student.model';
 import { CreatePeriodDialogData } from './create-period-dialog/create-period-dialog.data';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreatePeriodDialogComponent } from './create-period-dialog/create-period-dialog.component';
-import { StudentCollectionWebClient } from 'src/services/communication/api/web-api-clients/student-collection-web-client.service';
-import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/communication/api/web-api-clients/grade-period-web-client.service';
 import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { CreateStudentDialogData } from './create-student-dialog/create-student-dialog.data';
 import { CreateStudentDialogComponent } from './create-student-dialog/create-student-dialog.component';
-import { StudentWebClient } from 'src/services/communication/api/web-api-clients/student-web-client.service';
+import { StudentWebClient } from 'src/services/communication/api/web-api-clients/student-web-client';
+import { IGradePeriodClient } from 'src/services/communication/api/base/grade-period-client.interface';
 
 @Component({
   selector: 'app-class-configuration',
@@ -27,7 +26,7 @@ export class ClassConfigurationComponent {
   // private class$: Observable<StudentCollection>;
   public info$: Observable<ClassConfigurationInfo>;
 
-  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: GradePeriodWebClient,
+  constructor(private activatedRoute: ActivatedRoute, private matDialog: MatDialog, private gradePeriodWebClient: IGradePeriodClient,
     private dialogService: DialogService, private gradeStore: GradeStore, private studentWebClient: StudentWebClient) {
     const class$ = this.activatedRoute.params.pipe(map(p => p['classId'])).pipe(switchMap(i => this.gradeStore.getClass(i)));
     
