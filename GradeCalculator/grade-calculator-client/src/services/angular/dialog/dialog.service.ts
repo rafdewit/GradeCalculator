@@ -12,8 +12,8 @@ import { MultiGradeConfiguration } from '../../dtos/grade-config/multi-grade-con
 import { MultiGradeConfigDialogData } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.data';
 import { MultiGradeConfigurationData } from '../../communication/api/request/multi/multi-grade-configuration.data';
 import { MultiGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
-import { SingleGradeConfigurationWebClient } from '../../communication/api/single-grade-configuration-web-client';
-import { MultiGradeConfigurationWebClient } from '../../communication/api/multi-grade-configuration-web-client';
+import { SingleGradeConfigurationWebClient } from '../../communication/api/web-api-clients/single-grade-configuration-web-client';
+import { MultiGradeConfigurationWebClient } from '../../communication/api/web-api-clients/multi-grade-configuration-web-client';
 import { CreateSingleGradeConfigurationDto } from '../../communication/api/request/single/create-single-grade-configuration';
 
 @Injectable({

@@ -2,9 +2,9 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseUrlProvider } from "./base-url.provider";
-import { CreateSingleGradeConfigurationDto } from "./request/single/create-single-grade-configuration";
-import { DeleteSingleGradeConfigurationDto } from "./request/single/delete-single-grade-configuration";
-import { UpdateSingleGradeConfigurationDto } from "./request/single/update-single-grade-configuration";
+import { CreateSingleGradeConfigurationDto } from "../request/single/create-single-grade-configuration";
+import { DeleteSingleGradeConfigurationDto } from "../request/single/delete-single-grade-configuration";
+import { UpdateSingleGradeConfigurationDto } from "../request/single/update-single-grade-configuration";
 
 @Injectable({
     providedIn: 'root'

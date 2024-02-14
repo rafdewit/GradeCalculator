@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { BaseUrlProvider } from "./base-url.provider";
-import { SingleGradesUpdateDto } from "./request/grade-update/single-grades-update";
+import { SingleGradesUpdateDto } from "../request/grade-update/single-grades-update";
 
 @Injectable({
     providedIn: 'root'

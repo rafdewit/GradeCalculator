@@ -12,7 +12,7 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
 import { SingleGradeUpdateDto } from 'src/services/communication/api/request/grade-update/single-grade-update';
 import { SingleGradesUpdateDto } from 'src/services/communication/api/request/grade-update/single-grades-update';
-import { SingleGradeWebClient } from 'src/services/communication/api/single-grade-web-client';
+import { SingleGradeWebClient } from 'src/services/communication/api/web-api-clients/single-grade-web-client';
 import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfigDialogService } from 'src/services/angular/dialog/single-grade-config-dialog.service';
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
