@@ -33,16 +33,19 @@ export class ClassScoreTableComponent {
   public enableWeightFormControl: FormControl<boolean>;
   public rootOnlyFormControl: FormControl<boolean>;
   public showButtonsFormControl: FormControl<boolean>;
+  public gradePeriodFilterFormControl: FormControl<string[]>;
 
   public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
     private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService) {
+
     this.studentNameFilterFormControl = this.formBuilder.control('');
     this.enableWeightFormControl = this.formBuilder.control(true);
     this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
     this.rootOnlyFormControl = this.formBuilder.control(true);
     this.showButtonsFormControl = this.formBuilder.control(true);
+    this.gradePeriodFilterFormControl = this.formBuilder.control([]);
 
     const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
 
@@ -57,8 +60,10 @@ export class ClassScoreTableComponent {
       const scoreDisplayType$ = this.scoreDisplayTypeFormControl.valueChanges.pipe(startWith(''), map(() => this.scoreDisplayTypeFormControl.value));
       const rootOnly$ = this.rootOnlyFormControl.valueChanges.pipe(startWith(''), map(() => this.rootOnlyFormControl.value));
       const showButtons$ = this.showButtonsFormControl.valueChanges.pipe(startWith(''), map(() => this.showButtonsFormControl.value));
+      const gradePeriodFilter$ = this.gradePeriodFilterFormControl.valueChanges.pipe(startWith(''), map(() => this.gradePeriodFilterFormControl.value));
 
-    this.info$ = combineLatest([this.classScoreInfo$, studentNameFilter$, enableWeight$, scoreDisplayType$, rootOnly$, showButtons$]).pipe(map(([classInfo, studentNameFilter, enableWeight, scoreDisplayType, rootOnly, showButtons]) => {
+    this.info$ = combineLatest([this.classScoreInfo$, studentNameFilter$, enableWeight$, scoreDisplayType$, rootOnly$, showButtons$, gradePeriodFilter$])
+      .pipe(map(([classInfo, studentNameFilter, enableWeight, scoreDisplayType, rootOnly, showButtons, gradePeriodFilter]) => {
 
       const studentNameFilterLow = studentNameFilter.toLowerCase();
       const filteredStudentInfos = classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
@@ -70,7 +75,8 @@ export class ClassScoreTableComponent {
         enableWeight: enableWeight,
         scoreDisplayType: scoreDisplayType,
         rootOnly: rootOnly,
-        showButtons: showButtons
+        showButtons: showButtons,
+        gradePeriodFilter: new Set<string>(gradePeriodFilter)
       };
       return result;
     }));
@@ -122,4 +128,5 @@ export interface ClassTableComponentInfo {
   scoreDisplayType: 'percentage' | 'category' | 'score';
   rootOnly: boolean;
   showButtons: boolean;
+  gradePeriodFilter: Set<string>;
 }
