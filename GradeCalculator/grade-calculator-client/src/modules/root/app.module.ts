@@ -94,25 +94,25 @@ export const StudentCollection_ElectronClient = new InjectionToken<string>('Stud
 export class AppModule { }
 
 export function createGradePeriodClient(injector: Injector) {
-  return environment.electron ? injector.get(GradePeriod_WebClient) : injector.get(GradePeriod_ElectronClient);
+  return !environment.electron ? injector.get(GradePeriod_WebClient) : injector.get(GradePeriod_ElectronClient);
 }
 
 export function createMultiGradeConfigurationClient(injector: Injector) {
-  return environment.electron ? injector.get(MultiGradeConfiguration_WebClient) : injector.get(MultiGradeConfiguration_ElectronClient);
+  return !environment.electron ? injector.get(MultiGradeConfiguration_WebClient) : injector.get(MultiGradeConfiguration_ElectronClient);
 }
 
 export function createSingleGradeConfigurationClient(injector: Injector) {
-  return environment.electron ? injector.get(SingleGradeConfiguration_WebClient) : injector.get(SingleGradeConfiguration_ElectronClient);
+  return !environment.electron ? injector.get(SingleGradeConfiguration_WebClient) : injector.get(SingleGradeConfiguration_ElectronClient);
 }
 
 export function createSingleGradeClient(injector: Injector) {
-  return environment.electron ? injector.get(SingleGrade_WebClient) : injector.get(SingleGradeConfiguration_ElectronClient);
+  return !environment.electron ? injector.get(SingleGrade_WebClient) : injector.get(SingleGradeConfiguration_ElectronClient);
 }
 
 export function createStudentClient(injector: Injector) {
-  return environment.electron ? injector.get(Student_WebClient) : injector.get(Student_ElectronClient);
+  return !environment.electron ? injector.get(Student_WebClient) : injector.get(Student_ElectronClient);
 }
 
 export function createStudentCollectionClient(injector: Injector) {
-  return environment.electron ? injector.get(StudentCollection_WebClient) : injector.get(StudentCollection_ElectronClient);
+  return !environment.electron ? injector.get(StudentCollection_WebClient) : injector.get(StudentCollection_ElectronClient);
 }
