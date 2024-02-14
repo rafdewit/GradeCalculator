@@ -9,7 +9,7 @@ import { CopyStudentCollectionDto } from "../request/student-collection/copy-cla
 export class StudentCollectionElectronClient {
     public getAllClasses(): Observable<StudentCollection[]> {
         const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.invoke('getAllClasses');
+        ipcRenderer.invoke('getAllClasses').then(r => console.log(r));
         return of();
     }
 

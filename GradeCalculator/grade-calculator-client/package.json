@@ -1,7 +1,7 @@
 {
   "name": "grade-calculator-client",
   "version": "0.0.0",
-  "main": "app.js",
+  "main": "dist/app/app.js",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -10,7 +10,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "electron": "electron .",
-    "electron-build": "ng build && electron ."
+    "electron-build": "ng build && npm run electron:serve-tsc && electron .",
+    "electron:serve-tsc": "tsc -p tsconfig.build-app.json"
   },
   "private": true,
   "dependencies": {
