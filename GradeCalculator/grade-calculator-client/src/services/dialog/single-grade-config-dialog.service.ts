@@ -26,7 +26,7 @@ export class SingleGradeConfigDialogService {
         private singleGradeConfigurationWebClient: SingleGradeConfigurationWebClient,
         private multiGradeConfigurationWebClient: MultiGradeConfigurationWebClient) { }
 
-    public async createSingleGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string): Promise<void> {
+    public async createSingleGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
         const dialogResult = await this.openSingleGradeConfigDialog("Create Single Grade");
         if (!dialogResult) {
             return;

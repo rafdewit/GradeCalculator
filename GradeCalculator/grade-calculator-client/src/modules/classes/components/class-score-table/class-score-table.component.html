@@ -9,9 +9,11 @@
         <input matInput [formControl]="filterFormGroup.controls.studentNameFilter">
     </mat-form-field>
 
-    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.enableWeight">Show Weights</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.enableWeight">Show
+        Weights</mat-checkbox>
 
-    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.rootOnly">Main scores only</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.rootOnly">Main scores
+        only</mat-checkbox>
 
     <mat-form-field class="control-panel-item">
         <mat-label>Score Display Type</mat-label>
@@ -24,7 +26,7 @@
         </mat-select>
     </mat-form-field>
 
-    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showButtons">Buttons</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showCreateAndScoreButtons">Create & Score Buttons</mat-checkbox>
 
     <mat-form-field>
         <mat-label>Grade Periods</mat-label>
@@ -91,7 +93,7 @@
         }
     </tr>
 
-    <tr *ngIf="info.showButtons">
+    <tr *ngIf="info.showCreateAndScoreButtons">
         <!--Student name and total score-->
         <th class="table-header cell-margin">Buttons:</th>
         <th></th>
@@ -100,6 +102,11 @@
         @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
         <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
             <th>
+                <mat-icon class="icon-button" matTooltip="Add New Single Score"
+                    (click)="addSingleToGradePeriod(classScoreInfo, gradePeriod)">add</mat-icon>
+
+                <mat-icon class="icon-button" matTooltip="Add New Multi Score"
+                    (click)="addMultiToGradePeriod(classScoreInfo, gradePeriod)">playlist_add</mat-icon>
             </th>
 
             @for(single of gradePeriod.singleGradeConfigurations; track single) {
@@ -132,7 +139,8 @@
         <!--GradePeriods-->
         @for (gradePeriodInfo of studentInfo.gradePeriods; track gradePeriodInfo) {
 
-        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriodInfo.gradePeriod.id)">
+        <ng-container
+            *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriodInfo.gradePeriod.id)">
             <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
                 <app-score-representation [percentage]="gradePeriodInfo.totalPercentage"
                     [mode]="info.scoreDisplayType"></app-score-representation>
@@ -236,7 +244,7 @@
     let-root='root' let-rootOnly="rootOnly">
     <th [class.root]="root" *ngIf="root || !rootOnly">
         <mat-icon class="icon-button" matTooltip="Edit Student Scores"
-            (click)="editSingle(link, classScoreInfo)">edit</mat-icon>
+            (click)="editSingle(link, classScoreInfo)">update</mat-icon>
     </th>
 </ng-template>
 
@@ -245,6 +253,9 @@
     <th [class.root]="root" *ngIf="root || !rootOnly">
         <mat-icon class="icon-button" matTooltip="Add New Single Score"
             (click)="addSingle(link, classScoreInfo, gradePeriod)">add</mat-icon>
+
+        <mat-icon class="icon-button" matTooltip="Add New Multi Score"
+            (click)="addMulti(link, classScoreInfo, gradePeriod)">playlist_add</mat-icon>
     </th>
 
     @for(single of link.singleGradeConfigurations; track single) {

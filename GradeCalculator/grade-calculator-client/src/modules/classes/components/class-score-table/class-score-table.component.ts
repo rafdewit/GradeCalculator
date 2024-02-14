@@ -16,6 +16,7 @@ import { SingleGradeWebClient } from 'src/services/api/single-grade-web-client';
 import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfigDialogService } from 'src/services/dialog/single-grade-config-dialog.service';
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
+import { MultiGradeConfigDialogService } from 'src/services/dialog/multi-grade-config-dialog.service';
 
 @Component({
   selector: 'app-class-score-table',
@@ -35,21 +36,22 @@ export class ClassScoreTableComponent implements OnDestroy {
     scoreDisplayType: FormControl<'percentage' | 'category' | 'score'>,
     enableWeight: FormControl<boolean>,
     rootOnly: FormControl<boolean>,
-    showButtons: FormControl<boolean>,
+    showCreateAndScoreButtons: FormControl<boolean>,
     gradePeriodFilter: FormControl<string[]>
   }>;
 
   public scoreDisplayTypeOptions: string[] = ['percentage', 'category', 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService) {
+    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService,
+    private multiGradeConfigDialogService: MultiGradeConfigDialogService) {
 
     this.filterFormGroup = this.formBuilder.group({
       studentNameFilter: this.formBuilder.control<string>(''),
       scoreDisplayType: this.formBuilder.control<'percentage' | 'category' | 'score'>('score'),
       enableWeight: this.formBuilder.control<boolean>(true),
       rootOnly: this.formBuilder.control<boolean>(true),
-      showButtons: this.formBuilder.control<boolean>(true),
+      showCreateAndScoreButtons: this.formBuilder.control<boolean>(true),
       gradePeriodFilter: this.formBuilder.control<string[]>([])
     });
 
@@ -88,7 +90,7 @@ export class ClassScoreTableComponent implements OnDestroy {
           enableWeight: tableFilter.enableWeight,
           scoreDisplayType: tableFilter.scoreDisplayType,
           rootOnly: tableFilter.rootOnly,
-          showButtons: tableFilter.showButtons,
+          showCreateAndScoreButtons: tableFilter.showCreateAndScoreButtons,
           gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter)
         };
         return result;
@@ -104,8 +106,20 @@ export class ClassScoreTableComponent implements OnDestroy {
     this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
   }
 
+  public async addSingleToGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
+    await this.singleGradeConfigDialogService.createSingleGrade(classScoreInfo.class.id, gradePeriod.id, null);
+  }
+
+  public async addMultiToGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
+    await this.multiGradeConfigDialogService.createMultiGrade(classScoreInfo.class.id, gradePeriod.id, null);
+  }
+
   public async addSingle(multi: MultiGradeConfiguration, classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
     await this.singleGradeConfigDialogService.createSingleGrade(classScoreInfo.class.id, gradePeriod.id, multi.id);
+  }
+
+  public async addMulti(multi: MultiGradeConfiguration, classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
+    await this.multiGradeConfigDialogService.createMultiGrade(classScoreInfo.class.id, gradePeriod.id, multi.id);
   }
 
   public async editSingle(single: SingleGradeConfiguration, classScoreInfo: ClassScoreInfo): Promise<void> {
@@ -145,7 +159,7 @@ export interface ClassTableComponentInfo {
   enableWeight: boolean;
   scoreDisplayType: 'percentage' | 'category' | 'score';
   rootOnly: boolean;
-  showButtons: boolean;
+  showCreateAndScoreButtons: boolean;
   gradePeriodFilter: Set<string>;
 }
 
@@ -154,6 +168,6 @@ export interface TableFilter {
   scoreDisplayType: "percentage" | "category" | "score";
   enableWeight: boolean;
   rootOnly: boolean;
-  showButtons: boolean;
+  showCreateAndScoreButtons: boolean;
   gradePeriodFilter: string[];
 }

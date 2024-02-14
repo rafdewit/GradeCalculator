@@ -20,7 +20,7 @@ export class MultiGradeConfigDialogService {
     constructor(private matDialog: MatDialog, private dialogService: DialogService,
         private multiGradeConfigurationWebClient: MultiGradeConfigurationWebClient) { }
 
-    public async createMultiGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string): Promise<void> {
+    public async createMultiGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
         const dialogResult = await this.openMultiGradeConfigDialog("Create Multi Grade");
         if (!dialogResult) {
             return;
