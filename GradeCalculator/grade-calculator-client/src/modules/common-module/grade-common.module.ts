@@ -9,7 +9,7 @@ import { GridTileBlobTemplateRefComponent } from './grid/grid-tile-blob-template
 import { ThemeContainerComponent } from './theme/theme-container/theme-container.component';
 import { ThemeSelectorComponent } from './theme/theme-selector/theme-selector.component';
 import { NavigatorBarComponent } from './navigator-bar/navigator-bar.component';
-import { BlobColorBorderPipe } from 'src/services/pipes/blob-color-border.pipe';
+import { BlobColorBorderPipe } from 'src/services/angular/pipes/blob-color-border.pipe';
 import { ConfirmationDialogComponent } from './dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MultiGradeConfigDialogComponent } from './dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
 import { SingleGradeConfigDialogComponent } from './dialogs/single-grade-config-dialog/single-grade-config-dialog.component';

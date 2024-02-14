@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
-import { GradeHubClient } from 'src/services/signalr/grade-hub.client';
+import { GradeHubClient } from 'src/services/communication/signalr/grade-hub.client';
 
 @Component({
   selector: 'app-root',

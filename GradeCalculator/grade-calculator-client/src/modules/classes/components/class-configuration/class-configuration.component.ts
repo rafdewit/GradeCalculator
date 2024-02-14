@@ -8,13 +8,13 @@ import { Student } from 'src/services/dtos/students/student.model';
 import { CreatePeriodDialogData } from './create-period-dialog/create-period-dialog.data';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { CreatePeriodDialogComponent } from './create-period-dialog/create-period-dialog.component';
-import { StudentCollectionWebClient } from 'src/services/api/student-collection-web-client.service';
-import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/api/grade-period-web-client.service';
-import { DialogService } from 'src/services/dialog/dialog.service';
+import { StudentCollectionWebClient } from 'src/services/communication/api/student-collection-web-client.service';
+import { GradeOPeriodWebClient as GradePeriodWebClient } from 'src/services/communication/api/grade-period-web-client.service';
+import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { CreateStudentDialogData } from './create-student-dialog/create-student-dialog.data';
 import { CreateStudentDialogComponent } from './create-student-dialog/create-student-dialog.component';
-import { StudentWebClient } from 'src/services/api/student-web-client.service';
+import { StudentWebClient } from 'src/services/communication/api/student-web-client.service';
 
 @Component({
   selector: 'app-class-configuration',

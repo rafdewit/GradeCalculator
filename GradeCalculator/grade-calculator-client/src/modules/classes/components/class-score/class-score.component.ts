@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
-import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
+import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/angular/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo } from 'src/services/stores/models/score';
 

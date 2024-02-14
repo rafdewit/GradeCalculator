@@ -2,15 +2,15 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
-import { MultiGradeConfiguration } from '../dtos/grade-config/multi-grade-configuration.model';
+import { MultiGradeConfiguration } from '../../dtos/grade-config/multi-grade-configuration.model';
 import { MultiGradeConfigDialogData } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.data';
-import { MultiGradeConfigurationData } from '../api/request/grade-configuration/multi/multi-grade-configuration.data';
+import { MultiGradeConfigurationData } from '../../communication/api/request/multi/multi-grade-configuration.data';
 import { MultiGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
-import { MultiGradeConfigurationWebClient } from '../api/multi-grade-configuration-web-client';
+import { MultiGradeConfigurationWebClient } from '../../communication/api/multi-grade-configuration-web-client';
 import { DialogService } from './dialog.service';
-import { CreateMultiGradeConfigurationDto } from '../api/request/grade-configuration/multi/create-multi-grade-configuration';
-import { UpdateMultiGradeConfigurationDto } from '../api/request/grade-configuration/multi/update-multi-grade-configuration';
-import { DeleteMultiGradeConfigurationDto } from '../api/request/grade-configuration/multi/delete-multi-grade-configuration';
+import { CreateMultiGradeConfigurationDto } from '../../communication/api/request/multi/create-multi-grade-configuration';
+import { UpdateMultiGradeConfigurationDto } from '../../communication/api/request/multi/update-multi-grade-configuration';
+import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
 
 @Injectable({
     providedIn: 'root'

@@ -7,9 +7,9 @@ import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default
 import { CreateClassDialogComponent } from './create-class-dialog/create-class-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
-import { StudentCollectionWebClient } from 'src/services/api/student-collection-web-client.service';
+import { StudentCollectionWebClient } from 'src/services/communication/api/student-collection-web-client.service';
 import { saveAs } from 'file-saver';
-import { DialogService } from 'src/services/dialog/dialog.service';
+import { DialogService } from 'src/services/angular/dialog/dialog.service';
 
 @Component({
   selector: 'app-classes-page',

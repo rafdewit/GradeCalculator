@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { colorsBetween } from '../generation/color.generation';
+import { colorsBetween } from '../../generation/color.generation';
 
 export const PERCENTAGE_GRADIENT_COLORS = colorsBetween('#FF0100', '#00FF00', 98);
 

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
-import { GradeStore } from "../stores/grade.store";
+import { GradeStore } from "../../stores/grade.store";
 import { ActivatedRouteSnapshot } from "@angular/router";
-import { StudentCollection } from "../dtos/student-collection.model";
+import { StudentCollection } from "../../dtos/student-collection.model";
 import { Observable, firstValueFrom, map } from "rxjs";
 
 @Injectable({ providedIn: 'root' })

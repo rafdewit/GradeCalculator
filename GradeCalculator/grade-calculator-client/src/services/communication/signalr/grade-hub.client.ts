@@ -2,7 +2,7 @@ import { Injectable, OnDestroy } from "@angular/core";
 import { HubConnection, HubConnectionBuilder, HubConnectionState, IRetryPolicy, LogLevel, RetryContext } from "@microsoft/signalr";
 import { BehaviorSubject, Observable, Subject, takeUntil, timer } from "rxjs";
 import { environment } from "src/environments/environment";
-import { StudentCollection } from "../dtos/student-collection.model";
+import { StudentCollection } from "../../dtos/student-collection.model";
 
 @Injectable({
     providedIn: 'root'

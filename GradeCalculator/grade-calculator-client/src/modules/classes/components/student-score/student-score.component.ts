@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, combineLatest, map } from 'rxjs';
-import { ClassStudentInfo } from 'src/services/resolvers/student-score-info.resolver';
+import { ClassStudentInfo } from 'src/services/angular/resolvers/student-score-info.resolver';
 import { GradeStore } from 'src/services/stores/grade.store';
 
 @Component({

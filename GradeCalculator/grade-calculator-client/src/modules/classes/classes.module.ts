@@ -7,16 +7,15 @@ import { GradeCommonModule } from '../common-module/grade-common.module';
 import { ClassConfigurationComponent } from './components/class-configuration/class-configuration.component';
 import { PeriodPageComponent } from './components/period-page/period-page.component';
 import { ClassScoreComponent } from './components/class-score/class-score.component';
-import { PercentagePipe } from 'src/services/pipes/percentage.pipe';
+import { PercentagePipe } from 'src/services/angular/pipes/percentage.pipe';
 import { StudentScoreComponent } from './components/student-score/student-score.component';
 import { SingleScoreComponent } from './components/student-score/single-score/single-score.component';
 import { MultiScoreComponent } from './components/student-score/multi-score/multi-score.component';
-import { PercentageToHundredPipe } from 'src/services/pipes/percentage-to-hundred.pipe';
+import { PercentageToHundredPipe } from 'src/services/angular/pipes/percentage-to-hundred.pipe';
 import { PercentageRepresentationComponent } from './components/common/percentage-representation/percentage-representation.component';
-import { ProgressBarColor } from 'src/services/directives/progress-bar-color';
-import { PercentageToColorPipe } from 'src/services/pipes/percentage-to-color.pipe';
-import { MarginLeftPipe } from 'src/services/pipes/margin-left.pipe';
-import { GradeCategoryPipe } from 'src/services/pipes/grade-category.pipe';
+import { PercentageToColorPipe } from 'src/services/angular/pipes/percentage-to-color.pipe';
+import { MarginLeftPipe } from 'src/services/angular/pipes/margin-left.pipe';
+import { GradeCategoryPipe } from 'src/services/angular/pipes/grade-category.pipe';
 import { CreateClassDialogComponent } from './components/classes-page/create-class-dialog/create-class-dialog.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreatePeriodDialogComponent } from './components/class-configuration/create-period-dialog/create-period-dialog.component';
@@ -49,7 +48,6 @@ const routes: Routes = [
     MultiScoreComponent,
     SingleScoreComponent,
     PercentageRepresentationComponent,
-    ProgressBarColor,
     CreateClassDialogComponent,
     CreatePeriodDialogComponent,
     CreateStudentDialogComponent,

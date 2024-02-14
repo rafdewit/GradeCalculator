@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { GradeStore } from "../stores/grade.store";
+import { GradeStore } from "../../stores/grade.store";
 import { ActivatedRouteSnapshot } from "@angular/router";
 import { firstValueFrom, map } from "rxjs";
-import { ClassScoreInfo, StudentInfo } from "../stores/models/score";
+import { ClassScoreInfo, StudentInfo } from "../../stores/models/score";
 
 @Injectable({ providedIn: 'root' })
 export class StudentScoreInfoResolver {

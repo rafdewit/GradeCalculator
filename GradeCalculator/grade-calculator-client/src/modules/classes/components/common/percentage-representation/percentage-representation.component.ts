@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
+import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/angular/pipes/percentage-to-color.pipe';
 @Component({
   selector: 'app-percentage-representation',
   templateUrl: './percentage-representation.component.html',

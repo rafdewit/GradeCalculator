@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NonNullableFormBuilder } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, map, combineLatest, startWith, firstValueFrom, takeUntil, Subject } from 'rxjs';
-import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/pipes/percentage-to-color.pipe';
+import { PERCENTAGE_GRADIENT_COLORS } from 'src/services/angular/pipes/percentage-to-color.pipe';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { ClassScoreInfo, StudentInfo, StudentMultiGradeInfo } from 'src/services/stores/models/score';
 import { EditStudentsSingleScoreDialogData } from './edit-students-single-score-dialog/edit-students-single-score-dialog.data';
@@ -10,13 +10,13 @@ import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default
 import { EditStudentsSingleScoreDialogComponent } from './edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
-import { SingleGradeUpdateDto } from 'src/services/api/request/grade-update/single-grade-update';
-import { SingleGradesUpdateDto } from 'src/services/api/request/grade-update/single-grades-update';
-import { SingleGradeWebClient } from 'src/services/api/single-grade-web-client';
+import { SingleGradeUpdateDto } from 'src/services/communication/api/request/grade-update/single-grade-update';
+import { SingleGradesUpdateDto } from 'src/services/communication/api/request/grade-update/single-grades-update';
+import { SingleGradeWebClient } from 'src/services/communication/api/single-grade-web-client';
 import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
-import { SingleGradeConfigDialogService } from 'src/services/dialog/single-grade-config-dialog.service';
+import { SingleGradeConfigDialogService } from 'src/services/angular/dialog/single-grade-config-dialog.service';
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
-import { MultiGradeConfigDialogService } from 'src/services/dialog/multi-grade-config-dialog.service';
+import { MultiGradeConfigDialogService } from 'src/services/angular/dialog/multi-grade-config-dialog.service';
 
 @Component({
   selector: 'app-class-score-table',

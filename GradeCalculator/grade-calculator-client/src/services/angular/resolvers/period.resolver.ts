@@ -1,8 +1,8 @@
 import { Injectable } from "@angular/core";
-import { GradeStore } from "../stores/grade.store";
+import { GradeStore } from "../../stores/grade.store";
 import { ActivatedRouteSnapshot } from "@angular/router";
 import { firstValueFrom, map } from "rxjs";
-import { GradePeriod } from "../dtos/grade-config/grade-period.model";
+import { GradePeriod } from "../../dtos/grade-config/grade-period.model";
 
 @Injectable({ providedIn: 'root' })
 export class PeriodResolver {

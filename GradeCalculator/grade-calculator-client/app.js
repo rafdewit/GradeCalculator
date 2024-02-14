@@ -1,6 +1,7 @@
 const {
     app,
-    BrowserWindow
+    BrowserWindow,
+    ipcRenderer
 } = require('electron')
 
 let appWindow
