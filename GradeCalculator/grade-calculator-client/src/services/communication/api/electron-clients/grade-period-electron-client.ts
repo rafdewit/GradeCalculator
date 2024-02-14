@@ -28,7 +28,7 @@ export class GradePeriodElectronClient extends IGradePeriodClient {
     }
 
     public deleteGradePeriod(request: DeleteGradePeriodDto): Observable<void> {
-        (window as any).electron.deleteGradePeriod(request)>;
+        (window as any).electron.deleteGradePeriod(request);
         return of(void 0);
     }
 }

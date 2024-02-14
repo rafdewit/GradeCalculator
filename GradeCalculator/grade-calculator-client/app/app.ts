@@ -2,10 +2,12 @@ import { BrowserWindow, app, ipcMain } from "electron";
 import { StudentCollection } from "./dtos/student-collection.model";
 import { GradeDataProvider } from "./data-layer/grade-data-provider";
 import { CreateStudentCollectionDto } from "./request/student-collection/create-class-request";
+
 const path = require('node:path');
 
 export default class Main {
   private static appWindow: BrowserWindow | null;
+  private static gradeDataProvider: GradeDataProvider = new GradeDataProvider();
 
   static main() {
     app.on('ready', () => this.onReady());
@@ -26,41 +28,42 @@ export default class Main {
     this.appWindow.loadFile('dist/grade-calculator-client/index.html');
     this.appWindow.on('closed', () => this.appWindow = null);
 
-    this.initializeHandlers();
+    this.initializeHandlers(this.gradeDataProvider);
 
     ipcMain.handle('ping', () => 'pong');
   }
 
-  private static initializeHandlers(): void {
+  private static initializeHandlers(gradeDataProvider: GradeDataProvider): void {
+
     ipcMain.handle('getAllClasses', () => {
-      const provider: GradeDataProvider = new GradeDataProvider();
-      const studentCollection: StudentCollection = {
-        id: 'test-id',
-        name: 'test-name',
-        gradePeriods: [],
-        students: []
-      };
-
-      provider.store(studentCollection);
-      const result = provider.get(studentCollection.id);
-
-      return [result];
+      const result = gradeDataProvider.getAll();
+      return result;
     });
 
-    ipcMain.handle('getClass', () => {
-      const studentCollection: StudentCollection = {
-        id: 'test-id',
-        name: 'test-name',
-        gradePeriods: [],
-        students: []
-      };
-      return studentCollection;
+    ipcMain.handle('getClass', (c, args: string) => {
+      const result = gradeDataProvider.get(args);
+      return result;
     });
 
     ipcMain.on('createClass', (c, arg: CreateStudentCollectionDto) => {
-      console.log(arg);
+      const studentCollection: StudentCollection = {
+        id: this.generateGuid(),
+        name: arg.className,
+        students: [],
+        gradePeriods: []
+      };
+      
+      console.log(studentCollection);
+
+      const result = gradeDataProvider.createOrUpdate(studentCollection);
+      return result;
     });
     
+  }
+
+  private static generateGuid(): string {
+    const crypto = require("crypto")
+    return crypto.randomBytes(16).toString("hex");
   }
 }
 
