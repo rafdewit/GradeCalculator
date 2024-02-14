@@ -8,26 +8,38 @@ import { CopyStudentCollectionDto } from "../request/student-collection/copy-cla
 @Injectable()
 export class StudentCollectionElectronClient {
     public getAllClasses(): Observable<StudentCollection[]> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.invoke('getAllClasses');
         return of();
     }
 
     public getClass(classId: string): Observable<StudentCollection> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.invoke('getClass', classId);
         return of();
     }
     
     public updateClass(request: UpdateStudentCollectionDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('updateClass', request);
         return of();
     }
     
     public copyClass(request: CopyStudentCollectionDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('copyClass', request);
         return of();
     }
     
     public createClass(request: CreateStudentCollectionDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('createClass', request);
         return of();
     }
     
     public deleteClass(id: string): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('deleteClass', id);
         return of();
     }
     

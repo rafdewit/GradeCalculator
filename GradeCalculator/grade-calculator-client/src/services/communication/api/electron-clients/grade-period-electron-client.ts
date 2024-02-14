@@ -13,18 +13,26 @@ export class GradePeriodElectronClient extends IGradePeriodClient {
     }
 
     public updateGradePeriod(request: UpdateGradePeriodDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('updateGradePeriod', request);
         return of();
     }
     
     public copyGradePeriod(request: CopyGradePeriodDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('copyGradePeriod', request);
         return of();
     }
     
     public createGradePeriod(request: CreateGradePeriodDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('createGradePeriod', request);
         return of();
     }
 
     public deleteGradePeriod(request: DeleteGradePeriodDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('deleteGradePeriod', request);
         return of();
     }
 }

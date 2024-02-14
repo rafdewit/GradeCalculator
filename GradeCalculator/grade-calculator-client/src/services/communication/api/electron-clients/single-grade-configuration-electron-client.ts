@@ -12,14 +12,20 @@ export class SingleGradeConfigurationElectronClient extends ISingleGradeConfigur
     }
 
     public updateSingleGradeConfiguration(request: UpdateSingleGradeConfigurationDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('updateSingleGradeConfiguration', request);
         return of();
     }
         
     public createSingleGradeConfiguration(request: CreateSingleGradeConfigurationDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('createSingleGradeConfiguration', request);
         return of();
     }
 
     public deleteSingleGradeConfiguration(request: DeleteSingleGradeConfigurationDto): Observable<void> {
+        const ipcRenderer  = window.require('electron').ipcRenderer;
+        ipcRenderer.send('deleteSingleGradeConfiguration', request);
         return of();
     }
 }
