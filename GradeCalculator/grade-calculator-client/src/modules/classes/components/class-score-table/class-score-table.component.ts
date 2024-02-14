@@ -13,6 +13,9 @@ import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-
 import { SingleGradeUpdateDto } from 'src/services/api/request/grade-update/single-grade-update';
 import { SingleGradesUpdateDto } from 'src/services/api/request/grade-update/single-grades-update';
 import { SingleGradeWebClient } from 'src/services/api/single-grade-web-client';
+import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
+import { SingleGradeConfigDialogService } from 'src/services/dialog/single-grade-config-dialog.service';
+import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 
 @Component({
   selector: 'app-class-score-table',
@@ -34,7 +37,7 @@ export class ClassScoreTableComponent {
   public scoreDisplayTypeOptions: string[] = ['percentage' , 'category' , 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient) {
+    private matDialog: MatDialog, private singleGradeWebClient: SingleGradeWebClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService) {
     this.studentNameFilterFormControl = this.formBuilder.control('');
     this.enableWeightFormControl = this.formBuilder.control(true);
     this.scoreDisplayTypeFormControl = this.formBuilder.control('score');
@@ -77,6 +80,10 @@ export class ClassScoreTableComponent {
     this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
   }
 
+  public async addSingle(multi: MultiGradeConfiguration, classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
+    await this.singleGradeConfigDialogService.createSingleGrade(classScoreInfo.class.id, gradePeriod.id, multi.id);
+  }
+
   public async editSingle(single: SingleGradeConfiguration, classScoreInfo: ClassScoreInfo): Promise<void> {
     const data: DefaultCrudDialogData<EditStudentsSingleScoreDialogData> = {
       object: {
@@ -98,16 +105,12 @@ export class ClassScoreTableComponent {
     if(result) {
       const request: SingleGradesUpdateDto = {
         singleGradeConfigurationId: single.id,
-        singleGradeUpdates: result,
+        singleGradeUpdates: result.filter(r => r.score !== null),
         studentCollectionId: classScoreInfo.class.id
       };
 
       await firstValueFrom(this.singleGradeWebClient.updateSingleGrades(request));
     }
-  }
-
-  public addSingle(multi: StudentMultiGradeInfo): void {
-    console.log(multi);
   }
 }
 

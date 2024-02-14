@@ -86,12 +86,12 @@
         </th>
 
         @for(single of gradePeriod.singleGradeConfigurations; track single) {
-            <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: true, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
             </ng-container>
         }
 
         @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
-            <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: true, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
             </ng-container>
         }
         }
@@ -197,24 +197,24 @@
     }
 </ng-template>
 
-<ng-template #singleLinkButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-root='root' let-rootOnly="rootOnly">
+<ng-template #singleLinkButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root='root' let-rootOnly="rootOnly">
     <th [class.root]="root" *ngIf="root || !rootOnly">
         <mat-icon class="icon-button" matTooltip="Edit Student Scores" (click)="editSingle(link, classScoreInfo)">edit</mat-icon>
     </th>
 </ng-template>
 
-<ng-template #multiLinkButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-root='root' let-rootOnly="rootOnly">
+<ng-template #multiLinkButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root='root' let-rootOnly="rootOnly">
     <th [class.root]="root" *ngIf="root || !rootOnly">
-        <mat-icon class="icon-button" matTooltip="Add New Single Score" (click)="addSingle(link)">add</mat-icon>
+        <mat-icon class="icon-button" matTooltip="Add New Single Score" (click)="addSingle(link, classScoreInfo, gradePeriod)">add</mat-icon>
     </th>
 
     @for(single of link.singleGradeConfigurations; track single) {
-        <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: false, rootOnly: rootOnly, classScoreInfo: classScoreInfo}">
+        <ng-container [ngTemplateOutlet]="singleLinkButtonHeader" [ngTemplateOutletContext]="{link: single, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
         </ng-container>
     }
 
     @for(multi of link.multiGradeConfigurations; track multi) {
-        <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly, classScoreInfo: classScoreInfo}">
+        <ng-container [ngTemplateOutlet]="multiLinkButtonHeader" [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
         </ng-container>
     }
 </ng-template>

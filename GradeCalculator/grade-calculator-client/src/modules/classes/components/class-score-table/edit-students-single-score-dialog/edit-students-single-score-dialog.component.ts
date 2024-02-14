@@ -19,7 +19,7 @@ export class EditStudentsSingleScoreDialogComponent {
 
     let i = 0;
     data.object.classScoreInfo.studentInfos.forEach(s => {
-      const studentGrade = s.student.studentSingleGrades.find(g => g.singleGradeConfigurationId === data.object.single.id);
+      const studentGrade = s.student.studentSingleGrades?.find(g => g.singleGradeConfigurationId === data.object.single.id);
 
       const studentSingleScoreFormGroup: StudentSingleScoreFormGroup = this.formBuilder.group({
         studentId: this.formBuilder.control(s.student.id),

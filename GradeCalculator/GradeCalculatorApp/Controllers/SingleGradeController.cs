@@ -37,6 +37,9 @@ namespace GradeCalculatorApp.Controllers
                 if (student == null)
                     continue;
 
+                if (student.StudentSingleGrades == null)
+                    student.StudentSingleGrades = new List<StudentSingleGrade>();
+
                 var grade = student.StudentSingleGrades.FirstOrDefault(g => g.SingleGradeConfigurationId == updates.SingleGradeConfigurationId);
                 if(grade != null)
                 {

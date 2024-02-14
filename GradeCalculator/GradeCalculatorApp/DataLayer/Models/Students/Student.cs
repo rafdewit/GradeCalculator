@@ -18,5 +18,5 @@ public class Student
 
     public string Id { get; set; }
     public string Name { get; set; }
-    public List<StudentSingleGrade> StudentSingleGrades { get; }
+    public List<StudentSingleGrade> StudentSingleGrades { get; set; }
 }

@@ -23,10 +23,7 @@ public class GradeDataProvider(IGradeLiteDb gradeLiteDb) : IGradeDataProvider
     public List<StudentCollection> GetAll()
     {
         if (_studentCollections == null)
-            _studentCollections = _gradeLiteDb.GetAll().ToList().Concat(new List<StudentCollection>() {
-                DataGenerator.CreateClass("Class1"), 
-                DataGenerator.CreateClass("Class2") 
-            }).ToList();
+            _studentCollections = _gradeLiteDb.GetAll().ToList();
 
         return _studentCollections;
     }

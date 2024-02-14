@@ -23,7 +23,7 @@ export class MultiGradeConfigDialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<MultiGradeConfigDialogData>, private dialogRef: MatDialogRef<MultiGradeConfigDialogComponent>, private formBuilder: NonNullableFormBuilder) { 
     this.multiGradeConfigFormGroup = this.formBuilder.group({
-      name: this.formBuilder.control(data.object.multi?.name ?? 'ScoreCollection'),
+      name: this.formBuilder.control(data.object.multi?.name ?? 'GradeCollection'),
       weight: this.formBuilder.control(data.object.multi?.weight ?? 50),
       singleGradeConfigurations: this.formBuilder.array<FormControl<SingleGradeConfiguration>>([]),
       multiGradeConfigurations: this.formBuilder.array<FormControl<MultiGradeConfiguration>>([]),
