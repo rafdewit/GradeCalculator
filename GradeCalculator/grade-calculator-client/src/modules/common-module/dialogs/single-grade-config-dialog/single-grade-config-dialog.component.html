@@ -2,7 +2,7 @@
     <h2 mat-dialog-title>{{data.title}}</h2>
 
     <mat-dialog-content class="mat-typography">
-        <form>
+        <form class="dialog-form">
             <mat-form-field>
                 <mat-label>Name</mat-label>
                 <input matInput [formControl]="singleGradeConfigFormGroup.controls.name">
@@ -11,12 +11,12 @@
 
             <mat-form-field>
                 <mat-label>Total Score</mat-label>
-                <input matInput [formControl]="singleGradeConfigFormGroup.controls.totalScore">
+                <input type="number" min="1" matInput [formControl]="singleGradeConfigFormGroup.controls.totalScore">
             </mat-form-field>
 
             <mat-form-field>
                 <mat-label>Weight</mat-label>
-                <input matInput [formControl]="singleGradeConfigFormGroup.controls.weight">
+                <input type="number" min="1" matInput [formControl]="singleGradeConfigFormGroup.controls.weight">
             </mat-form-field>
         </form>
     </mat-dialog-content>
@@ -24,7 +24,6 @@
     <mat-dialog-actions align="end">
         <button mat-raised-button (click)="cancel()">Cancel</button>
         <div class="right-buttons">
-            @if(data.isUpdate) {<button mat-raised-button color="warn" (click)="deleteItem()">Delete</button>}
             <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.singleGradeConfigFormGroup.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
         </div>
     </mat-dialog-actions>

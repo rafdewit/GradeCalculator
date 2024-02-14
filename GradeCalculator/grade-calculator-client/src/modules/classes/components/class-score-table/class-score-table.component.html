@@ -27,6 +27,8 @@
     </mat-form-field>
 
     <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showCreateAndScoreButtons">Create & Score Buttons</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showEditButtons">Edit Buttons</mat-checkbox>
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showDeleteButtons">Delete Buttons</mat-checkbox>
 
     <mat-form-field>
         <mat-label>Grade Periods</mat-label>
@@ -93,9 +95,63 @@
         }
     </tr>
 
+    <tr *ngIf="info.showDeleteButtons">
+        <!--Student name and total score-->
+        <th class="table-header cell-margin">Delete Buttons:</th>
+        <th></th>
+
+        <!--GradePeriods-->
+        @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
+            <th>
+
+            </th>
+
+            @for(single of gradePeriod.singleGradeConfigurations; track single) {
+            <ng-container [ngTemplateOutlet]="singleLinkDeleteButtonHeader"
+                [ngTemplateOutletContext]="{link: single, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            </ng-container>
+            }
+
+            @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLinkDeleteButtonHeader"
+                [ngTemplateOutletContext]="{link: multi, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            </ng-container>
+            }
+        </ng-container>
+        }
+    </tr>
+
+    <tr *ngIf="info.showEditButtons">
+        <!--Student name and total score-->
+        <th class="table-header cell-margin">Edit Buttons:</th>
+        <th></th>
+
+        <!--GradePeriods-->
+        @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
+        <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
+            <th>
+
+            </th>
+
+            @for(single of gradePeriod.singleGradeConfigurations; track single) {
+            <ng-container [ngTemplateOutlet]="singleLinkEditButtonHeader"
+                [ngTemplateOutletContext]="{link: single, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            </ng-container>
+            }
+
+            @for(multi of gradePeriod.multiGradeConfigurations; track multi) {
+            <ng-container [ngTemplateOutlet]="multiLinkEditButtonHeader"
+                [ngTemplateOutletContext]="{link: multi, root: true, gradePeriod: gradePeriod, rootOnly: info.rootOnly, classScoreInfo: classScoreInfo}">
+            </ng-container>
+            }
+        </ng-container>
+        }
+    </tr>
+
     <tr *ngIf="info.showCreateAndScoreButtons">
         <!--Student name and total score-->
-        <th class="table-header cell-margin">Buttons:</th>
+        <th class="table-header cell-margin">Score Buttons:</th>
         <th></th>
 
         <!--GradePeriods-->
@@ -266,6 +322,62 @@
 
     @for(multi of link.multiGradeConfigurations; track multi) {
     <ng-container [ngTemplateOutlet]="multiLinkButtonHeader"
+        [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
+    </ng-container>
+    }
+</ng-template>
+
+<ng-template #singleLinkEditButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod"
+    let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Edit Student Scores"
+            (click)="editSingleGradeConfig(classScoreInfo, link)">edit</mat-icon>
+    </th>
+</ng-template>
+
+<ng-template #multiLinkEditButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod"
+    let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Add New Multi Score"
+            (click)="editMultiGradeConfig(classScoreInfo, link)">border_color</mat-icon>
+    </th>
+
+    @for(single of link.singleGradeConfigurations; track single) {
+    <ng-container [ngTemplateOutlet]="singleLinkEditButtonHeader"
+        [ngTemplateOutletContext]="{link: single, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
+    </ng-container>
+    }
+
+    @for(multi of link.multiGradeConfigurations; track multi) {
+    <ng-container [ngTemplateOutlet]="multiLinkEditButtonHeader"
+        [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
+    </ng-container>
+    }
+</ng-template>
+
+<ng-template #singleLinkDeleteButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod"
+    let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Edit Student Scores"
+            (click)="deleteSingleGradeConfig(classScoreInfo, link)">delete</mat-icon>
+    </th>
+</ng-template>
+
+<ng-template #multiLinkDeleteButtonHeader let-link='link' let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod"
+    let-root='root' let-rootOnly="rootOnly">
+    <th [class.root]="root" *ngIf="root || !rootOnly">
+        <mat-icon class="icon-button" matTooltip="Add New Multi Score"
+            (click)="deleteMultiGradeConfig(classScoreInfo, link)">delete</mat-icon>
+    </th>
+
+    @for(single of link.singleGradeConfigurations; track single) {
+    <ng-container [ngTemplateOutlet]="singleLinkDeleteButtonHeader"
+        [ngTemplateOutletContext]="{link: single, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
+    </ng-container>
+    }
+
+    @for(multi of link.multiGradeConfigurations; track multi) {
+    <ng-container [ngTemplateOutlet]="multiLinkDeleteButtonHeader"
         [ngTemplateOutletContext]="{link: multi, root: false, rootOnly: rootOnly, gradePeriod:gradePeriod, classScoreInfo: classScoreInfo}">
     </ng-container>
     }

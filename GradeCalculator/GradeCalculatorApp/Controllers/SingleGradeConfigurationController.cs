@@ -63,7 +63,7 @@ public class SingleGradeConfigurationController : ControllerBase
         if (studentCollection == null)
             return NotFound();
 
-        var single = _gradeConfigurationTracker.FindSingle(update.SingleId);
+        var single = _gradeConfigurationTracker.FindSingle(update.SingleId, studentCollection.GradePeriods.ToArray());
         if(single == null)
             return NotFound();
 

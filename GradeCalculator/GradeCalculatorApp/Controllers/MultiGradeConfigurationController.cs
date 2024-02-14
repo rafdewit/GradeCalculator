@@ -64,7 +64,7 @@ public class MultiGradeConfigurationController : ControllerBase
         if (studentCollection == null)
             return NotFound();
 
-        var multi = _gradeConfigurationTracker.FindMulti(update.MultiId);
+        var multi = _gradeConfigurationTracker.FindMulti(update.MultiId, studentCollection.GradePeriods.ToArray());
         if(multi == null)
             return NotFound();
 

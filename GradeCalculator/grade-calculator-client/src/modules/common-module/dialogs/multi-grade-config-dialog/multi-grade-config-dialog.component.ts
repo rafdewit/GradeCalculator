@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { MultiGradeConfigDialogData } from './multi-grade-config-dialog.data';
 import { DefaultCrudDialogData } from '../default-dialog-crud.data';

@@ -37,6 +37,8 @@ export class ClassScoreTableComponent implements OnDestroy {
     enableWeight: FormControl<boolean>,
     rootOnly: FormControl<boolean>,
     showCreateAndScoreButtons: FormControl<boolean>,
+    showEditButtons: FormControl<boolean>,
+    showDeleteButtons: FormControl<boolean>,
     gradePeriodFilter: FormControl<string[]>
   }>;
 
@@ -52,6 +54,8 @@ export class ClassScoreTableComponent implements OnDestroy {
       enableWeight: this.formBuilder.control<boolean>(true),
       rootOnly: this.formBuilder.control<boolean>(true),
       showCreateAndScoreButtons: this.formBuilder.control<boolean>(true),
+      showEditButtons:  this.formBuilder.control<boolean>(true),
+      showDeleteButtons: this.formBuilder.control<boolean>(false),
       gradePeriodFilter: this.formBuilder.control<string[]>([])
     });
 
@@ -91,6 +95,8 @@ export class ClassScoreTableComponent implements OnDestroy {
           scoreDisplayType: tableFilter.scoreDisplayType,
           rootOnly: tableFilter.rootOnly,
           showCreateAndScoreButtons: tableFilter.showCreateAndScoreButtons,
+          showDeleteButtons: tableFilter.showDeleteButtons,
+          showEditButtons: tableFilter.showEditButtons,
           gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter)
         };
         return result;
@@ -104,6 +110,22 @@ export class ClassScoreTableComponent implements OnDestroy {
 
   public studentNavigate(studentInfo: StudentInfo) {
     this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
+  }
+
+  public async deleteSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {
+    await this.singleGradeConfigDialogService.deleteSingleGrade(classScoreInfo.class.id, single);
+  }
+
+  public async deleteMultiGradeConfig(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration): Promise<void> {
+    await this.multiGradeConfigDialogService.deleteMultiGrade(classScoreInfo.class.id, multi);
+  }
+
+  public async editSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {
+    await this.singleGradeConfigDialogService.updateSingleGrade(classScoreInfo.class.id, single);
+  }
+
+  public async editMultiGradeConfig(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration): Promise<void> {
+    await this.multiGradeConfigDialogService.updateMultiGrade(classScoreInfo.class.id, multi);
   }
 
   public async addSingleToGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
@@ -160,6 +182,8 @@ export interface ClassTableComponentInfo {
   scoreDisplayType: 'percentage' | 'category' | 'score';
   rootOnly: boolean;
   showCreateAndScoreButtons: boolean;
+  showEditButtons: boolean;
+  showDeleteButtons: boolean;
   gradePeriodFilter: Set<string>;
 }
 
@@ -169,5 +193,7 @@ export interface TableFilter {
   enableWeight: boolean;
   rootOnly: boolean;
   showCreateAndScoreButtons: boolean;
+  showEditButtons: boolean;
+  showDeleteButtons: boolean;
   gradePeriodFilter: string[];
 }
