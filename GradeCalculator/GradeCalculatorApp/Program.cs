@@ -20,9 +20,8 @@ public class Program
             configure.RunAsLocalSystem();
             configure.SetServiceName("GradeCalculator");
             configure.SetDisplayName("GradeCalculator");
-            configure.SetDescription("TiliaLight - configure and activate Etricc Projects");
+            configure.SetDescription("GradeCalculator - calculates grades");
             configure.StartAutomaticallyDelayed();
-            configure.DependsOn("KMA.Identity");
             configure.OnException(exc =>
             {
                 LogToEventLog(exc);
