@@ -1,11 +1,4 @@
-
-using GradeCalculator.DataLayer.DataProviders;
-using GradeCalculator.DataLayer;
-using GradeCalculatorApp.Extensions;
-using GradeCalculatorApp.Hubs;
-using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
-using GradeCalculatorApp.Services;
+using Topshelf;
 
 namespace GradeCalculatorApp;
 
@@ -13,67 +6,45 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        var builder = WebApplication.CreateBuilder(args);
-        ConfigureServices(builder.Services);
-        ConfigureApplicationSpecificServices(builder.Services);
-        var app = builder.Build();
-
-        Configure(app);
-    }
-
-    public static void ConfigureServices(IServiceCollection services)
-    {
-        services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen(c =>
+        string url = "https://localhost:7179";
+        HostFactory.Run(configure =>
         {
-            c.SwaggerDoc("v1", new OpenApiInfo { Title = "Avant", Version = "v1" });
-        });
-
-        services.AddCors(options =>
-        {
-            options.AddPolicy("CorsPolicy", builder => builder
-            .WithOrigins("http://localhost:4200", "https://localhost:4200")
-            .AllowAnyMethod()
-            .AllowAnyHeader()
-            .AllowCredentials());
-        });
-
-        services.AddSignalR()
-            .AddJsonProtocol(options =>
+            configure.Service<GradeWindowsService>(service =>
             {
-                options.PayloadSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                service.ConstructUsing(s => new GradeWindowsService());
+                service.WhenStarted((s, c) => s.Start(url, args));
+                service.WhenStopped((s, c) => s.Stop());
             });
+
+            //Setup Account that window service use to run.  
+            configure.RunAsLocalSystem();
+            configure.SetServiceName("GradeCalculator");
+            configure.SetDisplayName("GradeCalculator");
+            configure.SetDescription("TiliaLight - configure and activate Etricc Projects");
+            configure.StartAutomaticallyDelayed();
+            configure.DependsOn("KMA.Identity");
+            configure.OnException(exc =>
+            {
+                LogToEventLog(exc);
+            });
+        });
     }
 
-    public static void ConfigureApplicationSpecificServices(IServiceCollection services)
+    internal static void LogToEventLog(Exception exc)
     {
-        services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
-        services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
-        services.AddSingleton<IGradeConfigurationTracker, GradeConfigurationTracker>();
-        services.AddTransient<IGradeLiteDb, GradeLiteDb>();
-        services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
-    }
-
-    public static void Configure(WebApplication app)
-    {
-        if (app.Environment.IsDevelopment())
+        try
         {
-            app.UseSwagger();
-            app.UseSwaggerUI();
+            var message = $"{exc.Message}{Environment.NewLine}{exc.StackTrace}";
+#pragma warning disable CA1416 // Validate platform compatibility
+            System.Diagnostics.EventLog.WriteEntry("TiliaLight", message, System.Diagnostics.EventLogEntryType.Error);
+#pragma warning restore CA1416 // Validate platform compatibility
+            if (exc.InnerException != null)
+                LogToEventLog(exc.InnerException);
         }
-
-        app.UseCors("CorsPolicy");
-        app.UseHttpsRedirection();
-        app.UseRouting();
-        app.UseAuthorization();
-        app.UseStaticFiles();
-        app.UseAuthorization();
-
-        app.MapControllers();
-        app.MapHub<GradeHub>("/hubs/grades");
-        app.UseAppFileServer();
-
-        app.Run();
+        catch (Exception e)
+        {
+            Console.WriteLine(exc.Message);
+            Console.WriteLine(e.Message);
+        }
     }
 }
