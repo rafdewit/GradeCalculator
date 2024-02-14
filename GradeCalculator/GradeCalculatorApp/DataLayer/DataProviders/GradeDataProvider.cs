@@ -19,13 +19,9 @@ public class GradeDataProvider(IGradeLiteDb gradeLiteDb) : IGradeDataProvider
 {
     private readonly IGradeLiteDb _gradeLiteDb = gradeLiteDb;
 
-    private List<StudentCollection>? _studentCollections = null;
     public List<StudentCollection> GetAll()
     {
-        if (_studentCollections == null)
-            _studentCollections = _gradeLiteDb.GetAll().ToList();
-
-        return _studentCollections;
+        return _gradeLiteDb.GetAll().ToList();
     }
 
     public StudentCollection? Get(string id)
