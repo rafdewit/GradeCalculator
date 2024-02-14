@@ -143,7 +143,7 @@ export class ClassScoreTableComponent implements OnDestroy {
     if (result) {
       const request: SingleGradesUpdateDto = {
         singleGradeConfigurationId: single.id,
-        singleGradeUpdates: result.filter(r => r.score !== null),
+        singleGradeUpdates: result,
         studentCollectionId: classScoreInfo.class.id
       };
 

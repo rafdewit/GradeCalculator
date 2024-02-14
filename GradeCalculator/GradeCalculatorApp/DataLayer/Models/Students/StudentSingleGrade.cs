@@ -9,7 +9,7 @@ public class StudentSingleGrade
 
     }
 
-    public StudentSingleGrade(string id, string singleGradeConfigurationId, double score)
+    public StudentSingleGrade(string id, string singleGradeConfigurationId, double? score)
     {
         Id = id;
         SingleGradeConfigurationId = singleGradeConfigurationId;
@@ -18,5 +18,5 @@ public class StudentSingleGrade
 
     public string Id { get; set; }
     public string SingleGradeConfigurationId { get; set; }
-    public double Score { get; set; }
+    public double? Score { get; set; }
 }
