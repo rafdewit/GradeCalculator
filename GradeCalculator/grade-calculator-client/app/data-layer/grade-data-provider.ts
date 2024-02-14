@@ -1,6 +1,7 @@
 import { StudentCollection } from "../dtos/student-collection.model";
 import { GradePeriod } from "../dtos/grade-config/grade-period.model";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "original-fs";
+import { deepCopy } from "app/helpers/helper-methods";
 
 export const classesStorageDirectory: string = "ClassesStorage";
 export class GradeDataProvider {
@@ -35,6 +36,15 @@ export class GradeDataProvider {
         return null;
     }
 
+    public async getDeepCopy(id: string): Promise<StudentCollection | null> {
+        let item = this.get(id);
+        if(item) {
+            item = deepCopy(item);
+        }
+
+        return null;
+    }
+
     public async getGradePeriod(studentCollectionId: string, gradeId: string): Promise<GradePeriod | null> {
         if(this._cache.has(studentCollectionId)) {
             const studentCollection = this._cache.get(studentCollectionId);
@@ -50,7 +60,7 @@ export class GradeDataProvider {
         writeFileSync(`${classesStorageDirectory}/Class-${studentCollection.id}`, JSON.stringify(studentCollection));
     }
 
-    public async delete(id: string): Promise<void>
+    public delete(id: string): void
     {
         this._cache.delete(id);
         rmSync(`${classesStorageDirectory}/Class-${id}`);

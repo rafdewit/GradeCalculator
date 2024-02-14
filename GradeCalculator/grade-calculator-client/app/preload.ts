@@ -2,7 +2,9 @@
 // contextBridge.exposeInMainWorld("ipcRenderer", {ipcRenderer}); //exposing ipcRenderer to the window in renderer process 
 
 import { StudentCollection } from "./dtos/student-collection.model";
+import { CopyStudentCollectionDto } from "./request/student-collection/copy-class-request";
 import { CreateStudentCollectionDto } from "./request/student-collection/create-class-request";
+import { UpdateStudentCollectionDto } from "./request/student-collection/update-class-request";
 
 const { contextBridge, ipcRenderer } = require('electron')
 
@@ -14,8 +16,8 @@ contextBridge.exposeInMainWorld('electron', {
 
     getAllClasses: () => ipcRenderer.invoke('getAllClasses'),
     getClass: (id: string) => ipcRenderer.invoke('getClass', id),
-    updateClass: (request: any) => ipcRenderer.send('updateClass', request),
-    copyClass: (request: any) => ipcRenderer.send('copyClass', request),
+    updateClass: (request: UpdateStudentCollectionDto) => ipcRenderer.send('updateClass', request),
+    copyClass: (request: CopyStudentCollectionDto) => ipcRenderer.send('copyClass', request),
     createClass: (request: CreateStudentCollectionDto) => ipcRenderer.send('createClass', request),
     deleteClass: (request: string) => ipcRenderer.send('deleteClass', request),
 

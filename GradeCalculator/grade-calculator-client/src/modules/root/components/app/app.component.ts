@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
-import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
 import { IEventClient } from 'src/services/communication/signalr/event-client';
 
 @Component({
