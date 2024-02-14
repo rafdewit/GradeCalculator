@@ -57,12 +57,12 @@ export class GradeDataProvider {
     public async createOrUpdate(studentCollection: StudentCollection): Promise<void>
     {
         this._cache.set(studentCollection.id, studentCollection);
-        writeFileSync(`${classesStorageDirectory}/Class-${studentCollection.id}`, JSON.stringify(studentCollection));
+        writeFileSync(`${classesStorageDirectory}/Class-${studentCollection.id}.json`, JSON.stringify(studentCollection));
     }
 
     public delete(id: string): void
     {
         this._cache.delete(id);
-        rmSync(`${classesStorageDirectory}/Class-${id}`);
+        rmSync(`${classesStorageDirectory}/Class-${id}.json`);
     }
 }

@@ -12,7 +12,7 @@ const path = require('node:path');
 export default class Main {
   private static appWindow: BrowserWindow | null;
   private static gradeDataProvider: GradeDataProvider = new GradeDataProvider();
-  private static updateMessenger: UpdateMessenger = new UpdateMessenger();
+  private static updateMessenger: UpdateMessenger;
 
   static main() {
     app.on('ready', () => this.onReady());
@@ -33,6 +33,7 @@ export default class Main {
     this.appWindow.loadFile('dist/grade-calculator-client/index.html');
     this.appWindow.on('closed', () => this.appWindow = null);
 
+    this.updateMessenger = new UpdateMessenger(this.appWindow);
     this.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
 
     ipcMain.handle('ping', () => 'pong');
@@ -59,7 +60,7 @@ export default class Main {
       };
 
       await gradeDataProvider.createOrUpdate(studentCollection);
-      this.updateMessenger.SendUpdatedStudentCollection(studentCollection);
+      updateMessenger.SendUpdatedStudentCollection(studentCollection);
     });
 
     ipcMain.on('updateClass', async (c, arg: UpdateStudentCollectionDto) => {
@@ -67,7 +68,7 @@ export default class Main {
       if (item) {
         item.name = arg.className;
         await gradeDataProvider.createOrUpdate(item);
-        this.updateMessenger.SendUpdatedStudentCollection(item);
+        updateMessenger.SendUpdatedStudentCollection(item);
       }
     });
 
@@ -76,7 +77,7 @@ export default class Main {
       if (item) {
         item.id = generateGuid();
         await gradeDataProvider.createOrUpdate(item);
-        this.updateMessenger.SendUpdatedStudentCollection(item);
+        updateMessenger.SendUpdatedStudentCollection(item);
       }
     });
 

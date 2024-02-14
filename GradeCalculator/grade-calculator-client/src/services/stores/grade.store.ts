@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { GradeHubClient } from "../communication/signalr/grade-hub.client";
 import { StudentCollection } from "../dtos/student-collection.model";
 import { Observable, map, scan, startWith, switchMap } from "rxjs";
 import { bufferOneRef } from "../rxjs/buffer-one-ref";
@@ -17,8 +16,7 @@ export class GradeStore {
 
     constructor(private studentCollectionClient: IStudentCollectionClient, private gradeEventClient: IEventClient) {
         this.classes$ = this.get();
-        this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item))))
-            .pipe(bufferOneRef());
+        this.classScoreInfos$ = this.classes$.pipe(map(collection =>  collection.map(item => convertClass(item)))).pipe(bufferOneRef());
     }
 
     public getClass(id: string): Observable<StudentCollection | null> {
@@ -30,6 +28,7 @@ export class GradeStore {
 
         const attachCreate$ = initialClasses$.pipe(switchMap(r => {
             return this.gradeEventClient.studentCollectionUpdateEvent$.pipe(startWith(null), scan((acc, value) => {
+
                 if (value) {
                     const index = acc.findIndex(i => i.id === value.id);
                     if (index >= 0) {
@@ -38,6 +37,7 @@ export class GradeStore {
                         acc.push(value);
                     }
                 }
+                
                 return acc;
             }, r))
         }));
