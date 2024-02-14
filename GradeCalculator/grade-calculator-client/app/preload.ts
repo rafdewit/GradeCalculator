@@ -1,6 +1,8 @@
 // const { contextBridge, ipcRenderer } = require("electron");
 // contextBridge.exposeInMainWorld("ipcRenderer", {ipcRenderer}); //exposing ipcRenderer to the window in renderer process 
 
+import { CreateStudentCollectionDto } from "./request/student-collection/create-class-request";
+
 const { contextBridge, ipcRenderer } = require('electron')
 
 contextBridge.exposeInMainWorld('electron', {
@@ -11,27 +13,27 @@ contextBridge.exposeInMainWorld('electron', {
 
     getAllClasses: () => ipcRenderer.invoke('getAllClasses'),
     getClass: (id: string) => ipcRenderer.invoke('getClass', id),
-    updateClass: (request: any) => ipcRenderer.invoke('updateClass', request),
-    copyClass: (request: any) => ipcRenderer.invoke('copyClass', request),
-    createClass: (request: any) => ipcRenderer.invoke('createClass', request),
-    deleteClass: (request: string) => ipcRenderer.invoke('deleteClass', request),
+    updateClass: (request: any) => ipcRenderer.send('updateClass', request),
+    copyClass: (request: any) => ipcRenderer.send('copyClass', request),
+    createClass: (request: CreateStudentCollectionDto) => ipcRenderer.send('createClass', request),
+    deleteClass: (request: string) => ipcRenderer.send('deleteClass', request),
 
-    updateStudent: (request: any) => ipcRenderer.invoke('updateStudent', request),
-    createStudent: (request: any) => ipcRenderer.invoke('createStudent', request),
-    deleteStudent: (request: any) => ipcRenderer.invoke('deleteStudent', request),
+    updateStudent: (request: any) => ipcRenderer.send('updateStudent', request),
+    createStudent: (request: any) => ipcRenderer.send('createStudent', request),
+    deleteStudent: (request: any) => ipcRenderer.send('deleteStudent', request),
 
-    updateSingleGradeConfiguration: (request: any) => ipcRenderer.invoke('updateSingleGradeConfiguration', request),
-    createSingleGradeConfiguration: (request: any) => ipcRenderer.invoke('createSingleGradeConfiguration', request),
-    deleteSingleGradeConfiguration: (request: any) => ipcRenderer.invoke('deleteSingleGradeConfiguration', request),
+    updateSingleGradeConfiguration: (request: any) => ipcRenderer.send('updateSingleGradeConfiguration', request),
+    createSingleGradeConfiguration: (request: any) => ipcRenderer.send('createSingleGradeConfiguration', request),
+    deleteSingleGradeConfiguration: (request: any) => ipcRenderer.send('deleteSingleGradeConfiguration', request),
 
-    updateSingleGrades: (request: any) => ipcRenderer.invoke('updateSingleGrades', request),
+    updateSingleGrades: (request: any) => ipcRenderer.send('updateSingleGrades', request),
 
-    updateMultiGradeConfiguration: (request: any) => ipcRenderer.invoke('updateMultiGradeConfiguration', request),
-    createMultiGradeConfiguration: (request: any) => ipcRenderer.invoke('createMultiGradeConfiguration', request),
-    deleteMultiGradeConfiguration: (request: any) => ipcRenderer.invoke('deleteMultiGradeConfiguration', request),
+    updateMultiGradeConfiguration: (request: any) => ipcRenderer.send('updateMultiGradeConfiguration', request),
+    createMultiGradeConfiguration: (request: any) => ipcRenderer.send('createMultiGradeConfiguration', request),
+    deleteMultiGradeConfiguration: (request: any) => ipcRenderer.send('deleteMultiGradeConfiguration', request),
 
-    updateGradePeriod: (request: any) => ipcRenderer.invoke('updateGradePeriod', request),
-    copyGradePeriod: (request: any) => ipcRenderer.invoke('copyGradePeriod', request),
-    createGradePeriod: (request: any) => ipcRenderer.invoke('createGradePeriod', request),
-    deleteGradePeriod: (request: any) => ipcRenderer.invoke('deleteGradePeriod', request),
+    updateGradePeriod: (request: any) => ipcRenderer.send('updateGradePeriod', request),
+    copyGradePeriod: (request: any) => ipcRenderer.send('copyGradePeriod', request),
+    createGradePeriod: (request: any) => ipcRenderer.send('createGradePeriod', request),
+    deleteGradePeriod: (request: any) => ipcRenderer.send('deleteGradePeriod', request),
 });

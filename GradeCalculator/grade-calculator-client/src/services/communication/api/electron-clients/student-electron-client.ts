@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, from } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CreateStudentPeriodDto } from "../request/students/create-student-period";
 import { DeleteStudentPeriodDto } from "../request/students/delete-student-period";
 import { UpdateStudentPeriodDto } from "../request/students/update-student-period";
@@ -12,14 +12,17 @@ export class StudentElectronClient extends IStudentClient {
     }
     
     public updateStudent(request: UpdateStudentPeriodDto): Observable<void> {
-        return from((window as any).electron.updateStudent(request)) as Observable<void>;
+        (window as any).electron.updateStudent(request);
+        return of(void 0);
     }
 
     public createStudent(request: CreateStudentPeriodDto): Observable<void> {
-        return from((window as any).electron.createStudent(request)) as Observable<void>;
+        (window as any).electron.createStudent(request);
+        return of(void 0);
     }
 
     public deleteStudent(request: DeleteStudentPeriodDto): Observable<void> {
-        return from((window as any).electron.deleteStudent(request)) as Observable<void>;
+        (window as any).electron.deleteStudent(request);
+        return of(void 0);
     }
 }

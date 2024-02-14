@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, from, of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CopyGradePeriodDto } from "../request/grade-period/copy-grade-period";
 import { CreateGradePeriodDto } from "../request/grade-period/create-grade-period";
 import { DeleteGradePeriodDto } from "../request/grade-period/delete-grade-period";
@@ -13,18 +13,22 @@ export class GradePeriodElectronClient extends IGradePeriodClient {
     }
 
     public updateGradePeriod(request: UpdateGradePeriodDto): Observable<void> {
-        return from((window as any).electron.updateGradePeriod(request)) as Observable<void>;
+        (window as any).electron.updateGradePeriod(request);
+        return of(void 0);
     }
     
     public copyGradePeriod(request: CopyGradePeriodDto): Observable<void> {
-        return from((window as any).electron.copyGradePeriod(request)) as Observable<void>;
+        (window as any).electron.copyGradePeriod(request);
+        return of(void 0);
     }
     
     public createGradePeriod(request: CreateGradePeriodDto): Observable<void> {
-        return from((window as any).electron.createGradePeriod(request)) as Observable<void>;
+        (window as any).electron.createGradePeriod(request);
+        return of(void 0);
     }
 
     public deleteGradePeriod(request: DeleteGradePeriodDto): Observable<void> {
-        return from((window as any).electron.deleteGradePeriod(request)) as Observable<void>;
+        (window as any).electron.deleteGradePeriod(request)>;
+        return of(void 0);
     }
 }

@@ -6,7 +6,6 @@ import { CreateStudentCollectionDto } from "../request/student-collection/create
 import { CopyStudentCollectionDto } from "../request/student-collection/copy-class-request";
 import { IStudentCollectionClient } from "../base/student-collection-client";
 
-
 @Injectable()
 export class StudentCollectionElectronClient extends IStudentCollectionClient {
     constructor() {
@@ -22,19 +21,23 @@ export class StudentCollectionElectronClient extends IStudentCollectionClient {
     }
 
     public updateClass(request: UpdateStudentCollectionDto): Observable<void> {
-        return from((window as any).electron.updateClass(request)) as Observable<void>;
+        (window as any).electron.updateClass(request);
+        return of(void 0);
     }
 
     public copyClass(request: CopyStudentCollectionDto): Observable<void> {
-        return from((window as any).electron.copyClass(request)) as Observable<void>;
+        (window as any).electron.copyClass(request);
+        return of(void 0);
     }
 
     public createClass(request: CreateStudentCollectionDto): Observable<void> {
-        return from((window as any).electron.createClass(request)) as Observable<void>;
+        (window as any).electron.createClass(request);
+        return of(void 0);
     }
 
     public deleteClass(id: string): Observable<void> {
-        return from((window as any).electron.deleteClass(id)) as Observable<void>;
+        (window as any).electron.deleteClass(id);
+        return of(void 0);
     }
 
 }
