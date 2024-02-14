@@ -1,12 +1,7 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
-import { FormGroup, FormControl, FormArray, NonNullableFormBuilder } from '@angular/forms';
+import { FormGroup, FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
-import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
 import { DefaultCrudDialogData } from '../default-dialog-crud.data';
-import { MultiGradeConfigDialogComponent } from '../multi-grade-config-dialog/multi-grade-config-dialog.component';
-import { MultiGradeConfigDialogData } from '../multi-grade-config-dialog/multi-grade-config-dialog.data';
 import { SingleGradeConfigDialogData } from './single-grade-config-dialog.data';
 
 @Component({
@@ -17,7 +12,6 @@ import { SingleGradeConfigDialogData } from './single-grade-config-dialog.data';
 })
 export class SingleGradeConfigDialogComponent {
   public singleGradeConfigFormGroup: FormGroup<{
-    id: FormControl<string>,
     name: FormControl<string>,
     totalScore: FormControl<number>,
     weight: FormControl<number>,
@@ -25,10 +19,9 @@ export class SingleGradeConfigDialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<SingleGradeConfigDialogData>, private dialogRef: MatDialogRef<SingleGradeConfigDialogData>, private formBuilder: NonNullableFormBuilder) {
     this.singleGradeConfigFormGroup = this.formBuilder.group({
-      id: this.formBuilder.control(''),
-      name: this.formBuilder.control(''),
-      totalScore: this.formBuilder.control(0),
-      weight: this.formBuilder.control(0)
+      name: this.formBuilder.control(data.object.single?.name ?? 'Grade', [Validators.required]),
+      totalScore: this.formBuilder.control(data.object.single?.totalScore ?? 20),
+      weight: this.formBuilder.control(data.object.single?.weight ?? 10)
     });
   }
 

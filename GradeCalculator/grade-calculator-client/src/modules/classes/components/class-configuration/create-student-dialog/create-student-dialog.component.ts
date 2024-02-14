@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CreateStudentDialogData } from './create-student-dialog.data';
 import { FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';

@@ -15,7 +15,6 @@ import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-gr
 })
 export class MultiGradeConfigDialogComponent {
   public multiGradeConfigFormGroup: FormGroup<{
-    id: FormControl<string>,
     name: FormControl<string>,
     weight: FormControl<number>,
     singleGradeConfigurations: FormArray<FormControl<SingleGradeConfiguration>>,
@@ -24,9 +23,8 @@ export class MultiGradeConfigDialogComponent {
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<MultiGradeConfigDialogData>, private dialogRef: MatDialogRef<MultiGradeConfigDialogComponent>, private formBuilder: NonNullableFormBuilder) { 
     this.multiGradeConfigFormGroup = this.formBuilder.group({
-      id: this.formBuilder.control(''),
-      name: this.formBuilder.control(''),
-      weight: this.formBuilder.control(0),
+      name: this.formBuilder.control(data.object.multi?.name ?? 'ScoreCollection'),
+      weight: this.formBuilder.control(data.object.multi?.weight ?? 50),
       singleGradeConfigurations: this.formBuilder.array<FormControl<SingleGradeConfiguration>>([]),
       multiGradeConfigurations: this.formBuilder.array<FormControl<MultiGradeConfiguration>>([]),
     });

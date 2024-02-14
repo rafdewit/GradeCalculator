@@ -1,15 +1,20 @@
 <app-theme-container>
     <h2 mat-dialog-title>{{data.title}}</h2>
-<!-- 
+
     <mat-dialog-content class="mat-typography">
-        <form class="example-form">
-            <mat-form-field class="example-full-width">
+        <form>
+            <mat-form-field>
                 <mat-label>Name</mat-label>
-                <input matInput [formControl]="valueFormControl">
-                @if(valueFormControl.hasError('required')) {<mat-error>Required</mat-error>}
+                <input matInput [formControl]="multiGradeConfigFormGroup.controls.name">
+                @if(multiGradeConfigFormGroup.controls.name.hasError('required')) {<mat-error>Required</mat-error>}
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Weight</mat-label>
+                <input matInput [formControl]="multiGradeConfigFormGroup.controls.weight">
             </mat-form-field>
         </form>
-    </mat-dialog-content> -->
+    </mat-dialog-content>
 
     <mat-dialog-actions align="end">
         <button mat-raised-button (click)="cancel()">Cancel</button>
