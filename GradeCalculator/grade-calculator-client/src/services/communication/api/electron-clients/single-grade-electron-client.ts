@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from 'rxjs';
+import { Observable, from } from 'rxjs';
 import { SingleGradesUpdateDto } from "../request/grade-update/single-grades-update";
 import { ISingleGradeClient } from "../base/single-grade-client.interface";
 
@@ -10,8 +10,6 @@ export class SingleGradeElectronClient extends ISingleGradeClient {
     }
     
     public updateSingleGrades(request: SingleGradesUpdateDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('updateSingleGrades', request);
-        return of();
+        return from((window as any).electron.updateSingleGrades(request)) as Observable<void>;
     }
 }

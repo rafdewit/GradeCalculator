@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { CreateMultiGradeConfigurationDto } from "../request/multi/create-multi-grade-configuration";
 import { UpdateMultiGradeConfigurationDto } from "../request/multi/update-multi-grade-configuration";
 import { DeleteMultiGradeConfigurationDto } from "../request/multi/delete-multi-grade-configuration";
@@ -13,20 +13,14 @@ export class MultiGradeConfigurationElectronClient extends IMultiGradeConfigurat
     }
 
     public updateMultiGradeConfiguration(request: UpdateMultiGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('updateMultiGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.updateMultiGradeConfiguration(request)) as Observable<void>;
     }
         
     public createMultiGradeConfiguration(request: CreateMultiGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('createMultiGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.createMultiGradeConfiguration(request)) as Observable<void>;
     }
 
     public deleteMultiGradeConfiguration(request: DeleteMultiGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('deleteMultiGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.deleteMultiGradeConfiguration(request)) as Observable<void>;
     }
 }

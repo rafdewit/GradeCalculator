@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of } from 'rxjs';
+import { Observable, from, of } from 'rxjs';
 import { ISingleGradeConfigurationClient } from "../base/single-grade-configuration-client";
 import { CreateSingleGradeConfigurationDto } from "../request/single/create-single-grade-configuration";
 import { DeleteSingleGradeConfigurationDto } from "../request/single/delete-single-grade-configuration";
@@ -12,20 +12,14 @@ export class SingleGradeConfigurationElectronClient extends ISingleGradeConfigur
     }
 
     public updateSingleGradeConfiguration(request: UpdateSingleGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('updateSingleGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.updateSingleGradeConfiguration(request)) as Observable<void>;
     }
         
     public createSingleGradeConfiguration(request: CreateSingleGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('createSingleGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.createSingleGradeConfiguration(request)) as Observable<void>;
     }
 
     public deleteSingleGradeConfiguration(request: DeleteSingleGradeConfigurationDto): Observable<void> {
-        const ipcRenderer  = window.require('electron').ipcRenderer;
-        ipcRenderer.send('deleteSingleGradeConfiguration', request);
-        return of();
+        return from((window as any).electron.deleteSingleGradeConfiguration(request)) as Observable<void>;
     }
 }

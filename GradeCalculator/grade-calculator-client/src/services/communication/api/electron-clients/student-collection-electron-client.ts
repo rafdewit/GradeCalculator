@@ -14,45 +14,27 @@ export class StudentCollectionElectronClient extends IStudentCollectionClient {
     }
 
     public getAllClasses(): Observable<StudentCollection[]> {
-        const func = async () => {
-            const response = await (window as any).versions.ping()
-            console.log(response) // prints out 'pong'
-        }
-        func();
-
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        const promise: Promise<StudentCollection[]> = ipcRenderer.invoke('getAllClasses');
-        return from(promise);
+        return from((window as any).electron.getAllClasses()) as Observable<StudentCollection[]>;
     }
 
     public getClass(classId: string): Observable<StudentCollection> {
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        const promise: Promise<StudentCollection> = ipcRenderer.invoke('getClass', classId);
-        return from(promise);
+        return from((window as any).electron.getClass(classId)) as Observable<StudentCollection>;
     }
 
     public updateClass(request: UpdateStudentCollectionDto): Observable<void> {
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        ipcRenderer.send('updateClass', request);
-        return of();
+        return from((window as any).electron.updateClass(request)) as Observable<void>;
     }
 
     public copyClass(request: CopyStudentCollectionDto): Observable<void> {
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        ipcRenderer.send('copyClass', request);
-        return of();
+        return from((window as any).electron.copyClass(request)) as Observable<void>;
     }
 
     public createClass(request: CreateStudentCollectionDto): Observable<void> {
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        ipcRenderer.send('createClass', request);
-        return of();
+        return from((window as any).electron.createClass(request)) as Observable<void>;
     }
 
     public deleteClass(id: string): Observable<void> {
-        const ipcRenderer = window.require('electron').ipcRenderer;
-        ipcRenderer.send('deleteClass', id);
-        return of();
+        return from((window as any).electron.deleteClass(id)) as Observable<void>;
     }
 
 }
