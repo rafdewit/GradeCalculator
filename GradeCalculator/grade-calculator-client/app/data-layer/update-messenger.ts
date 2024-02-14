@@ -1,4 +1,4 @@
-import { StudentCollection } from "app/dtos/student-collection.model";
+import { StudentCollection } from "../dtos/student-collection.model";
 import { ipcMain } from "electron";
 
 export class UpdateMessenger {

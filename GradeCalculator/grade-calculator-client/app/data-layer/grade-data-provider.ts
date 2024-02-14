@@ -1,7 +1,7 @@
 import { StudentCollection } from "../dtos/student-collection.model";
 import { GradePeriod } from "../dtos/grade-config/grade-period.model";
 import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from "original-fs";
-import { deepCopy } from "app/helpers/helper-methods";
+import { deepCopy } from "../helpers/helper-methods";
 
 export const classesStorageDirectory: string = "ClassesStorage";
 export class GradeDataProvider {
