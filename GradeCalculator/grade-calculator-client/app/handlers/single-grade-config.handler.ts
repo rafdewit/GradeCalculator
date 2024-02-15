@@ -35,7 +35,6 @@ export class SingleGradeConfigHandler {
                 }
             }
 
-            console.log("tesdt");
             await gradeDataProvider.createOrUpdate(studentCollection);
             await updateMessenger.SendUpdatedStudentCollection(studentCollection);
         });

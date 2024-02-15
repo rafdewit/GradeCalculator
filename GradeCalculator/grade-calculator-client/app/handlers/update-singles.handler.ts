@@ -2,6 +2,8 @@ import { GradeDataProvider } from "../data-layer/grade-data-provider";
 import { UpdateMessenger } from "../data-layer/update-messenger";
 import { ipcMain } from "electron";
 import { SingleGradesUpdateDto } from "../request/grade-update/single-grades-update";
+import { StudentSingleGrade } from "../dtos/students/student-single-grade.model";
+import { generateGuid } from "../helpers/helper-methods";
 
 export class UpdateSinglesHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -14,6 +16,14 @@ export class UpdateSinglesHandler {
                         const grade = student.studentSingleGrades.find(g => g.singleGradeConfigurationId === arg.singleGradeConfigurationId);
                         if(grade) {
                             grade.score = u.score;
+                        } else {
+                            const newGrade: StudentSingleGrade = {
+                                id: generateGuid(),
+                                singleGradeConfigurationId: arg.singleGradeConfigurationId,
+                                score: u.score
+                            };
+
+                            student.studentSingleGrades.push(newGrade);
                         }
                     }
                 });

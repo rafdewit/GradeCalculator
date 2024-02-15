@@ -24,17 +24,18 @@ export class MultiGradeConfigHandler {
                 singleGradeConfigurations: []
             };
 
-            if (arg.multiParentId) {
-                const parent = GradeConfigFinder.findMulti(studentCollection, arg.multiParentId);
-                if (parent) {
-                    parent.result.multiGradeConfigurations.push(multi);
-                }
-            } else if (arg.gradePeriodId) {
-                const gradePeriod = studentCollection.gradePeriods.find(g => g.id === arg.gradePeriodId);
-                if (gradePeriod) {
+            const gradePeriod = studentCollection.gradePeriods.find(g => g.id === arg.gradePeriodId);
+            if (gradePeriod) {
+                if (arg.multiParentId) {
+                    const parent = GradeConfigFinder.findMulti(studentCollection, arg.multiParentId);
+                    if (parent) {
+                        parent.result.multiGradeConfigurations.push(multi);
+                    }
+                } else {
                     gradePeriod.multiGradeConfigurations.push(multi);
                 }
             }
+
 
             await gradeDataProvider.createOrUpdate(studentCollection);
             await updateMessenger.SendUpdatedStudentCollection(studentCollection);

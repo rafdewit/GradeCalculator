@@ -54,7 +54,7 @@ export class ClassScoreTableComponent implements OnDestroy {
       enableWeight: this.formBuilder.control<boolean>(true),
       rootOnly: this.formBuilder.control<boolean>(true),
       showCreateAndScoreButtons: this.formBuilder.control<boolean>(true),
-      showEditButtons:  this.formBuilder.control<boolean>(true),
+      showEditButtons: this.formBuilder.control<boolean>(true),
       showDeleteButtons: this.formBuilder.control<boolean>(false),
       gradePeriodFilter: this.formBuilder.control<string[]>([])
     });
@@ -62,9 +62,9 @@ export class ClassScoreTableComponent implements OnDestroy {
     const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
     classId$.pipe(takeUntil(this._onDestroy)).subscribe(classId => {
       const serializedFilter = localStorage.getItem(`filter-${classId}`);
-      if(serializedFilter) {
+      if (serializedFilter) {
         const filter = JSON.parse(serializedFilter) as TableFilter;
-        if(filter) {
+        if (filter) {
           this.filterFormGroup.setValue(filter);
         }
       }
@@ -130,18 +130,28 @@ export class ClassScoreTableComponent implements OnDestroy {
 
   public async addSingleToGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
     await this.singleGradeConfigDialogService.createSingleGrade(classScoreInfo.class.id, gradePeriod.id, null);
+    this.disableRootOnlyIfEnabled();
   }
 
   public async addMultiToGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
     await this.multiGradeConfigDialogService.createMultiGrade(classScoreInfo.class.id, gradePeriod.id, null);
+    this.disableRootOnlyIfEnabled();
   }
 
   public async addSingle(multi: MultiGradeConfiguration, classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
     await this.singleGradeConfigDialogService.createSingleGrade(classScoreInfo.class.id, gradePeriod.id, multi.id);
+    this.disableRootOnlyIfEnabled();
   }
 
   public async addMulti(multi: MultiGradeConfiguration, classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod): Promise<void> {
     await this.multiGradeConfigDialogService.createMultiGrade(classScoreInfo.class.id, gradePeriod.id, multi.id);
+    this.disableRootOnlyIfEnabled();
+  }
+
+  private disableRootOnlyIfEnabled() {
+    if (this.filterFormGroup.controls.rootOnly.value) {
+      this.filterFormGroup.controls.rootOnly.setValue(false);
+    }
   }
 
   public async editSingle(single: SingleGradeConfiguration, classScoreInfo: ClassScoreInfo): Promise<void> {
