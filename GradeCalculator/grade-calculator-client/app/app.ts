@@ -1,14 +1,10 @@
 import { BrowserWindow, app, ipcMain } from "electron";
-import { StudentCollection } from "./dtos/student-collection.model";
 import { GradeDataProvider } from "./data-layer/grade-data-provider";
-import { CreateStudentCollectionDto } from "./request/student-collection/create-class-request";
 import { UpdateMessenger } from "./data-layer/update-messenger";
-import { UpdateStudentCollectionDto } from "./request/student-collection/update-class-request";
-import { CopyStudentCollectionDto } from "./request/student-collection/copy-class-request";
-import { deepCopy, generateGuid } from "./helpers/helper-methods";
 import { StudentCollectionHandler } from "./handlers/student-collection.handler";
 import { StudentHandler } from "./handlers/student.handler";
 import { GradeHandler } from "./handlers/grade.handler";
+import { UpdateSinglesHandler } from "./handlers/update-singles.handler";
 
 const path = require('node:path');
 
@@ -41,7 +37,8 @@ export default class Main {
     StudentCollectionHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
     StudentHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
     GradeHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
-    
+    UpdateSinglesHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+
     ipcMain.handle('ping', () => 'pong');
   }
 

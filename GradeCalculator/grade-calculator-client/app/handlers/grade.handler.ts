@@ -6,9 +6,9 @@ import { generateGuid } from "../helpers/helper-methods";
 import { ipcMain } from "electron";
 import { UpdateGradePeriodDto } from "../request/grade-period/update-grade-period";
 import { DeleteGradePeriodDto } from "../request/grade-period/delete-grade-period";
-import { CopyGradePeriodDto } from "app/request/grade-period/copy-grade-period";
-import { MultiGradeConfiguration } from "app/dtos/grade-config/multi-grade-configuration.model";
-import { SingleGradeConfiguration } from "app/dtos/grade-config/single-grade-configuration.model";
+import { CopyGradePeriodDto } from "../request/grade-period/copy-grade-period";
+import { MultiGradeConfiguration } from "../dtos/grade-config/multi-grade-configuration.model";
+import { SingleGradeConfiguration } from "../dtos/grade-config/single-grade-configuration.model";
 
 export class GradeHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
