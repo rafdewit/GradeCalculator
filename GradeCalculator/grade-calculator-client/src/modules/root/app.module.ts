@@ -117,7 +117,7 @@ export function createSingleGradeConfigurationClient(injector: Injector) {
 }
 
 export function createSingleGradeClient(injector: Injector) {
-  return !environment.electron ? injector.get(SingleGrade_WebClient) : injector.get(SingleGradeConfiguration_ElectronClient);
+  return !environment.electron ? injector.get(SingleGrade_WebClient) : injector.get(SingleGrade_ElectronClient);
 }
 
 export function createStudentClient(injector: Injector) {

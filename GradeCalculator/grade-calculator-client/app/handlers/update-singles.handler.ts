@@ -12,9 +12,9 @@ export class UpdateSinglesHandler {
             if (studentCollection) {
                 arg.singleGradeUpdates.forEach(u => {
                     const student = studentCollection.students.find(s => s.id === u.studentId);
-                    if(student) {
+                    if (student) {
                         const grade = student.studentSingleGrades.find(g => g.singleGradeConfigurationId === arg.singleGradeConfigurationId);
-                        if(grade) {
+                        if (grade) {
                             grade.score = u.score;
                         } else {
                             const newGrade: StudentSingleGrade = {
@@ -22,7 +22,7 @@ export class UpdateSinglesHandler {
                                 singleGradeConfigurationId: arg.singleGradeConfigurationId,
                                 score: u.score
                             };
-
+                            
                             student.studentSingleGrades.push(newGrade);
                         }
                     }
