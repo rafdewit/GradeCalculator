@@ -1,7 +1,7 @@
-import { StudentCollection } from "app/dtos/student-collection.model";
 import { BehaviorSubject, Observable, Subject } from "rxjs";
 import { IEventClient } from "./event-client";
 import { Injectable, NgZone } from "@angular/core";
+import { StudentCollection } from "src/services/dtos/student-collection.model";
 
 @Injectable()
 export class GradeElectronEventClient extends IEventClient {

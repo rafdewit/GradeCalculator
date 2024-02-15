@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { StudentCollection } from "../dtos/student-collection.model";
 import { Observable, map, scan, startWith, switchMap } from "rxjs";
 import { bufferOneRef } from "../rxjs/buffer-one-ref";
 import { ClassScoreInfo } from "./models/score";
 import { convertClass } from "./grade.converter";
 import { IStudentCollectionClient } from "../communication/api/base/student-collection-client";
 import { IEventClient } from "../communication/signalr/event-client";
+import { StudentCollection } from "../dtos/student-collection.model";
 
 @Injectable({
     providedIn: 'root'
