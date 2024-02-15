@@ -9,7 +9,7 @@ import { ClassScoreInfo, StudentInfo, StudentGradePeriodInfo, StudentSingleGrade
 export function convertClass(c: StudentCollection): ClassScoreInfo {
     const result: ClassScoreInfo = {
         class: c,
-        studentInfos: c.students.map(s => convertStudent(s, c)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage))
+        studentInfos: c.students.map(s => convertStudent(s, c))
     };
 
     return result;

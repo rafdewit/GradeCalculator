@@ -30,6 +30,8 @@
     <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showEditButtons">Edit Buttons</mat-checkbox>
     <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.showDeleteButtons">Delete Buttons</mat-checkbox>
 
+    <mat-checkbox class="control-panel-item" [formControl]="filterFormGroup.controls.sortByScore">Sort by score</mat-checkbox>
+
     <mat-form-field>
         <mat-label>Grade Periods</mat-label>
         <mat-select [formControl]="filterFormGroup.controls.gradePeriodFilter" multiple>

@@ -17,6 +17,7 @@ import { SingleGradeConfigDialogService } from 'src/services/angular/dialog/sing
 import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { MultiGradeConfigDialogService } from 'src/services/angular/dialog/multi-grade-config-dialog.service';
 import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
+import { alphabetically } from 'src/services/stores/grade.converter';
 
 @Component({
   selector: 'app-class-score-table',
@@ -39,6 +40,7 @@ export class ClassScoreTableComponent implements OnDestroy {
     showCreateAndScoreButtons: FormControl<boolean>,
     showEditButtons: FormControl<boolean>,
     showDeleteButtons: FormControl<boolean>,
+    sortByScore: FormControl<boolean>,
     gradePeriodFilter: FormControl<string[]>
   }>;
 
@@ -56,6 +58,7 @@ export class ClassScoreTableComponent implements OnDestroy {
       showCreateAndScoreButtons: this.formBuilder.control<boolean>(true),
       showEditButtons: this.formBuilder.control<boolean>(true),
       showDeleteButtons: this.formBuilder.control<boolean>(false),
+      sortByScore: this.formBuilder.control<boolean>(false),
       gradePeriodFilter: this.formBuilder.control<string[]>([])
     });
 
@@ -85,7 +88,10 @@ export class ClassScoreTableComponent implements OnDestroy {
         localStorage.setItem(`filter-${classInfo?.class.id}`, JSON.stringify(tableFilter));
 
         const studentNameFilterLow = tableFilter.studentNameFilter.toLowerCase();
-        const filteredStudentInfos = classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
+
+        const filteredStudentInfos = filter.sortByScore 
+          ? classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage)) ?? []
+          : classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
 
         const result: ClassTableComponentInfo = {
           classScoreInfo: classInfo,
@@ -97,6 +103,7 @@ export class ClassScoreTableComponent implements OnDestroy {
           showCreateAndScoreButtons: tableFilter.showCreateAndScoreButtons,
           showDeleteButtons: tableFilter.showDeleteButtons,
           showEditButtons: tableFilter.showEditButtons,
+          sortByScore: tableFilter.sortByScore,
           gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter)
         };
         return result;
@@ -194,6 +201,7 @@ export interface ClassTableComponentInfo {
   showCreateAndScoreButtons: boolean;
   showEditButtons: boolean;
   showDeleteButtons: boolean;
+  sortByScore: boolean;
   gradePeriodFilter: Set<string>;
 }
 
@@ -205,5 +213,6 @@ export interface TableFilter {
   showCreateAndScoreButtons: boolean;
   showEditButtons: boolean;
   showDeleteButtons: boolean;
+  sortByScore: boolean;
   gradePeriodFilter: string[];
 }
