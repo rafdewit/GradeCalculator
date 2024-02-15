@@ -6,6 +6,9 @@ import { UpdateMessenger } from "./data-layer/update-messenger";
 import { UpdateStudentCollectionDto } from "./request/student-collection/update-class-request";
 import { CopyStudentCollectionDto } from "./request/student-collection/copy-class-request";
 import { deepCopy, generateGuid } from "./helpers/helper-methods";
+import { StudentCollectionHandler } from "./handlers/student-collection.handler";
+import { StudentHandler } from "./handlers/student.handler";
+import { GradeHandler } from "./handlers/grade.handler";
 
 const path = require('node:path');
 
@@ -34,57 +37,15 @@ export default class Main {
     this.appWindow.on('closed', () => this.appWindow = null);
 
     this.updateMessenger = new UpdateMessenger(this.appWindow);
-    this.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
 
+    StudentCollectionHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+    StudentHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+    GradeHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+    
     ipcMain.handle('ping', () => 'pong');
   }
 
-  private static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
-
-    ipcMain.handle('getAllClasses', () => {
-      const result = gradeDataProvider.getAll();
-      return result;
-    });
-
-    ipcMain.handle('getClass', (c, args: string) => {
-      const result = gradeDataProvider.get(args);
-      return result;
-    });
-
-    ipcMain.on('createClass', async (c, arg: CreateStudentCollectionDto) => {
-      const studentCollection: StudentCollection = {
-        id: generateGuid(),
-        name: arg.className,
-        students: [],
-        gradePeriods: []
-      };
-
-      await gradeDataProvider.createOrUpdate(studentCollection);
-      updateMessenger.SendUpdatedStudentCollection(studentCollection);
-    });
-
-    ipcMain.on('updateClass', async (c, arg: UpdateStudentCollectionDto) => {
-      const item = await gradeDataProvider.getDeepCopy(arg.id);
-      if (item) {
-        item.name = arg.className;
-        await gradeDataProvider.createOrUpdate(item);
-        updateMessenger.SendUpdatedStudentCollection(item);
-      }
-    });
-
-    ipcMain.on('copyClass', async (c, arg: CopyStudentCollectionDto) => {
-      const item = await gradeDataProvider.getDeepCopy(arg.id);
-      if (item) {
-        item.id = generateGuid();
-        await gradeDataProvider.createOrUpdate(item);
-        updateMessenger.SendUpdatedStudentCollection(item);
-      }
-    });
-
-    ipcMain.on('deleteClass', async (c, arg: string) => {
-      gradeDataProvider.delete(arg);
-    });
-  }
+  
 }
 
 Main.main();
