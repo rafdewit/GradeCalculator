@@ -51,14 +51,14 @@ export function convertStudent(s: Student, c: StudentCollection): StudentInfo {
 }
 
 export function calculatePercentage(gradePeriods: StudentGradePeriodInfo[]): number | null {
-    if (!gradePeriods.some(p => p.totalPercentage)) {
+    if (!gradePeriods.some(p => p.totalPercentage !== null)) {
         return null;
     }
 
     let total = 0;
     let totalItems = 0;
     gradePeriods.forEach(p => {
-        if (p.totalPercentage) {
+        if (p.totalPercentage !== null) {
             total += p.totalPercentage;
             totalItems++;
         }
@@ -92,7 +92,7 @@ export function mapSingleGradeInfos(config: SingleGradeConfiguration, gradeMap: 
     const result: StudentSingleGradeInfo = {
         single: config,
         score: singleGrade,
-        percentage: singleGrade ? singleGrade.score / config.totalScore : null
+        percentage: singleGrade !== null && singleGrade.score !== null ? singleGrade.score / config.totalScore : null
     };
 
     return result;
@@ -112,7 +112,7 @@ export function mapMultiGradeInfos(config: MultiGradeConfiguration, gradeMap: { 
 }
 
 export function calculateMultiPercentage(singles: StudentSingleGradeInfo[], multis: StudentMultiGradeInfo[]): number | null {
-    if (!singles.some(s => s.percentage) && !multis.some(m => m.percentage)) {
+    if (!singles.some(s => s.percentage !== null) && !multis.some(m => m.percentage !== null)) {
         return null;
     }
 
@@ -120,14 +120,14 @@ export function calculateMultiPercentage(singles: StudentSingleGradeInfo[], mult
     let totalWeight = 0;
 
     singles.forEach(s => {
-        if (s.percentage) {
+        if (s.percentage !== null) {
             total += s.percentage * s.single.weight;
             totalWeight += s.single.weight;
         }
     });
 
     multis.forEach(m => {
-        if (m.percentage) {
+        if (m.percentage !== null) {
             total += m.percentage * m.multi.weight;
             totalWeight += m.multi.weight;
         }
