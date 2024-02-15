@@ -2,7 +2,7 @@ import { CreateGradePeriodDto } from "../request/grade-period/create-grade-perio
 import { GradeDataProvider } from "../data-layer/grade-data-provider";
 import { UpdateMessenger } from "../data-layer/update-messenger";
 import { GradePeriod } from "../dtos/grade-config/grade-period.model";
-import { generateGuid } from "../helpers/helper-methods";
+import { deepCopy, generateGuid } from "../helpers/helper-methods";
 import { ipcMain } from "electron";
 import { UpdateGradePeriodDto } from "../request/grade-period/update-grade-period";
 import { DeleteGradePeriodDto } from "../request/grade-period/delete-grade-period";
@@ -54,9 +54,12 @@ export class GradeHandler {
             if (studentCollection) {
                 const gradePeriod = studentCollection.gradePeriods.find(s => s.id === arg.gradePeriodId);
                 if (gradePeriod) {
-                    gradePeriod.name = arg.name;
-                    gradePeriod.id = generateGuid();
-                    this.updateGradePeriodIds(gradePeriod);
+                    const gradePeriodCopy = deepCopy(gradePeriod)
+                    gradePeriodCopy.name = arg.name;
+                    gradePeriodCopy.id = generateGuid();
+                    this.updateGradePeriodIds(gradePeriodCopy);
+
+                    studentCollection.gradePeriods.push(gradePeriodCopy);
 
                     await gradeDataProvider.createOrUpdate(studentCollection);
                     await updateMessenger.SendUpdatedStudentCollection(studentCollection);
@@ -66,6 +69,9 @@ export class GradeHandler {
     }
 
     private static updateGradePeriodIds(g: GradePeriod): void {
+        this.updateMultis(g.multiGradeConfigurations);
+        this.updateSingles(g.singleGradeConfigurations);
+
         g.multiGradeConfigurations.forEach(m => {
             m.id = generateGuid();
             this.updateMultis(m.multiGradeConfigurations);
@@ -75,13 +81,13 @@ export class GradeHandler {
 
     private static updateMultis(multi: MultiGradeConfiguration[]): void {
         multi.forEach(m => {
-            m.id = generateGuid(),
-                this.updateMultis(m.multiGradeConfigurations);
+            m.id = generateGuid();
+            this.updateMultis(m.multiGradeConfigurations);
             this.updateSingles(m.singleGradeConfigurations);
         });
     }
 
-    private static updateSingles(single: SingleGradeConfiguration[]): void {
-        single.forEach(s => s.id = generateGuid());
+    private static updateSingles(singles: SingleGradeConfiguration[]): void {
+        singles.forEach(s => s.id = generateGuid());
     }
 }
