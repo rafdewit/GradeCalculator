@@ -29,7 +29,7 @@ export class StudentCollectionHandler {
             };
 
             await gradeDataProvider.createOrUpdate(studentCollection);
-            updateMessenger.SendUpdatedStudentCollection(studentCollection);
+            await updateMessenger.SendUpdatedStudentCollection(studentCollection);
         });
 
         ipcMain.on('updateClass', async (c, arg: UpdateStudentCollectionDto) => {
@@ -37,7 +37,7 @@ export class StudentCollectionHandler {
             if (item) {
                 item.name = arg.className;
                 await gradeDataProvider.createOrUpdate(item);
-                updateMessenger.SendUpdatedStudentCollection(item);
+                await updateMessenger.SendUpdatedStudentCollection(item);
             }
         });
 
@@ -46,13 +46,13 @@ export class StudentCollectionHandler {
             if (item) {
                 item.id = generateGuid();
                 await gradeDataProvider.createOrUpdate(item);
-                updateMessenger.SendUpdatedStudentCollection(item);
+                await updateMessenger.SendUpdatedStudentCollection(item);
             }
         });
 
         ipcMain.on('deleteClass', async (c, arg: string) => {
             gradeDataProvider.delete(arg);
-            updateMessenger.SendDeletedStudentCollection(arg);
+            await updateMessenger.SendDeletedStudentCollection(arg);
         });
     }
 }
