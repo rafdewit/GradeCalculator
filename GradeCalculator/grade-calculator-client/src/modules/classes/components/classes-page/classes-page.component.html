@@ -6,21 +6,21 @@
                 Create Class
             </button>
 
-            <input class="hidden" type="file" #uploadclass id="uploadclass" name="uploadclass" accept=".json" (change)="uploadClasses($event)">
+            <input class="hidden" type="file" #uploadclasses id="uploadclasses" name="uploadclasses" accept=".json" (change)="uploadClasses($event)">
             <button (click)="triggerUploadClasses()" mat-raised-button>
                 <mat-icon>upload</mat-icon>
-                Import Class
+                Import Classes
             </button>
     
-            <input class="hidden" type="file" #uploadclasses id="uploadclasses" name="uploadclasses" accept=".json" (change)="uploadClass($event)">
             <button (click)="downloadClasses(classes)" mat-raised-button>
                 <mat-icon>download</mat-icon>
                 Download Classes
             </button>
     
+            <input class="hidden" type="file" #uploadclass id="uploadclass" name="uploadclass" accept=".json" (change)="uploadClass($event)">
             <button (click)="triggerUploadClass()" mat-raised-button>
                 <mat-icon>upload</mat-icon>
-                Import Classes
+                Import Class
             </button>
         </div>
     </app-navigator-bar>

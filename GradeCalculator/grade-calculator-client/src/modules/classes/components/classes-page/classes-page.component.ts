@@ -73,7 +73,7 @@ export class ClassesPageComponent {
     this.uploadClassInput.nativeElement.click();
   }
 
-  public uploadClass(event: Event): void {
+  public async uploadClass(event: Event): Promise<void> {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     const fileReader = new FileReader();
