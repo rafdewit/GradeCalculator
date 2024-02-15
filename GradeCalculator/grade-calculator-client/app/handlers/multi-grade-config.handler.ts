@@ -8,7 +8,7 @@ import { CreateMultiGradeConfigurationDto } from "../request/multi/create-multi-
 import { UpdateMultiGradeConfigurationDto } from "../request/multi/update-multi-grade-configuration";
 import { DeleteMultiGradeConfigurationDto } from "../request/multi/delete-multi-grade-configuration";
 
-export class StudentHandler {
+export class MultiGradeConfigHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
         ipcMain.on('createMultiGradeConfigurationDto', async (c, arg: CreateMultiGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);

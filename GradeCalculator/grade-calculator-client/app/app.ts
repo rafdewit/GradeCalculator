@@ -5,6 +5,8 @@ import { StudentCollectionHandler } from "./handlers/student-collection.handler"
 import { StudentHandler } from "./handlers/student.handler";
 import { GradeHandler } from "./handlers/grade.handler";
 import { UpdateSinglesHandler } from "./handlers/update-singles.handler";
+import { SingleGradeConfigHandler } from "./handlers/single-grade-config.handler";
+import { MultiGradeConfigHandler } from "./handlers/multi-grade-config.handler";
 
 const path = require('node:path');
 
@@ -38,6 +40,8 @@ export default class Main {
     StudentHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
     GradeHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
     UpdateSinglesHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+    SingleGradeConfigHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
+    MultiGradeConfigHandler.initializeHandlers(this.gradeDataProvider, this.updateMessenger);
 
     ipcMain.handle('ping', () => 'pong');
   }

@@ -1,7 +1,6 @@
 import { CreateSingleGradeConfigurationDto } from "app/request/single/create-single-grade-configuration";
 import { GradeDataProvider } from "../data-layer/grade-data-provider";
 import { UpdateMessenger } from "../data-layer/update-messenger";
-import { Student } from "../dtos/students/student.model";
 import { generateGuid } from "../helpers/helper-methods";
 import { ipcMain } from "electron";
 import { UpdateSingleGradeConfigurationDto } from "app/request/single/update-single-grade-configuration";
@@ -9,7 +8,7 @@ import { DeleteSingleGradeConfigurationDto } from "app/request/single/delete-sin
 import { GradeConfigFinder } from "./grade-config.finder";
 import { SingleGradeConfiguration } from "app/dtos/grade-config/single-grade-configuration.model";
 
-export class StudentHandler {
+export class SingleGradeConfigHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
         ipcMain.on('createSingleGradeConfigurationDto', async (c, arg: CreateSingleGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
