@@ -43,12 +43,9 @@ export class GradeHandler {
         ipcMain.on('deleteGradePeriod', async (c, arg: DeleteGradePeriodDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (studentCollection) {
-                const gradePeriodIndex = studentCollection.students.findIndex(s => s.id === arg.gradePeriodId);
-                if (gradePeriodIndex >= 0) {
-                    studentCollection.gradePeriods = studentCollection.gradePeriods.splice(gradePeriodIndex, 1);
-                    await gradeDataProvider.createOrUpdate(studentCollection);
-                    await updateMessenger.SendUpdatedStudentCollection(studentCollection);
-                }
+                studentCollection.gradePeriods = studentCollection.gradePeriods.filter(g => g.id !== arg.gradePeriodId);
+                await gradeDataProvider.createOrUpdate(studentCollection);
+                await updateMessenger.SendUpdatedStudentCollection(studentCollection);
             }
         });
 
@@ -65,7 +62,7 @@ export class GradeHandler {
                     await updateMessenger.SendUpdatedStudentCollection(studentCollection);
                 }
             }
-        });        
+        });
     }
 
     private static updateGradePeriodIds(g: GradePeriod): void {
@@ -79,7 +76,7 @@ export class GradeHandler {
     private static updateMultis(multi: MultiGradeConfiguration[]): void {
         multi.forEach(m => {
             m.id = generateGuid(),
-            this.updateMultis(m.multiGradeConfigurations);
+                this.updateMultis(m.multiGradeConfigurations);
             this.updateSingles(m.singleGradeConfigurations);
         });
     }

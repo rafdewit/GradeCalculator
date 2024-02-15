@@ -22,15 +22,15 @@ export default class Main {
 
   private static onReady() {
     this.appWindow = new BrowserWindow({
-      width: 1000,
-      height: 800,
+      width: 1600,
+      height: 1200,
       webPreferences: {
         nodeIntegration: true,
         preload: path.join(__dirname, 'preload.js')
       }
     });
 
-    this.appWindow.webContents.openDevTools();
+    // this.appWindow.webContents.openDevTools();
     this.appWindow.loadFile('dist/grade-calculator-client/index.html');
     this.appWindow.on('closed', () => this.appWindow = null);
 

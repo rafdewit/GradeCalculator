@@ -10,7 +10,7 @@ import { DeleteMultiGradeConfigurationDto } from "../request/multi/delete-multi-
 
 export class MultiGradeConfigHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
-        ipcMain.on('createMultiGradeConfigurationDto', async (c, arg: CreateMultiGradeConfigurationDto) => {
+        ipcMain.on('createMultiGradeConfiguration', async (c, arg: CreateMultiGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (!studentCollection) {
                 return;
@@ -54,21 +54,15 @@ export class MultiGradeConfigHandler {
             }
         });
 
-        ipcMain.on('deleteMultiGradeConfigurationDto', async (c, arg: DeleteMultiGradeConfigurationDto) => {
+        ipcMain.on('deleteMultiGradeConfiguration', async (c, arg: DeleteMultiGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (studentCollection) {
                 const multi = GradeConfigFinder.findMulti(studentCollection, arg.multiId);
                 if(multi) {
                     if(multi.parent) {
-                        const index = multi.parent.multiGradeConfigurations.findIndex(s => s.id === arg.multiId);
-                        if(index >= 0) {
-                            multi.parent.multiGradeConfigurations = multi.parent.multiGradeConfigurations.splice(index, 1);
-                        }
+                        multi.parent.multiGradeConfigurations = multi.parent.multiGradeConfigurations.filter(m => m.id !== arg.multiId);
                     } else {
-                        const index = multi.gradePeriod.multiGradeConfigurations.findIndex(s => s.id === arg.multiId);
-                        if(index >= 0) {
-                            multi.gradePeriod.multiGradeConfigurations.splice(index, 1);
-                        }
+                        multi.gradePeriod.multiGradeConfigurations = multi.gradePeriod.multiGradeConfigurations.filter(m => m.id !== arg.multiId);
                     }
                 }
                 

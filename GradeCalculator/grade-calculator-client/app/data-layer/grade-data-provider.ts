@@ -37,12 +37,12 @@ export class GradeDataProvider {
     }
 
     public async getDeepCopy(id: string): Promise<StudentCollection | null> {
-        let item = this.get(id);
+        let item = await this.get(id);
         if(item) {
             item = deepCopy(item);
         }
 
-        return null;
+        return item;
     }
 
     public async getGradePeriod(studentCollectionId: string, gradeId: string): Promise<GradePeriod | null> {

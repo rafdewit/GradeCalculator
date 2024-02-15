@@ -10,7 +10,7 @@ import { SingleGradeConfiguration } from "../dtos/grade-config/single-grade-conf
 
 export class SingleGradeConfigHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
-        ipcMain.on('createSingleGradeConfigurationDto', async (c, arg: CreateSingleGradeConfigurationDto) => {
+        ipcMain.on('createSingleGradeConfiguration', async (c, arg: CreateSingleGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (!studentCollection) {
                 return;
@@ -23,18 +23,19 @@ export class SingleGradeConfigHandler {
                 weight: arg.weight
             };
 
-            if (arg.multiParentId) {
-                const parent = GradeConfigFinder.findMulti(studentCollection, arg.multiParentId);
-                if (parent) {
-                    parent.result.singleGradeConfigurations.push(single);
-                }
-            } else if (arg.gradePeriodId) {
-                const gradePeriod = studentCollection.gradePeriods.find(g => g.id === arg.gradePeriodId);
-                if (gradePeriod) {
+            const gradePeriod = studentCollection.gradePeriods.find(g => g.id === arg.gradePeriodId);
+            if (gradePeriod) {
+                if (arg.multiParentId) {
+                    const parent = GradeConfigFinder.findMulti(studentCollection, arg.multiParentId);
+                    if (parent) {
+                        parent.result.singleGradeConfigurations.push(single);
+                    }
+                } else {
                     gradePeriod.singleGradeConfigurations.push(single);
                 }
             }
 
+            console.log("tesdt");
             await gradeDataProvider.createOrUpdate(studentCollection);
             await updateMessenger.SendUpdatedStudentCollection(studentCollection);
         });
@@ -54,24 +55,18 @@ export class SingleGradeConfigHandler {
             }
         });
 
-        ipcMain.on('deleteSingleGradeConfigurationDto', async (c, arg: DeleteSingleGradeConfigurationDto) => {
+        ipcMain.on('deleteSingleGradeConfiguration', async (c, arg: DeleteSingleGradeConfigurationDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (studentCollection) {
                 const single = GradeConfigFinder.findSingle(studentCollection, arg.singleId);
-                if(single) {
-                    if(single.parent) {
-                        const index = single.parent.singleGradeConfigurations.findIndex(s => s.id === arg.singleId);
-                        if(index >= 0) {
-                            single.parent.singleGradeConfigurations = single.parent.singleGradeConfigurations.splice(index, 1);
-                        }
+                if (single) {
+                    if (single.parent) {
+                        single.parent.singleGradeConfigurations = single.parent.singleGradeConfigurations.filter(s => s.id !== arg.singleId);
                     } else {
-                        const index = single.gradePeriod.singleGradeConfigurations.findIndex(s => s.id === arg.singleId);
-                        if(index >= 0) {
-                            single.gradePeriod.singleGradeConfigurations.splice(index, 1);
-                        }
+                        single.gradePeriod.singleGradeConfigurations = single.gradePeriod.singleGradeConfigurations.filter(s => s.id !== arg.singleId);
                     }
                 }
-                
+
                 await gradeDataProvider.createOrUpdate(studentCollection);
                 await updateMessenger.SendUpdatedStudentCollection(studentCollection);
             }

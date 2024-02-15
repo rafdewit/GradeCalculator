@@ -39,12 +39,9 @@ export class StudentHandler {
         ipcMain.on('deleteStudent', async (c, arg: DeleteStudentPeriodDto) => {
             const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
             if (studentCollection) {
-                const studentIndex = studentCollection.students.findIndex(s => s.id === arg.studentId);
-                if (studentIndex >= 0) {
-                    studentCollection.students = studentCollection.students.splice(studentIndex, 1);
-                    await gradeDataProvider.createOrUpdate(studentCollection);
-                    await updateMessenger.SendUpdatedStudentCollection(studentCollection);
-                }
+                studentCollection.students = studentCollection.students.filter(s => s.id !== arg.studentId);
+                await gradeDataProvider.createOrUpdate(studentCollection);
+                await updateMessenger.SendUpdatedStudentCollection(studentCollection);
             }
         });
     }
