@@ -12,7 +12,7 @@
     "electron": "electron .",
     "electron-build": "ng build && npm run electron:serve-tsc && electron .",
     "electron:serve-tsc": "tsc -p tsconfig.build-app.json",
-    "electron-package": "electron-packager ./ grade-calculator --platform=win32 --overwrite"
+    "electron-package": "electron-packager ./ grade-calculator --platform=win32 --overwrite --ignore='/node_modules' --ignore='/.angular' --ignore='/.vscode' --ignore='/src'" 
   },
   "private": true,
   "dependencies": {
