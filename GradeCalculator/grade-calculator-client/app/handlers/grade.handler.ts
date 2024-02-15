@@ -6,6 +6,9 @@ import { generateGuid } from "../helpers/helper-methods";
 import { ipcMain } from "electron";
 import { UpdateGradePeriodDto } from "../request/grade-period/update-grade-period";
 import { DeleteGradePeriodDto } from "../request/grade-period/delete-grade-period";
+import { CopyGradePeriodDto } from "app/request/grade-period/copy-grade-period";
+import { MultiGradeConfiguration } from "app/dtos/grade-config/multi-grade-configuration.model";
+import { SingleGradeConfiguration } from "app/dtos/grade-config/single-grade-configuration.model";
 
 export class GradeHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -48,5 +51,40 @@ export class GradeHandler {
                 }
             }
         });
+
+        ipcMain.on('copyGradePeriod', async (c, arg: CopyGradePeriodDto) => {
+            const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+            if (studentCollection) {
+                const gradePeriod = studentCollection.gradePeriods.find(s => s.id === arg.gradePeriodId);
+                if (gradePeriod) {
+                    gradePeriod.name = arg.name;
+                    gradePeriod.id = generateGuid();
+                    this.updateGradePeriodIds(gradePeriod);
+
+                    await gradeDataProvider.createOrUpdate(studentCollection);
+                    await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+                }
+            }
+        });        
+    }
+
+    private static updateGradePeriodIds(g: GradePeriod): void {
+        g.multiGradeConfigurations.forEach(m => {
+            m.id = generateGuid();
+            this.updateMultis(m.multiGradeConfigurations);
+            this.updateSingles(m.singleGradeConfigurations);
+        });
+    }
+
+    private static updateMultis(multi: MultiGradeConfiguration[]): void {
+        multi.forEach(m => {
+            m.id = generateGuid(),
+            this.updateMultis(m.multiGradeConfigurations);
+            this.updateSingles(m.singleGradeConfigurations);
+        });
+    }
+
+    private static updateSingles(single: SingleGradeConfiguration[]): void {
+        single.forEach(s => s.id = generateGuid());
     }
 }
