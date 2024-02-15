@@ -1,12 +1,12 @@
-import { CreateSingleGradeConfigurationDto } from "app/request/single/create-single-grade-configuration";
+import { CreateSingleGradeConfigurationDto } from "../request/single/create-single-grade-configuration";
 import { GradeDataProvider } from "../data-layer/grade-data-provider";
 import { UpdateMessenger } from "../data-layer/update-messenger";
 import { generateGuid } from "../helpers/helper-methods";
 import { ipcMain } from "electron";
-import { UpdateSingleGradeConfigurationDto } from "app/request/single/update-single-grade-configuration";
-import { DeleteSingleGradeConfigurationDto } from "app/request/single/delete-single-grade-configuration";
+import { UpdateSingleGradeConfigurationDto } from "../request/single/update-single-grade-configuration";
+import { DeleteSingleGradeConfigurationDto } from "../request/single/delete-single-grade-configuration";
 import { GradeConfigFinder } from "./grade-config.finder";
-import { SingleGradeConfiguration } from "app/dtos/grade-config/single-grade-configuration.model";
+import { SingleGradeConfiguration } from "../dtos/grade-config/single-grade-configuration.model";
 
 export class SingleGradeConfigHandler {
     public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
