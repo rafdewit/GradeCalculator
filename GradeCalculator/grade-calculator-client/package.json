@@ -11,7 +11,8 @@
     "test": "ng test",
     "electron": "electron .",
     "electron-build": "ng build && npm run electron:serve-tsc && electron .",
-    "electron:serve-tsc": "tsc -p tsconfig.build-app.json"
+    "electron:serve-tsc": "tsc -p tsconfig.build-app.json",
+    "electron-package": "electron-packager ./ grade-calculator --platform=win32 --overwrite"
   },
   "private": true,
   "dependencies": {
@@ -28,6 +29,7 @@
     "@microsoft/signalr": "^8.0.0",
     "@types/file-saver": "^2.0.7",
     "electron": "^28.2.2",
+    "electron-packager": "^17.1.2",
     "file-saver": "^2.0.5",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
