@@ -18,6 +18,8 @@ import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { MultiGradeConfigDialogService } from 'src/services/angular/dialog/multi-grade-config-dialog.service';
 import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
 import { alphabetically } from 'src/services/stores/grade.converter';
+import { StudentConfigurationService } from '../class-configuration/student-configuration.service';
+import { GradePeriodConfigurationService } from '../class-configuration/grade-period-configuration.service';
 
 @Component({
   selector: 'app-class-score-table',
@@ -47,8 +49,11 @@ export class ClassScoreTableComponent implements OnDestroy {
   public scoreDisplayTypeOptions: string[] = ['percentage', 'category', 'score'];
 
   constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog, private singleGradeClient: ISingleGradeClient, private singleGradeConfigDialogService: SingleGradeConfigDialogService,
-    private multiGradeConfigDialogService: MultiGradeConfigDialogService) {
+    private matDialog: MatDialog, private singleGradeClient: ISingleGradeClient,
+    private singleGradeConfigDialogService: SingleGradeConfigDialogService,
+    private multiGradeConfigDialogService: MultiGradeConfigDialogService,
+    public gradePeriodConfigurationService: GradePeriodConfigurationService,
+    public studentConfigurationService: StudentConfigurationService) {
 
     this.filterFormGroup = this.formBuilder.group({
       studentNameFilter: this.formBuilder.control<string>(''),
@@ -89,7 +94,7 @@ export class ClassScoreTableComponent implements OnDestroy {
 
         const studentNameFilterLow = tableFilter.studentNameFilter.toLowerCase();
 
-        const filteredStudentInfos = filter.sortByScore 
+        const filteredStudentInfos = filter.sortByScore
           ? classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage)) ?? []
           : classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
 
