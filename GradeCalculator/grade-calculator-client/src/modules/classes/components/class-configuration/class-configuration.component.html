@@ -7,7 +7,7 @@
     
         <div class="collection-header">
             <h2>Periods</h2>
-            <button (click)="openCreatePeriodDialog(info.class)" mat-raised-button>
+            <button (click)="gradePeriodConfigurationService.openCreatePeriodDialog(info.class)" mat-raised-button>
                 <mat-icon>add</mat-icon>
                 Create
             </button>
@@ -16,19 +16,18 @@
         <div class="periods-content">
             <app-grid-list>
                 @for (gradePeriod of info.class.gradePeriods; track gradePeriod) {
-                <app-grid-tile-blob-template-ref [clickable]="false" [title]="gradePeriod.name" [clickable]="true" [showMenu]="true"
-                    (clickRequest)="periodClicked(gradePeriod)">
+                <app-grid-tile-blob-template-ref [clickable]="false" [title]="gradePeriod.name" [clickable]="true" [showMenu]="true">
 
                     <div menu-items>
-                        <button mat-menu-item (click)="updatePeriod(gradePeriod, info.class)">
+                        <button mat-menu-item (click)="gradePeriodConfigurationService.updatePeriod(gradePeriod, info.class)">
                             <mat-icon>copy_all</mat-icon>
                             <span>Update period</span>
                         </button>
-                        <button mat-menu-item (click)="copyPeriod(gradePeriod, info.class)">
+                        <button mat-menu-item (click)="gradePeriodConfigurationService.copyPeriod(gradePeriod, info.class)">
                             <mat-icon>copy_all</mat-icon>
                             <span>Copy period</span>
                         </button>
-                        <button mat-menu-item (click)="deletePeriod(gradePeriod, info.class)">
+                        <button mat-menu-item (click)="gradePeriodConfigurationService.deletePeriod(gradePeriod, info.class)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete period</span>
                         </button>
@@ -46,7 +45,7 @@
     
         <div class="collection-header students-header">
             <h2>Students</h2>
-            <button (click)="createStudent(info.class)" mat-raised-button>
+            <button (click)="studentConfigurationService.createStudent(info.class)" mat-raised-button>
                 <mat-icon>add</mat-icon>
                 Create
             </button>
@@ -58,11 +57,11 @@
                 <app-grid-tile-blob-template-ref [clickable]="false" [title]="student.name" [clickable]="true" [showMenu]="true">
         
                     <div menu-items>
-                        <button mat-menu-item (click)="updateStudent(student, info.class)">
+                        <button mat-menu-item (click)="studentConfigurationService.updateStudent(student, info.class)">
                             <mat-icon>update</mat-icon>
                             <span>Update student</span>
                         </button>
-                        <button mat-menu-item (click)="deleteStudent(student, info.class)">
+                        <button mat-menu-item (click)="studentConfigurationService.deleteStudent(student, info.class)">
                             <mat-icon>delete</mat-icon>
                             <span>Delete student</span>
                         </button>

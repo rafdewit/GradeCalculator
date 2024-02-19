@@ -67,8 +67,6 @@ export function calculatePercentage(gradePeriods: StudentGradePeriodInfo[]): num
             }
         });
 
-        console.log(total);
-        console.log(totalWeight);
         return total / totalWeight;
     } else {
         let total = 0;
