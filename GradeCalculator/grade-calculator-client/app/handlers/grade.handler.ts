@@ -16,6 +16,7 @@ export class GradeHandler {
             const gradePeriod: GradePeriod = {
                 id: generateGuid(),
                 name: arg.name,
+                weight: arg.weight,
                 multiGradeConfigurations: [],
                 singleGradeConfigurations: []
             }
@@ -34,6 +35,7 @@ export class GradeHandler {
                 const gradePeriod = studentCollection.gradePeriods.find(s => s.id === arg.gradePeriodId);
                 if (gradePeriod) {
                     gradePeriod.name = arg.name;
+                    gradePeriod.weight = arg.weight;
                     await gradeDataProvider.createOrUpdate(studentCollection);
                     await updateMessenger.SendUpdatedStudentCollection(studentCollection);
                 }
@@ -56,6 +58,7 @@ export class GradeHandler {
                 if (gradePeriod) {
                     const gradePeriodCopy = deepCopy(gradePeriod)
                     gradePeriodCopy.name = arg.name;
+                    gradePeriodCopy.weight = arg.weight;
                     gradePeriodCopy.id = generateGuid();
                     this.updateGradePeriodIds(gradePeriodCopy);
 

@@ -55,16 +55,36 @@ export function calculatePercentage(gradePeriods: StudentGradePeriodInfo[]): num
         return null;
     }
 
-    let total = 0;
-    let totalItems = 0;
-    gradePeriods.forEach(p => {
-        if (p.totalPercentage !== null) {
-            total += p.totalPercentage;
-            totalItems++;
-        }
-    });
+    if(gradePeriods.some(p => p.gradePeriod.weight > 0)) {
+        let total = 0;
+        let totalWeight = 0;
 
-    return total / totalItems;
+        gradePeriods.forEach(p => {
+            const weight = p.gradePeriod.weight ?? 0;
+            if (p.totalPercentage !== null) {
+                total += p.totalPercentage * weight;
+                totalWeight += weight;
+            }
+        });
+
+        console.log(total);
+        console.log(totalWeight);
+        return total / totalWeight;
+    } else {
+        let total = 0;
+        let totalItems = 0;
+
+        gradePeriods.forEach(p => {
+            if (p.totalPercentage !== null) {
+                total += p.totalPercentage;
+                totalItems++;
+            }
+        });
+
+        return total / totalItems;
+    }
+
+    
 }
 
 export function createGradeMap(grades: StudentSingleGrade[]): { [key: string]: StudentSingleGrade } {

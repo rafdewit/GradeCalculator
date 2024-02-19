@@ -2,7 +2,7 @@
 @if(info.classScoreInfo; as classScoreInfo) {
 <app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
 
-<div class="students-content">
+<div class="students-content styled-scrollbars">
     <app-grid-list>
         @for (studentInfo of classScoreInfo.studentInfos; track studentInfo) {
         <app-grid-tile-blob-template-ref [clickable]="false" [title]="studentInfo.student.name" [clickable]="true"

@@ -14,6 +14,7 @@ import { CreateStudentDialogData } from './create-student-dialog/create-student-
 import { CreateStudentDialogComponent } from './create-student-dialog/create-student-dialog.component';
 import { IGradePeriodClient } from 'src/services/communication/api/base/grade-period-client.interface';
 import { IStudentClient } from 'src/services/communication/api/base/student-client';
+import { CreatePeriodDialogResultData } from './create-period-dialog/create-period-dialog-result.data';
 
 @Component({
   selector: 'app-class-configuration',
@@ -42,7 +43,7 @@ export class ClassConfigurationComponent {
   public async openCreatePeriodDialog(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openPeriodDialog("Create Grade Period");
     if (result) {
-      await firstValueFrom(this.gradePeriodWebClient.createGradePeriod({ studentCollectionId: studentCollection.id, name: result }));
+      await firstValueFrom(this.gradePeriodWebClient.createGradePeriod({ studentCollectionId: studentCollection.id, name: result.name, weight: result.weight }));
     }
   }
 
@@ -53,14 +54,14 @@ export class ClassConfigurationComponent {
   public async copyPeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
     const result = await this.openPeriodDialog(`Copy Grade Period: ${gradePeriod.name}`, gradePeriod);
     if (result) {
-      await firstValueFrom(this.gradePeriodWebClient.copyGradePeriod({ studentCollectionId: studentCollection.id, name: result, gradePeriodId: gradePeriod.id }));
+      await firstValueFrom(this.gradePeriodWebClient.copyGradePeriod({ studentCollectionId: studentCollection.id, name: result.name, weight: result.weight, gradePeriodId: gradePeriod.id }));
     }
   }
 
   public async updatePeriod(gradePeriod: GradePeriod, studentCollection: StudentCollection): Promise<void> {
     const result = await this.openPeriodDialog(`Update Grade Period: ${gradePeriod.name}`, gradePeriod);
     if (result) {
-      await firstValueFrom(this.gradePeriodWebClient.updateGradePeriod({ studentCollectionId: studentCollection.id, name: result, gradePeriodId: gradePeriod.id }));
+      await firstValueFrom(this.gradePeriodWebClient.updateGradePeriod({ studentCollectionId: studentCollection.id, name: result.name, weight: result.weight, gradePeriodId: gradePeriod.id }));
     }
   }
 
@@ -110,10 +111,11 @@ export class ClassConfigurationComponent {
     return await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 
-  public async openPeriodDialog(title: string, period: GradePeriod | null = null): Promise<string | null> {
+  public async openPeriodDialog(title: string, period: GradePeriod | null = null): Promise<CreatePeriodDialogResultData | null> {
     const data: DefaultCrudDialogData<CreatePeriodDialogData> = {
       object: {
-        name: period?.name ?? 'GradePeriodName'
+        name: period?.name ?? 'GradePeriodName',
+        weight: period?.weight ?? 50
       },
       deleteFlag: false,
       title: title,
@@ -124,7 +126,7 @@ export class ClassConfigurationComponent {
     const input = new MatDialogConfig<DefaultCrudDialogData<CreatePeriodDialogData>>();
     input.data = data;
 
-    const dialogRef = this.matDialog.open<CreatePeriodDialogComponent, DefaultCrudDialogData<CreatePeriodDialogData>, string>(CreatePeriodDialogComponent, input);
+    const dialogRef = this.matDialog.open<CreatePeriodDialogComponent, DefaultCrudDialogData<CreatePeriodDialogData>, CreatePeriodDialogResultData>(CreatePeriodDialogComponent, input);
     return await firstValueFrom(dialogRef.afterClosed()) ?? null;
   }
 }

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Inject } from '@angular/core';
 import { CreatePeriodDialogData } from './create-period-dialog.data';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import {  FormControl, NonNullableFormBuilder, Validators } from '@angular/forms';
+import {  FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 
 @Component({
@@ -12,14 +12,20 @@ import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default
 })
 export class CreatePeriodDialogComponent {
 
-  valueFormControl: FormControl<string>;
+  public valueFormGroup: FormGroup<{
+    name: FormControl<string>,
+    weight: FormControl<number>
+  }>;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<CreatePeriodDialogData>, private dialogRef: MatDialogRef<CreatePeriodDialogComponent>, private formBuilder: NonNullableFormBuilder) { 
-    this.valueFormControl = this.formBuilder.control(data.object.name, [Validators.required]);
+    this.valueFormGroup = this.formBuilder.group({
+      name: this.formBuilder.control(data.object.name, [Validators.required]),
+      weight: this.formBuilder.control(data.object.weight, [Validators.required])
+    });
   }
 
   public acceptChanges(): void {
-    this.dialogRef.close(this.valueFormControl.value);
+    this.dialogRef.close(this.valueFormGroup.value);
   }
 
   public cancel(): void {

@@ -85,6 +85,7 @@
                 @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
                 <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
                     <th>
+                        {{gradePeriod.weight}}
                     </th>
 
                     @for(single of gradePeriod.singleGradeConfigurations; track single) {

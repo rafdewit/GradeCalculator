@@ -1,7 +1,13 @@
 :host {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
 
   .students-content {
+    height: 100%;
+    overflow-y: auto;
+
     .total-header {
       display: flex;
       flex-direction: row;

@@ -4,6 +4,7 @@ import { SingleGradeConfiguration } from "./single-grade-configuration.model";
 export interface GradePeriod {
     id: string;
     name: string;
+    weight: number;
     multiGradeConfigurations: MultiGradeConfiguration[];
     singleGradeConfigurations: SingleGradeConfiguration[];
 }

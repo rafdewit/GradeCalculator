@@ -5,14 +5,19 @@
         <form class="example-form">
             <mat-form-field class="example-full-width">
                 <mat-label>Name</mat-label>
-                <input matInput [formControl]="valueFormControl">
-                @if(valueFormControl.hasError('required')) {<mat-error>Required</mat-error>}
+                <input matInput [formControl]="valueFormGroup.controls.name">
+                @if(valueFormGroup.controls.name.hasError('required')) {<mat-error>Required</mat-error>}
+            </mat-form-field>
+
+            <mat-form-field class="example-full-width">
+                <mat-label>Weight</mat-label>
+                <input type="number" min="0" matInput [formControl]="valueFormGroup.controls.weight">
             </mat-form-field>
         </form>
     </mat-dialog-content>
 
     <mat-dialog-actions align="end">
         <button mat-raised-button (click)="cancel()">Cancel</button>
-        <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.valueFormControl.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
+        <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.valueFormGroup.invalid" cdkFocusInitial>{{data.isUpdate ? 'Update' : 'Create'}}</button>
     </mat-dialog-actions>
 </app-theme-container>
