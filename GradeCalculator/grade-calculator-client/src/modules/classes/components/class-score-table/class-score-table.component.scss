@@ -9,13 +9,32 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-  }
 
-  .table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-    border: 1px;
+    .filter-table-container {
+      display: flex;
+      flex-direction: row;
+      height: 100%;
+      overflow: hidden;
+
+      .table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        border: 1px;
+      }
+
+      .control-panel {
+        display: flex;
+        flex-direction: column;
+        justify-content:start;
+        width: 200px;
+        margin: 16px;
+    
+        .control-panel-item {
+          margin-right: 16px;
+        }
+      }
+    }
   }
 
   thead {
@@ -67,17 +86,6 @@
   .center-content {
     display: flex;
     justify-content: center;
-  }
-
-  .control-panel {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    flex-wrap: wrap;
-
-    .control-panel-item {
-      margin-right: 16px;
-    }
   }
 
   .icon-button {
