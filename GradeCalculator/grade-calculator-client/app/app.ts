@@ -30,7 +30,7 @@ export default class Main {
       }
     });
 
-    this.appWindow.webContents.openDevTools();
+    // this.appWindow.webContents.openDevTools();
     this.appWindow.maximize();
     this.appWindow.loadFile('dist/grade-calculator-client/index.html');
     this.appWindow.on('closed', () => this.appWindow = null);
@@ -47,7 +47,7 @@ export default class Main {
     ipcMain.handle('ping', () => 'pong');
   }
 
-  
+
 }
 
 Main.main();
