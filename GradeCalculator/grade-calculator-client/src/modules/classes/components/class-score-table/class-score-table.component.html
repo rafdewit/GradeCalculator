@@ -50,7 +50,13 @@
         <thead>
             <tr>
                 <!--Student name and total score-->
-                <th class="table-header cell-margin">Student Name</th>
+                <th class="table-header cell-margin">
+                    <div class="students-button-header">
+                        <div>Students</div>
+                        <mat-icon class="icon-button" matTooltip="Add New Student"
+                                (click)="studentConfigurationService.createStudent(classScoreInfo.class)">add</mat-icon>
+                    </div>
+                </th>
                 <th class="table-header cell-margin">Total</th>
 
                 <!--GradePeriods-->
@@ -199,7 +205,16 @@
             <tr>
                 <!--Student name and total score-->
                 <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">
-                    <div class="student-name">{{studentInfo.student.name}}</div>
+                    <div class="student-name-row">
+                        <div class="student-name">{{studentInfo.student.name}}</div>
+
+                        <div class="student-name-row-buttons">
+                            <mat-icon *ngIf="info.showEditButtons" class="icon-button" matTooltip="Update Student"
+                                    (click)="studentConfigurationService.updateStudent(studentInfo.student, classScoreInfo.class)">edit</mat-icon>
+                            <mat-icon *ngIf="info.showDeleteButtons" class="icon-button" matTooltip="Delete Student"
+                                    (click)="studentConfigurationService.deleteStudent(studentInfo.student, classScoreInfo.class)">delete</mat-icon>
+                        </div>
+                    </div>
                 </td>
 
                 <td [class.border-top]="first" [class.border-bottom]="last" class="border-left-right">

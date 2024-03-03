@@ -35,6 +35,25 @@
     font-weight: 100;
   }
 
+  .students-button-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .student-name-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    .student-name-row-buttons {
+      display: flex;
+      flex-direction: row;
+    }
+  }
+
   .cell-margin {
     padding: 4px 24px 4px 24px;
   }
@@ -63,6 +82,9 @@
 
   .icon-button {
     cursor: pointer;
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
     margin: 4px;
     vertical-align: middle;
   }
