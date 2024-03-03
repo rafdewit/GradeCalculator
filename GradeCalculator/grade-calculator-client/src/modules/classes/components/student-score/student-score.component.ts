@@ -11,27 +11,53 @@ import { GradeStore } from 'src/services/stores/grade.store';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StudentScoreComponent {
-  public classStudentInfo$: Observable<ClassStudentInfo>;
+  public info$: Observable<StudentScoreInfo>;
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore) {
-    const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
-    const studentId$ = this.activatedRoute.params.pipe(map(p => p['studentId'] as string));
-    
-    this.classStudentInfo$ = combineLatest(([classId$, studentId$, this.gradeStore.classScoreInfos$]))
-      .pipe(map(([classId, studentId, classScoreInfos]) => {
-        const classInfo = classScoreInfos.find(c => c.class.id === classId) ?? null;
-        const studentInfo = classInfo?.studentInfos.find(i => i.student.id === studentId) ?? null
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private gradeStore: GradeStore
+  ) {
+    const classId$ = this.activatedRoute.params.pipe(
+      map((p) => p['classId'] as string)
+    );
+    const studentId$ = this.activatedRoute.params.pipe(
+      map((p) => p['studentId'] as string)
+    );
+
+    this.info$ = combineLatest([
+      classId$,
+      studentId$,
+      this.gradeStore.classScoreInfos$,
+    ]).pipe(
+      map(([classId, studentId, classScoreInfos]) => {
+        const classInfo =
+          classScoreInfos.find((c) => c.class.id === classId) ?? null;
+        const studentInfo =
+          classInfo?.studentInfos.find((i) => i.student.id === studentId) ??
+          null;
 
         const result: ClassStudentInfo = {
           classInfo: classInfo,
-          studentInfo: studentInfo
+          studentInfo: studentInfo,
         };
-  
-        return result;
-      }));
+
+        return {
+          classStudentInfo: result,
+          classNavigationName: `Students(${classInfo?.class?.name})`,
+        };
+      })
+    );
   }
 
   public backToScores() {
-    this.router.navigate(["../../score-overview"], { relativeTo: this.activatedRoute })
+    this.router.navigate(['../../score-overview'], {
+      relativeTo: this.activatedRoute,
+    });
   }
+}
+
+export interface StudentScoreInfo {
+  classStudentInfo: ClassStudentInfo;
+  classNavigationName: string;
 }

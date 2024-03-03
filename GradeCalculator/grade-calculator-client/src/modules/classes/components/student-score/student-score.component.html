@@ -1,48 +1,49 @@
-@if(classStudentInfo$ | async; as info) {
-<app-navigator-bar [partsNav]="[1, 2]"
-    [parts]="['Classes', info.classInfo?.class?.name ?? 'Class Unknown', info.studentInfo?.student?.name ?? 'Student Unknown']"></app-navigator-bar>
-
-@if(info.studentInfo; as student) {
-<div class="year-total">
-    <h1 class="year-total-title">Year total:</h1>
-    <app-percentage-representation [percentage]="student.totalPercentage"></app-percentage-representation>
-    <div *ngIf="student.totalPercentage !== null">({{student.totalPercentage | gradeCategory}})</div>
-</div>
-
-<div class="periods-container">
-    @for (studentGradePeriodInfo of student.gradePeriods; track $index) {
-    <div class="period-container">
-        <div class="period-title-container">
-            <h2 class="period-title">
-                Period: {{studentGradePeriodInfo.gradePeriod.name}}:
-            </h2>
-
-            <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
-            <div *ngIf="studentGradePeriodInfo.totalPercentage !== null">({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
-        </div>
-
-        <div class="headers">
-            <div class="title">Name</div>
-            <div class="percentage-representation">Percentage</div>
-            <div class="score-representation">Score</div>
-            <div class="weight-representation">Weight</div>
-            <div class="score-category-representation">Category</div>
-        </div>
-        
-        @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
-            <div>
-                <app-single-score [depth]="0" [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+@if(info$ | async; as info) {
+    @if(info.classStudentInfo; as classStudentInfo)
+    {
+    <app-navigator-bar [partsNav]="[1, 2]" [parts]="['Classes', info.classNavigationName, classStudentInfo.studentInfo?.student?.name ?? 'Student Unknown']"></app-navigator-bar>
+    
+    @if(classStudentInfo.studentInfo; as student) {
+    <div class="year-total">
+        <h1 class="year-total-title">Year total:</h1>
+        <app-percentage-representation [percentage]="student.totalPercentage"></app-percentage-representation>
+        <div *ngIf="student.totalPercentage !== null">({{student.totalPercentage | gradeCategory}})</div>
+    </div>
+    
+    <div class="periods-container">
+        @for (studentGradePeriodInfo of student.gradePeriods; track $index) {
+        <div class="period-container">
+            <div class="period-title-container">
+                <h2 class="period-title">
+                    Period: {{studentGradePeriodInfo.gradePeriod.name}}:
+                </h2>
+    
+                <app-percentage-representation [percentage]="studentGradePeriodInfo.totalPercentage"></app-percentage-representation>
+                <div *ngIf="studentGradePeriodInfo.totalPercentage !== null">({{studentGradePeriodInfo.totalPercentage | gradeCategory}})</div>
             </div>
-        }
-
-        @for (multiInfo of studentGradePeriodInfo.studentMultiGradeInfos; track $index) {
-            <div>
-                <app-multi-score [depth]="0" [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+    
+            <div class="headers">
+                <div class="title">Name</div>
+                <div class="percentage-representation">Percentage</div>
+                <div class="score-representation">Score</div>
+                <div class="weight-representation">Weight</div>
+                <div class="score-category-representation">Category</div>
             </div>
+            
+            @for (singleInfo of studentGradePeriodInfo.studentSingleGradeInfos; track $index) {
+                <div>
+                    <app-single-score [depth]="0" [rootScore]="true" [singleInfo]="singleInfo"></app-single-score>
+                </div>
+            }
+    
+            @for (multiInfo of studentGradePeriodInfo.studentMultiGradeInfos; track $index) {
+                <div>
+                    <app-multi-score [depth]="0" [rootScore]="true" [multiInfo]="multiInfo"></app-multi-score>
+                </div>
+            }
+        </div>
         }
     </div>
     }
-</div>
-
-}
+    }
 }
