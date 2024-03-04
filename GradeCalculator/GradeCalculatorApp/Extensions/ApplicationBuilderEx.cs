@@ -19,6 +19,10 @@ public static class ApplicationBuilderEx
             ServeUnknownFileTypes = true
         });
 
-        app.UseFileServer();
+        app.Run(async context =>
+        {
+            context.Response.ContentType = "text/html";
+            await context.Response.SendFileAsync(Path.Combine("./wwwroot/index.html"));
+        });
     }
 }

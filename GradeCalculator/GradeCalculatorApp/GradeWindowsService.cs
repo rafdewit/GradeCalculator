@@ -5,6 +5,8 @@ using GradeCalculatorApp.Hubs;
 using GradeCalculatorApp.Services;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
+using GradeCalculatorApp.DataLayer.Databases.Lite;
+using GradeCalculatorApp.DataLayer.Databases.Mongo;
 
 namespace GradeCalculatorApp
 {
@@ -58,10 +60,10 @@ namespace GradeCalculatorApp
 
         public static void ConfigureApplicationSpecificServices(IServiceCollection services)
         {
-            services.AddSingleton(new GradeDbConfig("GradeDatabase.db"));
+            services.AddSingleton(new GradeLiteDbConfig("GradeDatabase.db"));
             services.AddSingleton<IGradeDataProvider, GradeDataProvider>();
             services.AddSingleton<IGradeConfigurationTracker, GradeConfigurationTracker>();
-            services.AddTransient<IGradeLiteDb, GradeLiteDb>();
+            services.AddTransient<IGradeDb, MongoGradeDb>();
             services.AddTransient<IGradeHubMessenger, GradeHubMessenger>();
         }
 

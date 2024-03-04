@@ -1,22 +1,21 @@
 ﻿using GradeCalculator.DataLayer.Models;
 using LiteDB;
-using Microsoft.AspNetCore.Components.Web;
 
-namespace GradeCalculator.DataLayer;
+namespace GradeCalculatorApp.DataLayer.Databases.Lite;
 
-public interface IGradeLiteDb
+public interface IGradeDb
 {
     void CreateOrUpdate(StudentCollection studentCollection);
     bool Delete(string id);
     IEnumerable<StudentCollection> GetAll();
 }
 
-public class GradeLiteDb : IGradeLiteDb
+public class GradeLiteDb : IGradeDb
 {
-    private readonly GradeDbConfig _gradeDbConfig;
+    private readonly GradeLiteDbConfig _gradeDbConfig;
     private const string _studentCollectionTableName = "StudentCollection";
 
-    public GradeLiteDb(GradeDbConfig gradeDbConfig)
+    public GradeLiteDb(GradeLiteDbConfig gradeDbConfig)
     {
         _gradeDbConfig = gradeDbConfig;
     }

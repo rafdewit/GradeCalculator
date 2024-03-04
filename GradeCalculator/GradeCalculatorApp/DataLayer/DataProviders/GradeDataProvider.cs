@@ -1,6 +1,7 @@
 ﻿using GradeCalculator.DataLayer.Models;
 using GradeCalculator.DataLayer.Models.Configurations;
 using GradeCalculator.Tests;
+using GradeCalculatorApp.DataLayer.Databases.Lite;
 using System.Security.Cryptography;
 
 namespace GradeCalculator.DataLayer.DataProviders;
@@ -15,9 +16,9 @@ public interface IGradeDataProvider
     GradePeriod? GetGradePeriod(string studentCollectionId, string gradeId);
 }
 
-public class GradeDataProvider(IGradeLiteDb gradeLiteDb) : IGradeDataProvider
+public class GradeDataProvider(IGradeDb gradeLiteDb) : IGradeDataProvider
 {
-    private readonly IGradeLiteDb _gradeLiteDb = gradeLiteDb;
+    private readonly IGradeDb _gradeLiteDb = gradeLiteDb;
 
     public List<StudentCollection> GetAll()
     {

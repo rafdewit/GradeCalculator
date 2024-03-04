@@ -1,4 +1,6 @@
 using GradeCalculator.DataLayer;
+using GradeCalculatorApp.DataLayer.Databases;
+using GradeCalculatorApp.DataLayer.Databases.Lite;
 
 namespace GradeCalculator.Tests;
 
@@ -13,7 +15,7 @@ public class GradeLiteDbTests
         if (File.Exists(TestDbFileName))
             File.Delete(TestDbFileName);
 
-        _sut = new GradeLiteDb(new GradeDbConfig(TestDbFileName));
+        _sut = new GradeLiteDb(new GradeLiteDbConfig(TestDbFileName));
     }
 
     [Fact]
