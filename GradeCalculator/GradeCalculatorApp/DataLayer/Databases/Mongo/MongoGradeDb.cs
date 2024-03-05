@@ -10,9 +10,6 @@ namespace GradeCalculatorApp.DataLayer.Databases.Mongo
         public MongoGradeDb()
         {
             _connectionString = "mongodb+srv://rafdewit:qYDzKnFael1RR08h@avanteducation.xmymlej.mongodb.net/?retryWrites=true&w=majority&appName=AvantEducation";
-#if DEBUG
-            _connectionString = "mongodb://localhost:27017";
-#endif
         }
 
         private IMongoDatabase GetDatabase()

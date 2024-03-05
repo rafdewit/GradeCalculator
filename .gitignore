@@ -13,6 +13,7 @@
 *.sln.docstates
 
 # User-specific files (MonoDevelop/Xamarin Studio)
+GradeCalculator/GradeCalculatorApp/wwwroot
 *.userprefs
 
 src/Avant.Tests/lcov.info

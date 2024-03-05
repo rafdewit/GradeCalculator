@@ -6,13 +6,14 @@
     "ng": "ng",
     "start": "ng serve",
     "start:dev": "ng serve --configuration development",
+    "build:dotnet": "ng build --configuration dotnet",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "electron": "electron .",
     "electron-build": "ng build && npm run electron:serve-tsc && electron .",
     "electron:serve-tsc": "tsc -p tsconfig.build-app.json",
-    "electron-package": "electron-packager ./ grade-calculator --platform=win32 --overwrite --ignore='/node_modules' --ignore='/.angular' --ignore='/.vscode' --ignore='/src'" 
+    "electron-package": "electron-packager ./ grade-calculator --platform=win32 --overwrite --ignore='/node_modules' --ignore='/.angular' --ignore='/.vscode' --ignore='/src'"
   },
   "private": true,
   "dependencies": {

@@ -1,4 +1,4 @@
-using Topshelf;
+using GradeCalculatorApp.Hubs;
 
 namespace GradeCalculatorApp;
 
@@ -6,44 +6,37 @@ public class Program
 {
     public static void Main(string[] args)
     {
-        string url = "https://localhost:7179";
-        HostFactory.Run(configure =>
-        {
-            configure.Service<GradeWindowsService>(service =>
-            {
-                service.ConstructUsing(s => new GradeWindowsService());
-                service.WhenStarted((s, c) => s.Start(url, args));
-                service.WhenStopped((s, c) => s.Stop());
-            });
+        var builder = WebApplication.CreateBuilder(args);
+        ContainerBuilderEx.ConfigureServices(builder.Services);
+        ContainerBuilderEx.ConfigureApplicationSpecificServices(builder.Services);
+        var app = builder.Build();
 
-            //Setup Account that window service use to run.  
-            configure.RunAsLocalSystem();
-            configure.SetServiceName("GradeCalculator");
-            configure.SetDisplayName("GradeCalculator");
-            configure.SetDescription("GradeCalculator - calculates grades");
-            configure.StartAutomaticallyDelayed();
-            configure.OnException(exc =>
-            {
-                LogToEventLog(exc);
-            });
-        });
+        Configure(app);
+
+        app.Run();
     }
 
-    internal static void LogToEventLog(Exception exc)
+    public static void Configure(WebApplication app)
     {
-        try
+        if (app.Environment.IsDevelopment())
         {
-            var message = $"{exc.Message}{Environment.NewLine}{exc.StackTrace}";
-#pragma warning disable CA1416 // Validate platform compatibility
-            System.Diagnostics.EventLog.WriteEntry("TiliaLight", message, System.Diagnostics.EventLogEntryType.Error);
-#pragma warning restore CA1416 // Validate platform compatibility
-            if (exc.InnerException != null)
-                LogToEventLog(exc.InnerException);
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(exc.Message);
-            Console.WriteLine(e.Message);
-        }
+
+        app.UseCors("CorsPolicy");
+        app.UseHttpsRedirection();
+        app.UseAuthorization();
+
+        app.MapControllers();
+        app.MapHub<GradeHub>("/hubs/grades");
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+        app.UseFileServer();
+
+        app.MapFallbackToFile("/classes/{*urlRemainder}", "index.html");
+        app.MapFallbackToFile("/classes", "index.html");
+        app.MapFallbackToFile("/", "index.html");
     }
 }
