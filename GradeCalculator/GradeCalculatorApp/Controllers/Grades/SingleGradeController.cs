@@ -5,7 +5,7 @@ using GradeCalculatorApp.Hubs;
 using GradeCalculatorApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GradeCalculatorApp.Controllers
+namespace GradeCalculatorApp.Controllers.Grades
 {
     [ApiController]
     [Route("[controller]")]
@@ -31,7 +31,7 @@ namespace GradeCalculatorApp.Controllers
             if (studentCollection == null)
                 return NotFound();
 
-            foreach(var update in updates.SingleGradeUpdates)
+            foreach (var update in updates.SingleGradeUpdates)
             {
                 var student = studentCollection.Students.FirstOrDefault(s => s.Id == update.StudentId);
                 if (student == null)
@@ -41,7 +41,7 @@ namespace GradeCalculatorApp.Controllers
                     student.StudentSingleGrades = new List<StudentSingleGrade>();
 
                 var grade = student.StudentSingleGrades.FirstOrDefault(g => g.SingleGradeConfigurationId == updates.SingleGradeConfigurationId);
-                if(grade != null)
+                if (grade != null)
                 {
                     grade.Score = update.Score;
                 }

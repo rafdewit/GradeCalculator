@@ -4,7 +4,7 @@ using GradeCalculatorApp.Controllers.Requests.Periods;
 using GradeCalculatorApp.Hubs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GradeCalculatorApp.Controllers;
+namespace GradeCalculatorApp.Controllers.Grades;
 
 [ApiController]
 [Route("[controller]")]

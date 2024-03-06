@@ -1,22 +1,21 @@
 ﻿using GradeCalculator.DataLayer.DataProviders;
 using GradeCalculator.DataLayer.Models.Configurations;
 using GradeCalculatorApp.Controllers.Requests.GradeConfiguration.Single;
-using GradeCalculatorApp.Controllers.Requests.Periods;
 using GradeCalculatorApp.Hubs;
 using GradeCalculatorApp.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GradeCalculatorApp.Controllers;
+namespace GradeCalculatorApp.Controllers.Grades;
 
 [ApiController]
 [Route("[controller]")]
-public class MultiGradeConfigurationController : ControllerBase
+public class SingleGradeConfigurationController : ControllerBase
 {
     private readonly IGradeDataProvider _gradeDataProvider;
     private readonly IGradeHubMessenger _gradeHubMessenger;
     private readonly IGradeConfigurationTracker _gradeConfigurationTracker;
 
-    public MultiGradeConfigurationController(IGradeDataProvider gradeDataProvider, IGradeHubMessenger gradeHubMessenger,
+    public SingleGradeConfigurationController(IGradeDataProvider gradeDataProvider, IGradeHubMessenger gradeHubMessenger,
         IGradeConfigurationTracker gradeConfigurationTracker)
     {
         _gradeDataProvider = gradeDataProvider;
@@ -26,7 +25,7 @@ public class MultiGradeConfigurationController : ControllerBase
 
     [HttpPost]
     [Route("")]
-    public IActionResult CreateMultiGradeConfiguration(CreateMultiGradeConfigurationDto create)
+    public IActionResult CreateSingleGradeConfiguration(CreateSingleGradeConfigurationDto create)
     {
         var studentCollection = _gradeDataProvider.Get(create.StudentCollectionId);
         if (studentCollection == null)
@@ -36,18 +35,18 @@ public class MultiGradeConfigurationController : ControllerBase
         if (gradePeriod == null)
             return NotFound();
 
-        var multi = new MultiGradeConfiguration(Guid.NewGuid().ToString(), create.Name, create.Weight, [], []);
-        if(string.IsNullOrEmpty(create.MultiParentId))
+        var single = new SingleGradeConfiguration(Guid.NewGuid().ToString(), create.Name, create.TotalScore, create.Weight);
+        if (string.IsNullOrEmpty(create.MultiParentId))
         {
-            gradePeriod.MultiGradeConfigurations.Add(multi);
+            gradePeriod.SingleGradeConfigurations.Add(single);
         }
         else
         {
-            var parentMulti = _gradeConfigurationTracker.FindMulti(create.MultiParentId, gradePeriod);
-            if (parentMulti == null)
+            var multi = _gradeConfigurationTracker.FindMulti(create.MultiParentId, gradePeriod);
+            if (multi == null)
                 return NotFound();
 
-            parentMulti.Result.MultiGradeConfigurations.Add(multi);
+            multi.Result.SingleGradeConfigurations.Add(single);
         }
 
         _gradeDataProvider.CreateOrUpdate(studentCollection);
@@ -58,18 +57,19 @@ public class MultiGradeConfigurationController : ControllerBase
 
     [HttpPost]
     [Route("update")]
-    public IActionResult UpdateMultiGradeConfiguration(UpdateMultiGradeConfigurationDto update)
+    public IActionResult UpdateSingleGradeConfiguration(UpdateSingleGradeConfigurationDto update)
     {
         var studentCollection = _gradeDataProvider.Get(update.StudentCollectionId);
         if (studentCollection == null)
             return NotFound();
 
-        var multi = _gradeConfigurationTracker.FindMulti(update.MultiId, studentCollection.GradePeriods.ToArray());
-        if(multi == null)
+        var single = _gradeConfigurationTracker.FindSingle(update.SingleId, studentCollection.GradePeriods.ToArray());
+        if (single == null)
             return NotFound();
 
-        multi.Result.Name = update.Name;
-        multi.Result.Weight = update.Weight;
+        single.Result.Name = update.Name;
+        single.Result.TotalScore = update.TotalScore;
+        single.Result.Weight = update.Weight;
 
         _gradeDataProvider.CreateOrUpdate(studentCollection);
         _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);
@@ -79,20 +79,20 @@ public class MultiGradeConfigurationController : ControllerBase
 
     [HttpPost]
     [Route("delete")]
-    public IActionResult DeleteMultiGradeConfiguration(DeleteMultiGradeConfigurationDto delete)
+    public IActionResult DeleteSingleGradeConfiguration(DeleteSingleGradeConfigurationDto delete)
     {
         var studentCollection = _gradeDataProvider.Get(delete.StudentCollectionId);
         if (studentCollection == null)
             return NotFound();
 
-        var multi = _gradeConfigurationTracker.FindMulti(delete.MultiId, studentCollection.GradePeriods.ToArray());
-        if(multi == null)
+        var single = _gradeConfigurationTracker.FindSingle(delete.SingleId, studentCollection.GradePeriods.ToArray());
+        if (single == null)
             return NotFound();
 
-        if(multi.Parent == null)
-            multi.GradePeriod.MultiGradeConfigurations.Remove(multi.Result);
+        if (single.Parent == null)
+            single.GradePeriod.SingleGradeConfigurations.Remove(single.Result);
         else
-            multi.Parent.MultiGradeConfigurations.Remove(multi.Result);
+            single.Parent.SingleGradeConfigurations.Remove(single.Result);
 
         _gradeDataProvider.CreateOrUpdate(studentCollection);
         _gradeHubMessenger.SendUpdatedStudentCollection(studentCollection);

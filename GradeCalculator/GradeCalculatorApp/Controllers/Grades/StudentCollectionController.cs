@@ -7,7 +7,7 @@ using GradeCalculatorApp.Controllers.Requests.Periods;
 using GradeCalculatorApp.Hubs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GradeCalculatorApp.Controllers;
+namespace GradeCalculatorApp.Controllers.Grades;
 
 [ApiController]
 [Route("[controller]")]
@@ -26,7 +26,7 @@ public class StudentCollectionController : ControllerBase
     [Route("")]
     public IActionResult Get(string? id = null)
     {
-        if(string.IsNullOrEmpty(id))
+        if (string.IsNullOrEmpty(id))
         {
             var gradeData = _gradeDataProvider.GetAll();
             return Ok(gradeData);
@@ -34,7 +34,7 @@ public class StudentCollectionController : ControllerBase
         else
         {
             var gradeData = _gradeDataProvider.Get(id);
-            if(gradeData == null)
+            if (gradeData == null)
             {
                 return NotFound($"class with id: {id} was not found");
             }

@@ -3,9 +3,8 @@ using GradeCalculator.DataLayer.Models.Configurations;
 using GradeCalculatorApp.Controllers.Requests.Periods;
 using GradeCalculatorApp.Hubs;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
-namespace GradeCalculatorApp.Controllers;
+namespace GradeCalculatorApp.Controllers.Grades;
 
 [ApiController]
 [Route("[controller]")]
@@ -98,7 +97,7 @@ public class GradePeriodController : ControllerBase
 
     private void UpdateIdConfigurations(IEnumerable<SingleGradeConfiguration> singles)
     {
-        foreach(var single in singles)
+        foreach (var single in singles)
         {
             single.Id = Guid.NewGuid().ToString();
         }
