@@ -1,5 +1,6 @@
 :host {
     height: 100%;
+
     .grid-container {
         display: flex;
         height: 100%;
@@ -9,19 +10,19 @@
         mat-toolbar {
             flex-shrink: 0;
         }
-    
+
         .title {
             cursor: pointer;
         }
-    
+
         .example-spacer {
             flex: 1 1 auto;
         }
-    
+
         .disconnected {
             color: red;
         }
-    
+
         .connected {
             color: green;
         }
@@ -30,7 +31,7 @@
             display: flex;
             flex-direction: column;
             margin: 0 auto 0 auto;
-            width: 80%;
+            width: 98%;
             height: 100%;
             overflow: hidden;
 

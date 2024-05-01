@@ -1,6 +1,6 @@
 :host {
     .bar-container {
-        margin-bottom: 32px;
+        margin-bottom: 8px;
         display: flex;
         flex-direction: row;
         justify-content: left;
@@ -29,6 +29,7 @@
 
     .clickable {
         cursor: pointer;
+
         &:hover {
             opacity: .9;
         }
