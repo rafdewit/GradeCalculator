@@ -4,6 +4,14 @@
   flex-direction: column;
   overflow: hidden;
 
+  .drag-handle {
+    display: inline-block;
+    cursor: grab;
+    padding: 8px;
+    background-color: lightgray;
+    border-radius: 4px;
+  }
+
   .page-container {
     height: 100%;
     display: flex;
@@ -26,10 +34,10 @@
       .control-panel {
         display: flex;
         flex-direction: column;
-        justify-content:start;
+        justify-content: start;
         width: 200px;
         margin: 16px;
-    
+
         .control-panel-item {
           margin-right: 16px;
         }

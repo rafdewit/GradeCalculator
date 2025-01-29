@@ -1,5 +1,6 @@
 export interface SingleGradeConfigurationData {
-    name: string;
-    totalScore: number;
-    weight: number
+  name: string;
+  totalScore: number;
+  weight: number;
+  orderId: number;
 }

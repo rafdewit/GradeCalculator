@@ -35,36 +35,43 @@ export class ClassScoreTableComponent implements OnDestroy {
   private _onDestroy = new Subject<void>();
 
   public filterFormGroup: FormGroup<{
-    studentNameFilter: FormControl<string>,
-    scoreDisplayType: FormControl<'percentage' | 'category' | 'score'>,
-    enableWeight: FormControl<boolean>,
-    rootOnly: FormControl<boolean>,
-    showCreateAndScoreButtons: FormControl<boolean>,
-    showEditButtons: FormControl<boolean>,
-    showDeleteButtons: FormControl<boolean>,
-    sortByScore: FormControl<boolean>,
-    gradePeriodFilter: FormControl<string[]>
+    studentNameFilter: FormControl<string>;
+    scoreDisplayType: FormControl<'percentage' | 'category' | 'score'>;
+    enableMove: FormControl<boolean>;
+    enableWeight: FormControl<boolean>;
+    rootOnly: FormControl<boolean>;
+    showCreateAndScoreButtons: FormControl<boolean>;
+    showEditButtons: FormControl<boolean>;
+    showDeleteButtons: FormControl<boolean>;
+    sortByScore: FormControl<boolean>;
+    gradePeriodFilter: FormControl<string[]>;
   }>;
 
   public scoreDisplayTypeOptions: string[] = ['percentage', 'category', 'score'];
 
-  constructor(private activatedRoute: ActivatedRoute, private router: Router, private gradeStore: GradeStore, private formBuilder: NonNullableFormBuilder,
-    private matDialog: MatDialog, private singleGradeClient: ISingleGradeClient,
+  constructor(
+    private activatedRoute: ActivatedRoute,
+    private router: Router,
+    private gradeStore: GradeStore,
+    private formBuilder: NonNullableFormBuilder,
+    private matDialog: MatDialog,
+    private singleGradeClient: ISingleGradeClient,
     private singleGradeConfigDialogService: SingleGradeConfigDialogService,
     private multiGradeConfigDialogService: MultiGradeConfigDialogService,
     public gradePeriodConfigurationService: GradePeriodConfigurationService,
-    public studentConfigurationService: StudentConfigurationService) {
-
+    public studentConfigurationService: StudentConfigurationService,
+  ) {
     this.filterFormGroup = this.formBuilder.group({
       studentNameFilter: this.formBuilder.control<string>(''),
       scoreDisplayType: this.formBuilder.control<'percentage' | 'category' | 'score'>('score'),
+      enableMove: this.formBuilder.control<boolean>(false),
       enableWeight: this.formBuilder.control<boolean>(true),
       rootOnly: this.formBuilder.control<boolean>(true),
       showCreateAndScoreButtons: this.formBuilder.control<boolean>(true),
       showEditButtons: this.formBuilder.control<boolean>(true),
       showDeleteButtons: this.formBuilder.control<boolean>(false),
       sortByScore: this.formBuilder.control<boolean>(false),
-      gradePeriodFilter: this.formBuilder.control<string[]>([])
+      gradePeriodFilter: this.formBuilder.control<string[]>([]),
     });
 
     const classId$ = this.activatedRoute.params.pipe(map(p => p['classId'] as string));
@@ -76,19 +83,22 @@ export class ClassScoreTableComponent implements OnDestroy {
           this.filterFormGroup.setValue(filter);
         }
       }
-    })
+    });
 
-    this.classScoreInfo$ = combineLatest(([classId$, this.gradeStore.classScoreInfos$]))
-      .pipe(map(([classId, classScoreInfos]) => {
+    this.classScoreInfo$ = combineLatest([classId$, this.gradeStore.classScoreInfos$]).pipe(
+      map(([classId, classScoreInfos]) => {
         const classInfo = classScoreInfos.find(c => c.class.id === classId) ?? null;
         return classInfo;
-      }));
+      }),
+    );
 
-    const filter$ = this.filterFormGroup.valueChanges.pipe(startWith(''), map(() => this.filterFormGroup.value));
+    const filter$ = this.filterFormGroup.valueChanges.pipe(
+      startWith(''),
+      map(() => this.filterFormGroup.value),
+    );
 
-    this.info$ = combineLatest([this.classScoreInfo$, filter$])
-      .pipe(map(([classInfo, filter]) => {
-
+    this.info$ = combineLatest([this.classScoreInfo$, filter$]).pipe(
+      map(([classInfo, filter]) => {
         const tableFilter = filter as TableFilter;
         localStorage.setItem(`filter-${classInfo?.class.id}`, JSON.stringify(tableFilter));
 
@@ -98,10 +108,12 @@ export class ClassScoreTableComponent implements OnDestroy {
           ? classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage)) ?? []
           : classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
 
+        console.log(classInfo);
         const result: ClassTableComponentInfo = {
           classScoreInfo: classInfo,
           navigationName: `Table(${classInfo?.class?.name})`,
           filteredStudentInfos: filteredStudentInfos,
+          enableMove: tableFilter.enableMove,
           enableWeight: tableFilter.enableWeight,
           scoreDisplayType: tableFilter.scoreDisplayType,
           rootOnly: tableFilter.rootOnly,
@@ -109,10 +121,11 @@ export class ClassScoreTableComponent implements OnDestroy {
           showDeleteButtons: tableFilter.showDeleteButtons,
           showEditButtons: tableFilter.showEditButtons,
           sortByScore: tableFilter.sortByScore,
-          gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter)
+          gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter),
         };
         return result;
-      }));
+      }),
+    );
   }
 
   ngOnDestroy(): void {
@@ -121,7 +134,9 @@ export class ClassScoreTableComponent implements OnDestroy {
   }
 
   public studentNavigate(studentInfo: StudentInfo) {
-    this.router.navigate(["../", "score-overview", studentInfo.student.id], { relativeTo: this.activatedRoute })
+    this.router.navigate(['../', 'score-overview', studentInfo.student.id], {
+      relativeTo: this.activatedRoute,
+    });
   }
 
   public async deleteSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {
@@ -170,25 +185,25 @@ export class ClassScoreTableComponent implements OnDestroy {
     const data: DefaultCrudDialogData<EditStudentsSingleScoreDialogData> = {
       object: {
         single: single,
-        classScoreInfo: classScoreInfo
+        classScoreInfo: classScoreInfo,
       },
       deleteFlag: false,
       title: `Update Score: ${single.name}`,
       cancelFlag: false,
-      isUpdate: true
-    }
+      isUpdate: true,
+    };
 
     const input = new MatDialogConfig<DefaultCrudDialogData<EditStudentsSingleScoreDialogData>>();
     input.data = data;
 
     const dialogRef = this.matDialog.open<EditStudentsSingleScoreDialogComponent, DefaultCrudDialogData<EditStudentsSingleScoreDialogData>, SingleGradeUpdateDto[]>(EditStudentsSingleScoreDialogComponent, input);
-    const result = await firstValueFrom(dialogRef.afterClosed()) ?? null;
+    const result = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
 
     if (result) {
       const request: SingleGradesUpdateDto = {
         singleGradeConfigurationId: single.id,
         singleGradeUpdates: result,
-        studentCollectionId: classScoreInfo.class.id
+        studentCollectionId: classScoreInfo.class.id,
       };
 
       await firstValueFrom(this.singleGradeClient.updateSingleGrades(request));
@@ -199,8 +214,9 @@ export class ClassScoreTableComponent implements OnDestroy {
 export interface ClassTableComponentInfo {
   classScoreInfo: ClassScoreInfo | null;
   navigationName: string;
-  filteredStudentInfos: StudentInfo[]
+  filteredStudentInfos: StudentInfo[];
   enableWeight: boolean;
+  enableMove: boolean;
   scoreDisplayType: 'percentage' | 'category' | 'score';
   rootOnly: boolean;
   showCreateAndScoreButtons: boolean;
@@ -212,8 +228,9 @@ export interface ClassTableComponentInfo {
 
 export interface TableFilter {
   studentNameFilter: string;
-  scoreDisplayType: "percentage" | "category" | "score";
+  scoreDisplayType: 'percentage' | 'category' | 'score';
   enableWeight: boolean;
+  enableMove: boolean;
   rootOnly: boolean;
   showCreateAndScoreButtons: boolean;
   showEditButtons: boolean;

@@ -1,5 +1,6 @@
 export interface CreateGradePeriodDto {
-    studentCollectionId: string;
-    weight: number;
-    name: string;
+  studentCollectionId: string;
+  weight: number;
+  orderId: number;
+  name: string;
 }

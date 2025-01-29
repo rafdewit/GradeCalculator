@@ -22,39 +22,44 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import {MatGridListModule} from '@angular/material/grid-list';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 @NgModule({
-    exports: [
-        MatButtonModule,
-        MatButtonToggleModule,
-        MatTableModule,
-        MatCardModule,
-        MatCheckboxModule,
-        MatDatepickerModule,
-        MatDialogModule,
-        MatExpansionModule,
-        MatIconModule,
-        MatInputModule,
-        MatListModule,
-        MatMenuModule,
-        MatSelectModule,
-        MatSidenavModule,
-        MatSliderModule,
-        MatBadgeModule,
-        MatToolbarModule,
-        MatTooltipModule,
-        MatSlideToggleModule,
-        OverlayModule,
-        MatCheckboxModule,
-        MatRadioModule,
-        MatSnackBarModule,
-        MatGridListModule,
-        MatProgressBarModule
-    ],
-    providers: [
-        { provide: MAT_TOOLTIP_DEFAULT_OPTIONS, useValue: { showDelay: 1000, hideDelay: 0, touchendHideDelay: 0, } }
-    ],
+  exports: [
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatTableModule,
+    MatCardModule,
+    MatCheckboxModule,
+    MatDatepickerModule,
+    MatDialogModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatMenuModule,
+    MatSelectModule,
+    MatSidenavModule,
+    MatSliderModule,
+    MatBadgeModule,
+    MatToolbarModule,
+    MatTooltipModule,
+    MatSlideToggleModule,
+    OverlayModule,
+    MatCheckboxModule,
+    MatRadioModule,
+    MatSnackBarModule,
+    MatGridListModule,
+    MatProgressBarModule,
+    DragDropModule,
+  ],
+  providers: [
+    {
+      provide: MAT_TOOLTIP_DEFAULT_OPTIONS,
+      useValue: { showDelay: 1000, hideDelay: 0, touchendHideDelay: 0 },
+    },
+  ],
 })
 export class MaterialModule {}

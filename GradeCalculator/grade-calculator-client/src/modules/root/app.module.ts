@@ -33,7 +33,7 @@ import { IEventClient } from 'src/services/communication/signalr/event-client';
 
 const routes: Routes = [
   { path: 'classes', loadChildren: () => import('../classes/classes.module').then(m => m.ClassesModule) },
-  { path: '**', redirectTo: 'classes' }
+  { path: '**', redirectTo: 'classes' },
 ];
 
 export const GradePeriod_WebClient = new InjectionToken<string>('GradePeriodWebClient');
@@ -54,23 +54,12 @@ export const Student_ElectronClient = new InjectionToken<string>('Student_Electr
 export const StudentCollection_WebClient = new InjectionToken<string>('StudentCollection_WebClient');
 export const StudentCollection_ElectronClient = new InjectionToken<string>('StudentCollection_ElectronClient');
 
-
 export const Grade_HubEventClient = new InjectionToken<string>('Grade_HubEventClient');
 export const Grade_ElectronEventClient = new InjectionToken<string>('Grade_ElectronEventClient');
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
-  imports: [
-    BrowserModule,
-    GradeCommonModule,
-    RouterModule.forRoot(routes),
-    BrowserAnimationsModule,
-    HttpClientModule,
-    MaterialModule,
-    CommonModule
-  ],
+  declarations: [AppComponent],
+  imports: [BrowserModule, GradeCommonModule, RouterModule.forRoot(routes), BrowserAnimationsModule, HttpClientModule, MaterialModule, CommonModule],
   providers: [
     { provide: GradePeriod_WebClient, useClass: GradePeriodWebClient },
     { provide: GradePeriod_ElectronClient, useClass: GradePeriodElectronClient },
@@ -100,9 +89,9 @@ export const Grade_ElectronEventClient = new InjectionToken<string>('Grade_Elect
     { provide: Grade_ElectronEventClient, useClass: GradeElectronEventClient },
     { provide: IEventClient, useFactory: createGradeEventClient, deps: [Injector] },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
 
 export function createGradePeriodClient(injector: Injector) {
   return !environment.electron ? injector.get(GradePeriod_WebClient) : injector.get(GradePeriod_ElectronClient);

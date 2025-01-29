@@ -27,7 +27,10 @@ import { EditStudentsSingleScoreDialogComponent } from './components/class-score
 const routes: Routes = [
   { path: ':classId/score-overview', component: ClassScoreComponent },
   { path: ':classId/score-table', component: ClassScoreTableComponent },
-  { path: ':classId/score-overview/:studentId', component: StudentScoreComponent },
+  {
+    path: ':classId/score-overview/:studentId',
+    component: StudentScoreComponent,
+  },
   { path: ':classId', component: ClassConfigurationComponent },
   { path: ':classId/periods/:periodId', component: PeriodPageComponent },
   { path: '**', component: ClassesPageComponent },
@@ -53,7 +56,7 @@ const routes: Routes = [
     CreateStudentDialogComponent,
     ClassScoreTableComponent,
     ScoreRepresentationComponent,
-    EditStudentsSingleScoreDialogComponent
+    EditStudentsSingleScoreDialogComponent,
   ],
   imports: [
     MaterialModule,
@@ -64,6 +67,6 @@ const routes: Routes = [
     FormsModule,
     RouterModule.forChild(routes),
   ],
-  providers: []
+  providers: [],
 })
-export class ClassesModule { }
+export class ClassesModule {}
