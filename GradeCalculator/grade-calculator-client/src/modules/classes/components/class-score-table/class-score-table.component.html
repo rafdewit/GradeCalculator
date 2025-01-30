@@ -95,8 +95,17 @@
           @for(gradePeriod of classScoreInfo.class.gradePeriods; track gradePeriod) {
           <ng-container *ngIf="info.gradePeriodFilter.size === 0 || info.gradePeriodFilter.has(gradePeriod.id)">
             <th>
-              <mat-icon class="icon-button" matTooltip="Move left" (click)="addSingleToGradePeriod(classScoreInfo, gradePeriod)">chevron_left</mat-icon>
-              <mat-icon class="icon-button" matTooltip="Move right" (click)="addMultiToGradePeriod(classScoreInfo, gradePeriod)">chevron_right</mat-icon>
+              <mat-icon class="icon-button" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+              <mat-menu #menu="matMenu" [class]="info.themeClass">
+                <button mat-menu-item (click)="moveGradePeriod(classScoreInfo, gradePeriod, true)">
+                  <mat-icon>chevron_left</mat-icon>
+                  <span>Move Left</span>
+                </button>
+                <button mat-menu-item (click)="moveGradePeriod(classScoreInfo, gradePeriod, false)">
+                  <mat-icon>chevron_right</mat-icon>
+                  <span>Move Right</span>
+                </button>
+              </mat-menu>
             </th>
 
             @for(single of gradePeriod.singleGradeConfigurations; track single) {
@@ -107,7 +116,8 @@
                 root: true,
                 gradePeriod: gradePeriod,
                 rootOnly: info.rootOnly,
-                classScoreInfo: classScoreInfo
+                classScoreInfo: classScoreInfo,
+                themeClass: info.themeClass
               }"
             >
             </ng-container>
@@ -119,7 +129,8 @@
                 root: true,
                 gradePeriod: gradePeriod,
                 rootOnly: info.rootOnly,
-                classScoreInfo: classScoreInfo
+                classScoreInfo: classScoreInfo,
+                themeClass: info.themeClass
               }"
             >
             </ng-container>
@@ -439,17 +450,43 @@
   }
 </ng-template>
 
-<ng-template #singleMoveButtonHeader let-link="link" let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root="root" let-rootOnly="rootOnly">
+<ng-template #singleMoveButtonHeader let-link="link" let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root="root" let-rootOnly="rootOnly" let-themeClass="themeClass">
   <th [class.root]="root" *ngIf="root || !rootOnly">
-    <mat-icon class="icon-button" matTooltip="Move left" (click)="addSingleToGradePeriod(classScoreInfo, gradePeriod)">chevron_left</mat-icon>
-    <mat-icon class="icon-button" matTooltip="Move right" (click)="addMultiToGradePeriod(classScoreInfo, gradePeriod)">chevron_right</mat-icon>
+    <mat-icon class="icon-button" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+    <mat-menu #menu="matMenu" [class]="themeClass">
+      <button mat-menu-item (click)="moveSingle(classScoreInfo, link, gradePeriod, true)">
+        <mat-icon>chevron_left</mat-icon>
+        <span>Move Left</span>
+      </button>
+      <button mat-menu-item (click)="dragDialogSingle(classScoreInfo, link, gradePeriod)">
+        <mat-icon>drag_indicator</mat-icon>
+        <span>Move dialog</span>
+      </button>
+      <button mat-menu-item (click)="moveSingle(classScoreInfo, link, gradePeriod, false)">
+        <mat-icon>chevron_right</mat-icon>
+        <span>Move Right</span>
+      </button>
+    </mat-menu>
   </th>
 </ng-template>
 
-<ng-template #multiMoveButtonHeader let-link="link" let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root="root" let-rootOnly="rootOnly">
+<ng-template #multiMoveButtonHeader let-link="link" let-classScoreInfo="classScoreInfo" let-gradePeriod="gradePeriod" let-root="root" let-rootOnly="rootOnly" let-themeClass="themeClass">
   <th [class.root]="root" *ngIf="root || !rootOnly">
-    <mat-icon class="icon-button" matTooltip="Move left" (click)="addSingleToGradePeriod(classScoreInfo, gradePeriod)">chevron_left</mat-icon>
-    <mat-icon class="icon-button" matTooltip="Move right" (click)="addMultiToGradePeriod(classScoreInfo, gradePeriod)">chevron_right</mat-icon>
+    <mat-icon class="icon-button" [matMenuTriggerFor]="menu">more_vert</mat-icon>
+    <mat-menu #menu="matMenu" [class]="themeClass">
+      <button mat-menu-item (click)="moveMulti(classScoreInfo, link, gradePeriod, true)">
+        <mat-icon>chevron_left</mat-icon>
+        <span>Move Left</span>
+      </button>
+      <button mat-menu-item (click)="dragDialogMulti(classScoreInfo, link, gradePeriod)">
+        <mat-icon>drag_indicator</mat-icon>
+        <span>Move dialog</span>
+      </button>
+      <button mat-menu-item (click)="moveMulti(classScoreInfo, link, gradePeriod, false)">
+        <mat-icon>chevron_right</mat-icon>
+        <span>Move Right</span>
+      </button>
+    </mat-menu>
   </th>
 
   @for(single of link.singleGradeConfigurations; track single) {
@@ -460,7 +497,8 @@
       root: false,
       rootOnly: rootOnly,
       gradePeriod: gradePeriod,
-      classScoreInfo: classScoreInfo
+      classScoreInfo: classScoreInfo,
+      themeClass: themeClass
     }"
   >
   </ng-container>
@@ -472,7 +510,8 @@
       root: false,
       rootOnly: rootOnly,
       gradePeriod: gradePeriod,
-      classScoreInfo: classScoreInfo
+      classScoreInfo: classScoreInfo,
+      themeClass: themeClass
     }"
   >
   </ng-container>

@@ -20,6 +20,7 @@ import { ISingleGradeClient } from 'src/services/communication/api/base/single-g
 import { alphabetically } from 'src/services/stores/grade.converter';
 import { StudentConfigurationService } from '../class-configuration/student-configuration.service';
 import { GradePeriodConfigurationService } from '../class-configuration/grade-period-configuration.service';
+import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
 
 @Component({
   selector: 'app-class-score-table',
@@ -60,6 +61,7 @@ export class ClassScoreTableComponent implements OnDestroy {
     private multiGradeConfigDialogService: MultiGradeConfigDialogService,
     public gradePeriodConfigurationService: GradePeriodConfigurationService,
     public studentConfigurationService: StudentConfigurationService,
+    public themeSelectorService: ThemeSelectorService,
   ) {
     this.filterFormGroup = this.formBuilder.group({
       studentNameFilter: this.formBuilder.control<string>(''),
@@ -97,8 +99,8 @@ export class ClassScoreTableComponent implements OnDestroy {
       map(() => this.filterFormGroup.value),
     );
 
-    this.info$ = combineLatest([this.classScoreInfo$, filter$]).pipe(
-      map(([classInfo, filter]) => {
+    this.info$ = combineLatest([this.classScoreInfo$, filter$, themeSelectorService.selectedTheme$]).pipe(
+      map(([classInfo, filter, theme]) => {
         const tableFilter = filter as TableFilter;
         localStorage.setItem(`filter-${classInfo?.class.id}`, JSON.stringify(tableFilter));
 
@@ -122,6 +124,7 @@ export class ClassScoreTableComponent implements OnDestroy {
           showEditButtons: tableFilter.showEditButtons,
           sortByScore: tableFilter.sortByScore,
           gradePeriodFilter: new Set<string>(tableFilter.gradePeriodFilter),
+          themeClass: theme.class,
         };
         return result;
       }),
@@ -138,6 +141,16 @@ export class ClassScoreTableComponent implements OnDestroy {
       relativeTo: this.activatedRoute,
     });
   }
+
+  public async moveGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+
+  public async moveMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+
+  public async moveSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+
+  public async dragDialogMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {}
+
+  public async dragDialogSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {}
 
   public async deleteSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {
     await this.singleGradeConfigDialogService.deleteSingleGrade(classScoreInfo.class.id, single);
@@ -224,6 +237,7 @@ export interface ClassTableComponentInfo {
   showDeleteButtons: boolean;
   sortByScore: boolean;
   gradePeriodFilter: Set<string>;
+  themeClass: string;
 }
 
 export interface TableFilter {
