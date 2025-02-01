@@ -11,6 +11,7 @@ import { UpdateMultiGradeConfigurationDto } from './request/multi/update-multi-g
 import { CreateSingleGradeConfigurationDto } from './request/single/create-single-grade-configuration';
 import { DeleteSingleGradeConfigurationDto } from './request/single/delete-single-grade-configuration';
 import { UpdateSingleGradeConfigurationDto } from './request/single/update-single-grade-configuration';
+import { MoveSingleGradeConfigurationDto } from './request/single/move-single-grade-configuration';
 import { CopyStudentCollectionDto } from './request/student-collection/copy-class-request';
 import { CreateStudentCollectionDto } from './request/student-collection/create-class-request';
 import { UpdateStudentCollectionDto } from './request/student-collection/update-class-request';
@@ -37,6 +38,7 @@ contextBridge.exposeInMainWorld('electron', {
   createStudent: (request: CreateStudentPeriodDto) => ipcRenderer.send('createStudent', request),
   deleteStudent: (request: DeleteStudentPeriodDto) => ipcRenderer.send('deleteStudent', request),
 
+  moveSingleGradeConfiguration: (request: MoveSingleGradeConfigurationDto) => ipcRenderer.send('moveSingleGradeConfiguration', request),
   updateSingleGradeConfiguration: (request: UpdateSingleGradeConfigurationDto) => ipcRenderer.send('updateSingleGradeConfiguration', request),
   createSingleGradeConfiguration: (request: CreateSingleGradeConfigurationDto) => ipcRenderer.send('createSingleGradeConfiguration', request),
   deleteSingleGradeConfiguration: (request: DeleteSingleGradeConfigurationDto) => ipcRenderer.send('deleteSingleGradeConfiguration', request),

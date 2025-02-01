@@ -143,7 +143,7 @@ export class ClassScoreTableComponent implements OnDestroy {
   }
 
   public async moveGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod, left: boolean): Promise<void> {
-    this.gradePeriodConfigurationService.movePeriod(classScoreInfo.class.id, gradePeriod, left);
+    await this.gradePeriodConfigurationService.movePeriod(classScoreInfo.class.id, gradePeriod, left);
   }
 
   public async moveMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {
@@ -151,7 +151,7 @@ export class ClassScoreTableComponent implements OnDestroy {
   }
 
   public async moveSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {
-    console.log(left);
+    await this.singleGradeConfigDialogService.moveSingle(classScoreInfo.class.id, single, left);
   }
 
   public async dragDialogMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {

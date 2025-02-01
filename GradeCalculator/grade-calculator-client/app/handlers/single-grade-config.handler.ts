@@ -5,6 +5,7 @@ import { generateGuid } from '../helpers/helper-methods';
 import { ipcMain } from 'electron';
 import { UpdateSingleGradeConfigurationDto } from '../request/single/update-single-grade-configuration';
 import { DeleteSingleGradeConfigurationDto } from '../request/single/delete-single-grade-configuration';
+import { MoveSingleGradeConfigurationDto } from '../request/single/move-single-grade-configuration';
 import { GradeConfigFinder } from './grade-config.finder';
 import { SingleGradeConfiguration } from '../dtos/grade-config/single-grade-configuration.model';
 
@@ -38,6 +39,23 @@ export class SingleGradeConfigHandler {
 
       await gradeDataProvider.createOrUpdate(studentCollection);
       await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+    });
+
+    ipcMain.on('moveSingleGradeConfiguration', async (c, arg: MoveSingleGradeConfigurationDto) => {
+      const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+      if (studentCollection) {
+        const single = GradeConfigFinder.findSingle(studentCollection, arg.singleId);
+        if (single) {
+          if (single.parent) {
+            //multi parent
+          } else {
+            //grade period parent
+          }
+        }
+
+        await gradeDataProvider.createOrUpdate(studentCollection);
+        await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+      }
     });
 
     ipcMain.on('updateSingleGradeConfiguration', async (c, arg: UpdateSingleGradeConfigurationDto) => {
