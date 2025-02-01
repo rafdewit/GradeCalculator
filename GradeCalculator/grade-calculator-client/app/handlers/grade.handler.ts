@@ -9,9 +9,51 @@ import { DeleteGradePeriodDto } from '../request/grade-period/delete-grade-perio
 import { CopyGradePeriodDto } from '../request/grade-period/copy-grade-period';
 import { MultiGradeConfiguration } from '../dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfiguration } from '../dtos/grade-config/single-grade-configuration.model';
+import { MoveGradePeriodDto } from '../request/grade-period/move-grade-period';
+import { StudentCollection } from '../dtos/student-collection.model';
 
 export class GradeHandler {
+  private static moveItem<T>(arr: T[], index: number, left: boolean) {
+    let newIndex;
+    if (left === false) {
+      newIndex = (index + 1) % arr.length;
+    } else if (left === true) {
+      newIndex = (index - 1 + arr.length) % arr.length;
+    } else {
+      return arr;
+    }
+
+    // Swap elements
+    [arr[index], arr[newIndex]] = [arr[newIndex], arr[index]];
+
+    return arr;
+  }
+
+  private static setGradeOrderIds(c: StudentCollection): void {
+    if (c.gradePeriods) {
+      let id = 1;
+      c.gradePeriods.forEach(p => {
+        p.orderId = id;
+        id++;
+      });
+    }
+  }
+
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
+    ipcMain.on('moveGradePeriod', async (c, arg: MoveGradePeriodDto) => {
+      const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+      if (studentCollection && studentCollection.gradePeriods.length > 1) {
+        studentCollection.gradePeriods = studentCollection.gradePeriods.sort((a, b) => (a.orderId < b.orderId ? -1 : 1));
+        const gradePeriodIndex = studentCollection.gradePeriods.findIndex(p => p.id === arg.gradePeriodId);
+        if (gradePeriodIndex >= 0) {
+          studentCollection.gradePeriods = GradeHandler.moveItem(studentCollection.gradePeriods, gradePeriodIndex, arg.left);
+          GradeHandler.setGradeOrderIds(studentCollection);
+          await gradeDataProvider.createOrUpdate(studentCollection);
+          await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+        }
+      }
+    });
+
     ipcMain.on('createGradePeriod', async (c, arg: CreateGradePeriodDto) => {
       const gradePeriod: GradePeriod = {
         id: generateGuid(),

@@ -142,15 +142,25 @@ export class ClassScoreTableComponent implements OnDestroy {
     });
   }
 
-  public async moveGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+  public async moveGradePeriod(classScoreInfo: ClassScoreInfo, gradePeriod: GradePeriod, left: boolean): Promise<void> {
+    this.gradePeriodConfigurationService.movePeriod(classScoreInfo.class.id, gradePeriod, left);
+  }
 
-  public async moveMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+  public async moveMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {
+    console.log(left);
+  }
 
-  public async moveSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {}
+  public async moveSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {
+    console.log(left);
+  }
 
-  public async dragDialogMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {}
+  public async dragDialogMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {
+    console.log(multi);
+  }
 
-  public async dragDialogSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {}
+  public async dragDialogSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {
+    console.log(single);
+  }
 
   public async deleteSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {
     await this.singleGradeConfigDialogService.deleteSingleGrade(classScoreInfo.class.id, single);
