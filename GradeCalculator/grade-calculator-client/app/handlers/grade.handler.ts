@@ -10,7 +10,7 @@ import { CopyGradePeriodDto } from '../request/grade-period/copy-grade-period';
 import { MultiGradeConfiguration } from '../dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfiguration } from '../dtos/grade-config/single-grade-configuration.model';
 import { MoveGradePeriodDto } from '../request/grade-period/move-grade-period';
-import { moveItem, setStudentCollectionOrderIds } from '../helpers/sorter-methods';
+import { moveItemAndRegenerateOrderId } from '../helpers/sorter-methods';
 
 export class GradeHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -20,9 +20,7 @@ export class GradeHandler {
         studentCollection.gradePeriods = studentCollection.gradePeriods.sort((a, b) => (a.orderId < b.orderId ? -1 : 1));
         const gradePeriodIndex = studentCollection.gradePeriods.findIndex(p => p.id === arg.gradePeriodId);
         if (gradePeriodIndex >= 0) {
-          studentCollection.gradePeriods = moveItem(studentCollection.gradePeriods, gradePeriodIndex, arg.left);
-          setStudentCollectionOrderIds(studentCollection);
-
+          studentCollection.gradePeriods = moveItemAndRegenerateOrderId(studentCollection.gradePeriods, gradePeriodIndex, arg.left);
           await gradeDataProvider.createOrUpdate(studentCollection);
           await updateMessenger.SendUpdatedStudentCollection(studentCollection);
         }

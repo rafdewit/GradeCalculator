@@ -8,7 +8,7 @@ import { DeleteSingleGradeConfigurationDto } from '../request/single/delete-sing
 import { MoveSingleGradeConfigurationDto } from '../request/single/move-single-grade-configuration';
 import { GradeConfigFinder } from './grade-config.finder';
 import { SingleGradeConfiguration } from '../dtos/grade-config/single-grade-configuration.model';
-import { moveItem, setStudentCollectionOrderIds } from 'app/helpers/sorter-methods';
+import { moveItemAndRegenerateOrderId } from '../helpers/sorter-methods';
 
 export class SingleGradeConfigHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -50,14 +50,12 @@ export class SingleGradeConfigHandler {
           if (single.parent) {
             const index = single.parent.singleGradeConfigurations.findIndex(i => i.id === arg.singleId);
             if (index >= 0) {
-              single.parent.singleGradeConfigurations = moveItem(single.parent.singleGradeConfigurations, index, arg.left);
-              setStudentCollectionOrderIds(studentCollection);
+              single.parent.singleGradeConfigurations = moveItemAndRegenerateOrderId(single.parent.singleGradeConfigurations, index, arg.left);
             }
           } else {
             const index = single.gradePeriod.singleGradeConfigurations.findIndex(i => i.id === arg.singleId);
             if (index >= 0) {
-              single.gradePeriod.singleGradeConfigurations = moveItem(single.gradePeriod.singleGradeConfigurations, index, arg.left);
-              setStudentCollectionOrderIds(studentCollection);
+              single.gradePeriod.singleGradeConfigurations = moveItemAndRegenerateOrderId(single.gradePeriod.singleGradeConfigurations, index, arg.left);
             }
           }
         }

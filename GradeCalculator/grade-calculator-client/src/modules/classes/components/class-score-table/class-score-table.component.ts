@@ -110,7 +110,6 @@ export class ClassScoreTableComponent implements OnDestroy {
           ? classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)).sort((a, b) => alphabetically(false, a.totalPercentage, b.totalPercentage)) ?? []
           : classInfo?.studentInfos.filter(s => s.student.name.toLowerCase().includes(studentNameFilterLow)) ?? [];
 
-        console.log(classInfo);
         const result: ClassTableComponentInfo = {
           classScoreInfo: classInfo,
           navigationName: `Table(${classInfo?.class?.name})`,
