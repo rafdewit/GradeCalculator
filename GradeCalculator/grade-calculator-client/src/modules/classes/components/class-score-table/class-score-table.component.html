@@ -67,7 +67,8 @@
               [ngTemplateOutletContext]="{
                 link: single,
                 root: true,
-                rootOnly: info.rootOnly
+                rootOnly: info.rootOnly,
+                level: 0
               }"
             >
             </ng-container>
@@ -77,7 +78,8 @@
               [ngTemplateOutletContext]="{
                 link: multi,
                 root: true,
-                rootOnly: info.rootOnly
+                rootOnly: info.rootOnly,
+                level: 0
               }"
             >
             </ng-container>
@@ -398,15 +400,15 @@
   }
 </ng-template>
 
-<ng-template #singleLinkHeader let-link="link" let-root="root" let-rootOnly="rootOnly">
+<ng-template #singleLinkHeader let-link="link" let-root="root" let-rootOnly="rootOnly" let-level="level">
   <th [class.root]="root" *ngIf="root || !rootOnly">
-    <div>{{ link.name }}</div>
+    <div [style]="level | topMargin">{{ link.name }}</div>
   </th>
 </ng-template>
 
-<ng-template #multiLinkHeader let-link="link" let-root="root" let-rootOnly="rootOnly">
+<ng-template #multiLinkHeader let-link="link" let-root="root" let-rootOnly="rootOnly" let-level="level">
   <th [class.root]="root" *ngIf="root || !rootOnly">
-    <div>{{ link.name }}</div>
+    <div [style]="level | topMargin">{{ link.name }}</div>
   </th>
 
   @for(single of link.singleGradeConfigurations; track single) {
@@ -415,12 +417,13 @@
     [ngTemplateOutletContext]="{
       link: single,
       root: false,
-      rootOnly: rootOnly
+      rootOnly: rootOnly,
+      level: level + 1
     }"
   >
   </ng-container>
   } @for(multi of link.multiGradeConfigurations; track multi) {
-  <ng-container [ngTemplateOutlet]="multiLinkHeader" [ngTemplateOutletContext]="{ link: multi, root: false, rootOnly: rootOnly }"> </ng-container>
+  <ng-container [ngTemplateOutlet]="multiLinkHeader" [ngTemplateOutletContext]="{ link: multi, root: false, rootOnly: rootOnly, level: level + 1 }"> </ng-container>
   }
 </ng-template>
 
