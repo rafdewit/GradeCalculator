@@ -4,7 +4,6 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync
 import { deepCopy } from '../helpers/helper-methods';
 import { setStudentCollectionOrderIds } from '../helpers/sorter-methods';
 
-export const classesStorageDirectory: string = 'ClassesStorage';
 export class GradeDataProvider {
   private _cache: Map<string, StudentCollection>;
 
@@ -12,13 +11,19 @@ export class GradeDataProvider {
     this._cache = this.getAllInternal();
   }
 
+  public getClassesStorageDirectory(): string {
+    const { app } = require('electron');
+    const path = require('path');
+    return path.join(app.getPath('appData'), 'GradeCalculator');
+  }
+
   private getAllInternal(): Map<string, StudentCollection> {
-    if (!existsSync(classesStorageDirectory)) {
-      mkdirSync(classesStorageDirectory);
+    if (!existsSync(this.getClassesStorageDirectory())) {
+      mkdirSync(this.getClassesStorageDirectory());
     }
 
-    const jsonFiles = readdirSync(classesStorageDirectory).filter(file => file.endsWith('.json'));
-    const studentCollections = jsonFiles.map(f => JSON.parse(readFileSync(`${classesStorageDirectory}/${f}`).toString()) as StudentCollection);
+    const jsonFiles = readdirSync(this.getClassesStorageDirectory()).filter(file => file.endsWith('.json'));
+    const studentCollections = jsonFiles.map(f => JSON.parse(readFileSync(`${this.getClassesStorageDirectory()}/${f}`).toString()) as StudentCollection);
     const result = new Map<string, StudentCollection>();
     studentCollections.forEach(c => setStudentCollectionOrderIds(c));
     studentCollections.forEach(c => result.set(c.id, c));
@@ -58,11 +63,11 @@ export class GradeDataProvider {
 
   public async createOrUpdate(studentCollection: StudentCollection): Promise<void> {
     this._cache.set(studentCollection.id, studentCollection);
-    writeFileSync(`${classesStorageDirectory}/Class-${studentCollection.id}.json`, JSON.stringify(studentCollection));
+    writeFileSync(`${this.getClassesStorageDirectory()}/Class-${studentCollection.id}.json`, JSON.stringify(studentCollection));
   }
 
   public delete(id: string): void {
     this._cache.delete(id);
-    rmSync(`${classesStorageDirectory}/Class-${id}.json`);
+    rmSync(`${this.getClassesStorageDirectory()}/Class-${id}.json`);
   }
 }
