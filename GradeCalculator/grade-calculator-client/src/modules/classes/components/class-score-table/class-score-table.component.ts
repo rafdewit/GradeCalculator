@@ -146,7 +146,7 @@ export class ClassScoreTableComponent implements OnDestroy {
   }
 
   public async moveMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {
-    console.log(left);
+    await this.multiGradeConfigDialogService.moveMulti(classScoreInfo.class.id, multi, left);
   }
 
   public async moveSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod, left: boolean): Promise<void> {

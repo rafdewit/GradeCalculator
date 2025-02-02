@@ -7,6 +7,8 @@ import { MultiGradeConfiguration } from '../dtos/grade-config/multi-grade-config
 import { CreateMultiGradeConfigurationDto } from '../request/multi/create-multi-grade-configuration';
 import { UpdateMultiGradeConfigurationDto } from '../request/multi/update-multi-grade-configuration';
 import { DeleteMultiGradeConfigurationDto } from '../request/multi/delete-multi-grade-configuration';
+import { MoveMultiGradeConfigurationDto } from '../request/multi/move-single-grade-configuration';
+import { moveItemAndRegenerateOrderId } from '../helpers/sorter-methods';
 
 export class MultiGradeConfigHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -48,6 +50,29 @@ export class MultiGradeConfigHandler {
         if (multi) {
           multi.result.name = arg.name;
           multi.result.weight = arg.weight;
+        }
+
+        await gradeDataProvider.createOrUpdate(studentCollection);
+        await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+      }
+    });
+
+    ipcMain.on('moveMultiGradeConfiguration', async (c, arg: MoveMultiGradeConfigurationDto) => {
+      const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+      if (studentCollection) {
+        const multi = GradeConfigFinder.findMulti(studentCollection, arg.multiId);
+        if (multi) {
+          if (multi.parent) {
+            const index = multi.parent.multiGradeConfigurations.findIndex(i => i.id === arg.multiId);
+            if (index >= 0) {
+              multi.parent.multiGradeConfigurations = moveItemAndRegenerateOrderId(multi.parent.multiGradeConfigurations, index, arg.left);
+            }
+          } else {
+            const index = multi.gradePeriod.multiGradeConfigurations.findIndex(i => i.id === arg.multiId);
+            if (index >= 0) {
+              multi.gradePeriod.multiGradeConfigurations = moveItemAndRegenerateOrderId(multi.gradePeriod.multiGradeConfigurations, index, arg.left);
+            }
+          }
         }
 
         await gradeDataProvider.createOrUpdate(studentCollection);

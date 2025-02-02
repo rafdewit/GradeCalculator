@@ -8,6 +8,7 @@ import { SingleGradesUpdateDto } from './request/grade-update/single-grades-upda
 import { CreateMultiGradeConfigurationDto } from './request/multi/create-multi-grade-configuration';
 import { DeleteMultiGradeConfigurationDto } from './request/multi/delete-multi-grade-configuration';
 import { UpdateMultiGradeConfigurationDto } from './request/multi/update-multi-grade-configuration';
+import { MoveMultiGradeConfigurationDto } from './request/multi/move-single-grade-configuration';
 import { CreateSingleGradeConfigurationDto } from './request/single/create-single-grade-configuration';
 import { DeleteSingleGradeConfigurationDto } from './request/single/delete-single-grade-configuration';
 import { UpdateSingleGradeConfigurationDto } from './request/single/update-single-grade-configuration';
@@ -45,6 +46,7 @@ contextBridge.exposeInMainWorld('electron', {
 
   updateSingleGrades: (request: SingleGradesUpdateDto) => ipcRenderer.send('updateSingleGrades', request),
 
+  moveMultiGradeConfiguration: (request: MoveMultiGradeConfigurationDto) => ipcRenderer.send('moveMultiGradeConfiguration', request),
   updateMultiGradeConfiguration: (request: UpdateMultiGradeConfigurationDto) => ipcRenderer.send('updateMultiGradeConfiguration', request),
   createMultiGradeConfiguration: (request: CreateMultiGradeConfigurationDto) => ipcRenderer.send('createMultiGradeConfiguration', request),
   deleteMultiGradeConfiguration: (request: DeleteMultiGradeConfigurationDto) => ipcRenderer.send('deleteMultiGradeConfiguration', request),

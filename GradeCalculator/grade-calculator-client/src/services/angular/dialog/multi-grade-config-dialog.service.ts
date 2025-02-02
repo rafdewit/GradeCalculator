@@ -11,78 +11,87 @@ import { CreateMultiGradeConfigurationDto } from '../../communication/api/reques
 import { UpdateMultiGradeConfigurationDto } from '../../communication/api/request/multi/update-multi-grade-configuration';
 import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
+import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: 'root',
 })
 export class MultiGradeConfigDialogService {
+  constructor(private matDialog: MatDialog, private dialogService: DialogService, private multiGradeConfigurationClient: IMultiGradeConfigurationClient) {}
 
-    constructor(private matDialog: MatDialog, private dialogService: DialogService,
-        private multiGradeConfigurationClient: IMultiGradeConfigurationClient) { }
+  public async moveMulti(studentCollectionId: string, multi: MultiGradeConfiguration, left: boolean): Promise<void> {
+    const request: MoveMultiGradeConfigurationDto = {
+      studentCollectionId: studentCollectionId,
+      multiId: multi.id,
+      left: left,
+    };
 
-    public async createMultiGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
-        const dialogResult = await this.openMultiGradeConfigDialog("Create Multi Grade");
-        if (!dialogResult) {
-            return;
-        }
+    await firstValueFrom(this.multiGradeConfigurationClient.moveMultiGradeConfiguration(request));
+  }
 
-        const request: CreateMultiGradeConfigurationDto = {
-            studentCollectionId: studentCollectionId,
-            gradePeriodId: gradePeriodId,
-            multiParentId: multiParentId,
-
-            name: dialogResult.name,
-            weight: dialogResult.weight,
-        };
-
-        await firstValueFrom(this.multiGradeConfigurationClient.createMultiGradeConfiguration(request));
+  public async createMultiGrade(studentCollectionId: string, gradePeriodId: string, multiParentId: string | null = null): Promise<void> {
+    const dialogResult = await this.openMultiGradeConfigDialog('Create Multi Grade');
+    if (!dialogResult) {
+      return;
     }
 
-    public async updateMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
-        const dialogResult = await this.openMultiGradeConfigDialog(`Update Multi Grade: ${multi.name}`, multi);
-        if (!dialogResult) {
-            return;
-        }
+    const request: CreateMultiGradeConfigurationDto = {
+      studentCollectionId: studentCollectionId,
+      gradePeriodId: gradePeriodId,
+      multiParentId: multiParentId,
 
-        const request: UpdateMultiGradeConfigurationDto = {
-            studentCollectionId: studentCollectionId,
-            multiId: multi.id,
+      name: dialogResult.name,
+      weight: dialogResult.weight,
+    };
 
-            name: dialogResult.name,
-            weight: dialogResult.weight,
-        };
+    await firstValueFrom(this.multiGradeConfigurationClient.createMultiGradeConfiguration(request));
+  }
 
-        await firstValueFrom(this.multiGradeConfigurationClient.updateMultiGradeConfiguration(request));
+  public async updateMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
+    const dialogResult = await this.openMultiGradeConfigDialog(`Update Multi Grade: ${multi.name}`, multi);
+    if (!dialogResult) {
+      return;
     }
 
-    public async deleteMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
-        const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Multi Grade: ${multi.name}?`, `Are you sure you want to multi grade: ${multi.name}`);
-        if (dialogResult) {
-            const request: DeleteMultiGradeConfigurationDto = {
-                studentCollectionId: studentCollectionId,
-                multiId: multi.id,
-            };
+    const request: UpdateMultiGradeConfigurationDto = {
+      studentCollectionId: studentCollectionId,
+      multiId: multi.id,
 
-            firstValueFrom(this.multiGradeConfigurationClient.deleteMultiGradeConfiguration(request));
-        }
+      name: dialogResult.name,
+      weight: dialogResult.weight,
+    };
+
+    await firstValueFrom(this.multiGradeConfigurationClient.updateMultiGradeConfiguration(request));
+  }
+
+  public async deleteMultiGrade(studentCollectionId: string, multi: MultiGradeConfiguration): Promise<void> {
+    const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Multi Grade: ${multi.name}?`, `Are you sure you want to multi grade: ${multi.name}`);
+    if (dialogResult) {
+      const request: DeleteMultiGradeConfigurationDto = {
+        studentCollectionId: studentCollectionId,
+        multiId: multi.id,
+      };
+
+      firstValueFrom(this.multiGradeConfigurationClient.deleteMultiGradeConfiguration(request));
     }
+  }
 
-    private async openMultiGradeConfigDialog(title: string, multi: MultiGradeConfiguration | null = null): Promise<MultiGradeConfigurationData | null> {
-        const data: DefaultCrudDialogData<MultiGradeConfigDialogData> = {
-            object: {
-                multi: multi
-            },
-            deleteFlag: false,
-            title: title,
-            cancelFlag: false,
-            isUpdate: multi !== null,
-        }
+  private async openMultiGradeConfigDialog(title: string, multi: MultiGradeConfiguration | null = null): Promise<MultiGradeConfigurationData | null> {
+    const data: DefaultCrudDialogData<MultiGradeConfigDialogData> = {
+      object: {
+        multi: multi,
+      },
+      deleteFlag: false,
+      title: title,
+      cancelFlag: false,
+      isUpdate: multi !== null,
+    };
 
-        const input = new MatDialogConfig<DefaultCrudDialogData<MultiGradeConfigDialogData>>();
-        input.data = data;
+    const input = new MatDialogConfig<DefaultCrudDialogData<MultiGradeConfigDialogData>>();
+    input.data = data;
 
-        const dialogRef = this.matDialog.open<MultiGradeConfigDialogComponent, DefaultCrudDialogData<MultiGradeConfigDialogData>, MultiGradeConfigurationData>(MultiGradeConfigDialogComponent, input);
-        const dialogResult = await firstValueFrom(dialogRef.afterClosed()) ?? null;
-        return dialogResult;
-    }
+    const dialogRef = this.matDialog.open<MultiGradeConfigDialogComponent, DefaultCrudDialogData<MultiGradeConfigDialogData>, MultiGradeConfigurationData>(MultiGradeConfigDialogComponent, input);
+    const dialogResult = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
+    return dialogResult;
+  }
 }
