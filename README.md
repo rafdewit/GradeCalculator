@@ -32,6 +32,7 @@ Semester2: (weight 50)
   - Oral Exam
 
 both semesters are equaly wieghted. Within the first semester, the daily worktotal  is weighted 40, exam 30 and oral exam 20.
+![GradeCalculatorScreen](https://github.com/user-attachments/assets/8dfe7d21-5694-4ad6-852f-78a13f913300)
 
 
 This grade calculator is currently a simple electron app which can be built locally.
