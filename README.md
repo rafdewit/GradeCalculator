@@ -8,28 +8,30 @@ With this model, the teacher can decide the structure of how the total grade bec
 
 Example:
 - Semester1: (weight 50)
-  - - DailyWork: (weight 50)
-    - - -Behavior
-    - - -Tests
-      - - - -Test1
-      - - - -Test2
-      - - - -Test3
-      - - - -Test4
-  --Exam        (weight 50%)
-  --Oral Exam   (weight 50%)
+  - DailyWork: (weight 40)
+    - Behavior
+    - Tests
+      - Test1
+      - Test2
+      - Test3
+      - Test4
+  - Exam (weight 30)
+  - Oral Exam   (weight 20)
 
-Semester2: (weight 50%)
-  -- DailyWork:
-    ---Behavior
-    ---Tests
-      ----Test1
-      ----Test2
-      ----Test3
-      ----Test4
-      ----Test5
-      ----Test6
-  --Exam
-  --Oral Exam
+Semester2: (weight 50)
+  - DailyWork:
+    - Behavior
+    - Tests
+      - Test1
+      - Test2
+      - Test3
+      - Test4
+      - Test5
+      - Test6
+  - Exam
+  - Oral Exam
+
+both semesters are equaly wieghted. Within the first semester, the daily worktotal  is weighted 40, exam 30 and oral exam 20.
 
 
 This grade calculator is currently a simple electron app which can be built locally.
