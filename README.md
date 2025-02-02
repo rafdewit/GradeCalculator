@@ -8,13 +8,13 @@ With this model, the teacher can decide the structure of how the total grade bec
 
 Example:
 - Semester1: (weight 50)
-  -- DailyWork: (weight 50)
-    ---Behavior
-    ---Tests
-      ----Test1
-      ----Test2
-      ----Test3
-      ----Test4
+  - - DailyWork: (weight 50)
+    - - -Behavior
+    - - -Tests
+      - - - -Test1
+      - - - -Test2
+      - - - -Test3
+      - - - -Test4
   --Exam        (weight 50%)
   --Oral Exam   (weight 50%)
 
