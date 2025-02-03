@@ -64,6 +64,6 @@ export class GradeStore {
       }),
     );
 
-    return attachDelete$.pipe(bufferOneRef());
+    return attachDelete$.pipe(map(i => i.sort((a, b) => (a.name < b.name ? -1 : 1)))).pipe(bufferOneRef());
   }
 }
