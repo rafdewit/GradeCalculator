@@ -36,7 +36,7 @@ export class DialogService {
 
     const data: SelectMultiTargetDialogData = {
       title: title,
-      targets: targets.filter(t => t.type !== 'grade' || t.id !== multiId),
+      targets: targets.filter(t => t.type !== 'multi' || t.id !== multiId),
     };
 
     const input = new MatDialogConfig<SelectMultiTargetDialogData>();
