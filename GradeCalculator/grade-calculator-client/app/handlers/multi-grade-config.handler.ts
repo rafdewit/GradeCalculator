@@ -102,10 +102,33 @@ export class MultiGradeConfigHandler {
       const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
       if (studentCollection) {
         const multi = GradeConfigFinder.findMulti(studentCollection, arg.id);
+
         if (multi) {
           if (multi.parent) {
+            const index = multi.parent.multiGradeConfigurations.findIndex(i => i.id === arg.id);
+            multi.parent.multiGradeConfigurations.splice(index, 1);
           } else {
+            const index = multi.gradePeriod.multiGradeConfigurations.findIndex(i => i.id === arg.id);
+            multi.gradePeriod.multiGradeConfigurations.splice(index, 1);
           }
+        } else {
+          return;
+        }
+
+        if (arg.targetType === 'grade') {
+          const target = studentCollection.gradePeriods.find(g => g.id === arg.targetId);
+          if (!target) {
+            return;
+          }
+
+          target.multiGradeConfigurations.push(multi.result);
+        } else if (arg.targetType === 'multi') {
+          const target = GradeConfigFinder.findMulti(studentCollection, arg.targetId);
+          if (!target) {
+            return;
+          }
+
+          target.result.multiGradeConfigurations.push(multi.result);
         }
 
         await gradeDataProvider.createOrUpdate(studentCollection);
