@@ -9,6 +9,7 @@ import { MoveSingleGradeConfigurationDto } from '../request/single/move-single-g
 import { GradeConfigFinder } from './grade-config.finder';
 import { SingleGradeConfiguration } from '../dtos/grade-config/single-grade-configuration.model';
 import { moveItemAndRegenerateOrderId } from '../helpers/sorter-methods';
+import { TargetMoveSingleGradeConfigurationDto } from '../request/single/target-move-single-grade-configuration';
 
 export class SingleGradeConfigHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -89,6 +90,21 @@ export class SingleGradeConfigHandler {
             single.parent.singleGradeConfigurations = single.parent.singleGradeConfigurations.filter(s => s.id !== arg.singleId);
           } else {
             single.gradePeriod.singleGradeConfigurations = single.gradePeriod.singleGradeConfigurations.filter(s => s.id !== arg.singleId);
+          }
+        }
+
+        await gradeDataProvider.createOrUpdate(studentCollection);
+        await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+      }
+    });
+
+    ipcMain.on('targetMoveSingleGradeConfiguration', async (c, arg: TargetMoveSingleGradeConfigurationDto) => {
+      const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+      if (studentCollection) {
+        const single = GradeConfigFinder.findSingle(studentCollection, arg.id);
+        if (single) {
+          if (single.parent) {
+          } else {
           }
         }
 

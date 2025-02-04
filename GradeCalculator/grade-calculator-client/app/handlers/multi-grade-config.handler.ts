@@ -9,6 +9,7 @@ import { UpdateMultiGradeConfigurationDto } from '../request/multi/update-multi-
 import { DeleteMultiGradeConfigurationDto } from '../request/multi/delete-multi-grade-configuration';
 import { MoveMultiGradeConfigurationDto } from '../request/multi/move-single-grade-configuration';
 import { moveItemAndRegenerateOrderId } from '../helpers/sorter-methods';
+import { TargetMoveMultiGradeConfigurationDto } from '../request/multi/target-move-multi-grade-configuration';
 
 export class MultiGradeConfigHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
@@ -89,6 +90,21 @@ export class MultiGradeConfigHandler {
             multi.parent.multiGradeConfigurations = multi.parent.multiGradeConfigurations.filter(m => m.id !== arg.multiId);
           } else {
             multi.gradePeriod.multiGradeConfigurations = multi.gradePeriod.multiGradeConfigurations.filter(m => m.id !== arg.multiId);
+          }
+        }
+
+        await gradeDataProvider.createOrUpdate(studentCollection);
+        await updateMessenger.SendUpdatedStudentCollection(studentCollection);
+      }
+    });
+
+    ipcMain.on('targetMoveMultiGradeConfiguration', async (c, arg: TargetMoveMultiGradeConfigurationDto) => {
+      const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
+      if (studentCollection) {
+        const multi = GradeConfigFinder.findMulti(studentCollection, arg.id);
+        if (multi) {
+          if (multi.parent) {
+          } else {
           }
         }
 

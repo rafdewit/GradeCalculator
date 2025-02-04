@@ -1,31 +1,48 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
+import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
+import { SelectMultiTargetDialogData } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.data';
 import { ConfirmationDialogData } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog-data';
 import { ConfirmationDialogComponent } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog.component';
+import { StudentCollection } from 'src/services/dtos/student-collection.model';
+import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class DialogService {
+  constructor(private matDialog: MatDialog, private multiCollectionTargetStore: MultiCollectionTargetStore) {}
 
-  constructor(private matDialog: MatDialog) { }
-
-  public async openConfirmationDialogDialog(title: string = "", text: string = ""): Promise<boolean | undefined> {
+  public async openConfirmationDialogDialog(title: string = '', text: string = ''): Promise<boolean | undefined> {
     const data: ConfirmationDialogData = {
       title: title,
-      content: text
-    }
+      content: text,
+    };
 
     const input = new MatDialogConfig<ConfirmationDialogData>();
     input.data = data;
-    
-    const dialogRef = this.matDialog.open<ConfirmationDialogComponent, ConfirmationDialogData, boolean>(
-      ConfirmationDialogComponent, input);
+
+    const dialogRef = this.matDialog.open<ConfirmationDialogComponent, ConfirmationDialogData, boolean>(ConfirmationDialogComponent, input);
     const result = await dialogRef.afterClosed();
     const promise = firstValueFrom(result);
 
     const resultAwaited = await promise;
     return resultAwaited;
+  }
+
+  public async openGradeTargetSelectionDialog(title: string, studentCollection: StudentCollection): Promise<MultiCollectionTarget | null> {
+    const targets: MultiCollectionTarget[] = this.multiCollectionTargetStore.getMultiCollectionTargets(studentCollection);
+    const data: SelectMultiTargetDialogData = {
+      title: title,
+      targets: targets,
+    };
+
+    const input = new MatDialogConfig<SelectMultiTargetDialogData>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<SelectMultiTargetDialogComponent, SelectMultiTargetDialogData, MultiCollectionTarget>(SelectMultiTargetDialogComponent, input);
+    const dialogResult = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
+    return dialogResult;
   }
 }

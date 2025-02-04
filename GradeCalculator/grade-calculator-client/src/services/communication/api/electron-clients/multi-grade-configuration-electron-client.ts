@@ -5,6 +5,7 @@ import { UpdateMultiGradeConfigurationDto } from '../request/multi/update-multi-
 import { DeleteMultiGradeConfigurationDto } from '../request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from '../base/multi-grade-configuration-client';
 import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
+import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
 
 @Injectable()
 export class MultiGradeConfigurationElectronClient extends IMultiGradeConfigurationClient {
@@ -29,6 +30,11 @@ export class MultiGradeConfigurationElectronClient extends IMultiGradeConfigurat
 
   public override moveMultiGradeConfiguration(request: MoveMultiGradeConfigurationDto): Observable<void> {
     (window as any).electron.moveMultiGradeConfiguration(request);
+    return of(void 0);
+  }
+
+  public override targetMoveMultiGradeConfiguration(request: TargetMoveMultiGradeConfigurationDto): Observable<void> {
+    (window as any).electron.targetMoveMultiGradeConfiguration(request);
     return of(void 0);
   }
 }

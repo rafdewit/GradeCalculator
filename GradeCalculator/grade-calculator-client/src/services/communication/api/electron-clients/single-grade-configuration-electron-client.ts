@@ -5,6 +5,7 @@ import { CreateSingleGradeConfigurationDto } from '../request/single/create-sing
 import { DeleteSingleGradeConfigurationDto } from '../request/single/delete-single-grade-configuration';
 import { UpdateSingleGradeConfigurationDto } from '../request/single/update-single-grade-configuration';
 import { MoveSingleGradeConfigurationDto } from 'src/services/communication/api/request/single/move-single-grade-configuration';
+import { TargetMoveSingleGradeConfigurationDto } from 'src/services/communication/api/request/single/target-move-single-grade-configuration';
 
 @Injectable()
 export class SingleGradeConfigurationElectronClient extends ISingleGradeConfigurationClient {
@@ -29,6 +30,11 @@ export class SingleGradeConfigurationElectronClient extends ISingleGradeConfigur
 
   public deleteSingleGradeConfiguration(request: DeleteSingleGradeConfigurationDto): Observable<void> {
     (window as any).electron.deleteSingleGradeConfiguration(request);
+    return of(void 0);
+  }
+
+  public override targetMoveSingleGradeConfiguration(request: TargetMoveSingleGradeConfigurationDto): Observable<void> {
+    (window as any).electron.targetMoveSingleGradeConfiguration(request);
     return of(void 0);
   }
 }

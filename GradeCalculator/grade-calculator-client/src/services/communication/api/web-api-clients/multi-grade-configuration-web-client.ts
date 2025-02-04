@@ -7,6 +7,7 @@ import { UpdateMultiGradeConfigurationDto } from '../request/multi/update-multi-
 import { DeleteMultiGradeConfigurationDto } from '../request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from '../base/multi-grade-configuration-client';
 import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
+import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
 
 @Injectable()
 export class MultiGradeConfigurationWebClient extends IMultiGradeConfigurationClient {
@@ -30,5 +31,9 @@ export class MultiGradeConfigurationWebClient extends IMultiGradeConfigurationCl
 
   public override moveMultiGradeConfiguration(request: MoveMultiGradeConfigurationDto): Observable<void> {
     return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/move`, request);
+  }
+
+  public override targetMoveMultiGradeConfiguration(request: TargetMoveMultiGradeConfigurationDto): Observable<void> {
+    return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/target-move`, request);
   }
 }

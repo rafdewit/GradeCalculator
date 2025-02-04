@@ -1,0 +1,10 @@
+<app-theme-container>
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+
+  <mat-dialog-content class="mat-typography"> </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.multiTargetFormControl.invalid" cdkFocusInitial>{{ 'Ok' }}</button>
+  </mat-dialog-actions>
+</app-theme-container>

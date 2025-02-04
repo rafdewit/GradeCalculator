@@ -19,6 +19,8 @@ import { UpdateStudentCollectionDto } from './request/student-collection/update-
 import { CreateStudentPeriodDto } from './request/students/create-student-period';
 import { DeleteStudentPeriodDto } from './request/students/delete-student-period';
 import { UpdateStudentPeriodDto } from './request/students/update-student-period';
+import { TargetMoveSingleGradeConfigurationDto } from './request/single/target-move-single-grade-configuration';
+import { TargetMoveMultiGradeConfigurationDto } from './request/multi/target-move-multi-grade-configuration';
 
 const { contextBridge, ipcRenderer } = require('electron');
 
@@ -43,6 +45,7 @@ contextBridge.exposeInMainWorld('electron', {
   updateSingleGradeConfiguration: (request: UpdateSingleGradeConfigurationDto) => ipcRenderer.send('updateSingleGradeConfiguration', request),
   createSingleGradeConfiguration: (request: CreateSingleGradeConfigurationDto) => ipcRenderer.send('createSingleGradeConfiguration', request),
   deleteSingleGradeConfiguration: (request: DeleteSingleGradeConfigurationDto) => ipcRenderer.send('deleteSingleGradeConfiguration', request),
+  targetMoveSingleGradeConfiguration: (request: TargetMoveSingleGradeConfigurationDto) => ipcRenderer.send('targetMoveSingleGradeConfiguration', request),
 
   updateSingleGrades: (request: SingleGradesUpdateDto) => ipcRenderer.send('updateSingleGrades', request),
 
@@ -50,6 +53,7 @@ contextBridge.exposeInMainWorld('electron', {
   updateMultiGradeConfiguration: (request: UpdateMultiGradeConfigurationDto) => ipcRenderer.send('updateMultiGradeConfiguration', request),
   createMultiGradeConfiguration: (request: CreateMultiGradeConfigurationDto) => ipcRenderer.send('createMultiGradeConfiguration', request),
   deleteMultiGradeConfiguration: (request: DeleteMultiGradeConfigurationDto) => ipcRenderer.send('deleteMultiGradeConfiguration', request),
+  targetMoveMultiGradeConfiguration: (request: TargetMoveMultiGradeConfigurationDto) => ipcRenderer.send('targetMoveMultiGradeConfiguration', request),
 
   moveGradePeriod: (request: MoveGradePeriodDto) => ipcRenderer.send('moveGradePeriod', request),
   updateGradePeriod: (request: UpdateGradePeriodDto) => ipcRenderer.send('updateGradePeriod', request),

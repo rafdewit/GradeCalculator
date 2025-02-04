@@ -12,12 +12,17 @@ import { UpdateMultiGradeConfigurationDto } from '../../communication/api/reques
 import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
 import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
+import { SelectMultiTargetDialogData } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.data';
+import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
+import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
+import { StudentCollection } from 'src/services/dtos/student-collection.model';
+import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MultiGradeConfigDialogService {
-  constructor(private matDialog: MatDialog, private dialogService: DialogService, private multiGradeConfigurationClient: IMultiGradeConfigurationClient) {}
+  constructor(private matDialog: MatDialog, private dialogService: DialogService, private multiGradeConfigurationClient: IMultiGradeConfigurationClient, private multiCollectionTargetStore: MultiCollectionTargetStore) {}
 
   public async moveMulti(studentCollectionId: string, multi: MultiGradeConfiguration, left: boolean): Promise<void> {
     const request: MoveMultiGradeConfigurationDto = {
@@ -93,5 +98,18 @@ export class MultiGradeConfigDialogService {
     const dialogRef = this.matDialog.open<MultiGradeConfigDialogComponent, DefaultCrudDialogData<MultiGradeConfigDialogData>, MultiGradeConfigurationData>(MultiGradeConfigDialogComponent, input);
     const dialogResult = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
     return dialogResult;
+  }
+
+  public async targetMoveMulti(studentCollection: StudentCollection, multi: MultiGradeConfiguration): Promise<void> {
+    const target = await this.dialogService.openGradeTargetSelectionDialog('Select a new target for this grade collection', studentCollection);
+    if (target) {
+      const request: TargetMoveMultiGradeConfigurationDto = {
+        studentCollectionId: studentCollection.id,
+        id: multi.id,
+        targetType: target.type,
+        targetId: target.id,
+      };
+      await firstValueFrom(this.multiGradeConfigurationClient.targetMoveMultiGradeConfiguration(request));
+    }
   }
 }
