@@ -11,9 +11,11 @@ import { MultiCollectionTarget } from 'src/services/stores/multi-collection-targ
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectMultiTargetDialogComponent {
-  multiTargetFormControl: FormControl<MultiCollectionTarget>;
+  multiTargetFormControl: FormControl<MultiCollectionTarget | null>;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: SelectMultiTargetDialogData, private dialogRef: MatDialogRef<SelectMultiTargetDialogData>, private formBuilder: NonNullableFormBuilder) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: SelectMultiTargetDialogData, private dialogRef: MatDialogRef<SelectMultiTargetDialogData>, private formBuilder: NonNullableFormBuilder) {
+    this.multiTargetFormControl = this.formBuilder.control<MultiCollectionTarget | null>(null);
+  }
 
   public acceptChanges(): void {
     this.dialogRef.close(this.multiTargetFormControl.value);

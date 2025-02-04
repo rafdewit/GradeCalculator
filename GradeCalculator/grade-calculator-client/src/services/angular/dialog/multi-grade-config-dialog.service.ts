@@ -101,7 +101,7 @@ export class MultiGradeConfigDialogService {
   }
 
   public async targetMoveMulti(studentCollection: StudentCollection, multi: MultiGradeConfiguration): Promise<void> {
-    const target = await this.dialogService.openGradeTargetSelectionDialog('Select a new target for this grade collection', studentCollection);
+    const target = await this.dialogService.openGradeTargetSelectionDialog('Select a new target for this grade collection', studentCollection, multi.id);
     if (target) {
       const request: TargetMoveMultiGradeConfigurationDto = {
         studentCollectionId: studentCollection.id,

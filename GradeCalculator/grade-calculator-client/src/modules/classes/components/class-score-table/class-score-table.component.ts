@@ -154,11 +154,11 @@ export class ClassScoreTableComponent implements OnDestroy {
   }
 
   public async dragDialogMulti(classScoreInfo: ClassScoreInfo, multi: MultiGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {
-    this.multiGradeConfigDialogService.moveMulti;
+    await this.multiGradeConfigDialogService.targetMoveMulti(classScoreInfo.class, multi);
   }
 
   public async dragDialogSingle(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration, gradePeriod: GradePeriod): Promise<void> {
-    console.log(single);
+    await this.singleGradeConfigDialogService.targetMoveSingle(classScoreInfo.class, single);
   }
 
   public async deleteSingleGradeConfig(classScoreInfo: ClassScoreInfo, single: SingleGradeConfiguration): Promise<void> {

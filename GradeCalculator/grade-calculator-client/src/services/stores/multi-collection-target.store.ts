@@ -8,6 +8,7 @@ export interface MultiCollectionTarget {
   type: 'grade' | 'multi';
   id: string;
   name: string;
+  displayText: string;
 }
 
 @Injectable({
@@ -29,16 +30,17 @@ export class MultiCollectionTargetStore {
           type: 'grade',
           id: p.id,
           name: p.name,
+          displayText: p.name,
         };
 
-        return [r].concat(this.getMultiTargets(p.multiGradeConfigurations));
+        return [r].concat(this.getMultiTargets(p.multiGradeConfigurations, p.name));
       });
 
       return targets;
     }
   }
 
-  private getMultiTargets(multis: MultiGradeConfiguration[]): MultiCollectionTarget[] {
+  private getMultiTargets(multis: MultiGradeConfiguration[], root: string): MultiCollectionTarget[] {
     if (!multis) {
       return [];
     }
@@ -48,11 +50,12 @@ export class MultiCollectionTargetStore {
         type: 'multi',
         id: m.id,
         name: m.name,
+        displayText: `${root} > ${m.name}`,
       };
 
       return r;
     });
 
-    return results.concat(multis.flatMap(m => this.getMultiTargets(m.multiGradeConfigurations)));
+    return results.concat(multis.flatMap(m => this.getMultiTargets(m.multiGradeConfigurations, `${root} > ${m.name}`)));
   }
 }

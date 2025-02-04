@@ -1,7 +1,18 @@
 <app-theme-container>
   <h2 mat-dialog-title>{{ data.title }}</h2>
 
-  <mat-dialog-content class="mat-typography"> </mat-dialog-content>
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field class="control-panel-item">
+      <mat-label>Target</mat-label>
+      <mat-select [formControl]="multiTargetFormControl">
+        @for (target of data.targets; track target) {
+        <mat-option [value]="target">
+          {{ target.displayText }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
 
   <mat-dialog-actions align="end">
     <button mat-raised-button (click)="cancel()">Cancel</button>

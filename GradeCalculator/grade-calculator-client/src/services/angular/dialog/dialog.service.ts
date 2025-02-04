@@ -31,11 +31,12 @@ export class DialogService {
     return resultAwaited;
   }
 
-  public async openGradeTargetSelectionDialog(title: string, studentCollection: StudentCollection): Promise<MultiCollectionTarget | null> {
+  public async openGradeTargetSelectionDialog(title: string, studentCollection: StudentCollection, multiId: string | null = null): Promise<MultiCollectionTarget | null> {
     const targets: MultiCollectionTarget[] = this.multiCollectionTargetStore.getMultiCollectionTargets(studentCollection);
+
     const data: SelectMultiTargetDialogData = {
       title: title,
-      targets: targets,
+      targets: targets.filter(t => t.type !== 'grade' || t.id !== multiId),
     };
 
     const input = new MatDialogConfig<SelectMultiTargetDialogData>();
