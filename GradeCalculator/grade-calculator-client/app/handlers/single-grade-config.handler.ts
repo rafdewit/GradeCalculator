@@ -102,10 +102,33 @@ export class SingleGradeConfigHandler {
       const studentCollection = await gradeDataProvider.getDeepCopy(arg.studentCollectionId);
       if (studentCollection) {
         const single = GradeConfigFinder.findSingle(studentCollection, arg.id);
+
         if (single) {
           if (single.parent) {
+            const index = single.parent.singleGradeConfigurations.findIndex(i => i.id === arg.id);
+            single.parent.singleGradeConfigurations.splice(index, 1);
           } else {
+            const index = single.gradePeriod.singleGradeConfigurations.findIndex(i => i.id === arg.id);
+            single.gradePeriod.singleGradeConfigurations.splice(index, 1);
           }
+        } else {
+          return;
+        }
+
+        if (arg.targetType === 'grade') {
+          const gradeTarget = studentCollection.gradePeriods.find(g => g.id === arg.targetId);
+          if (!gradeTarget) {
+            return;
+          }
+
+          gradeTarget.singleGradeConfigurations.push(single.result);
+        } else if (arg.targetType === 'multi') {
+          const multiTarget = GradeConfigFinder.findMulti(studentCollection, arg.targetId);
+          if (!multiTarget) {
+            return;
+          }
+
+          multiTarget.result.singleGradeConfigurations.push(single.result);
         }
 
         await gradeDataProvider.createOrUpdate(studentCollection);
