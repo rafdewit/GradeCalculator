@@ -10,12 +10,10 @@ import { CreateSingleGradeConfigurationDto } from '../../communication/api/reque
 import { UpdateSingleGradeConfigurationDto } from '../../communication/api/request/single/update-single-grade-configuration';
 import { DialogService } from './dialog.service';
 import { DeleteSingleGradeConfigurationDto } from '../../communication/api/request/single/delete-single-grade-configuration';
-import { ISingleGradeConfigurationClient } from 'src/services/communication/api/base/single-grade-configuration-client';
-import { MoveSingleGradeConfigurationDto } from 'src/services/communication/api/request/single/move-single-grade-configuration';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
-import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
-import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
-import { TargetMoveSingleGradeConfigurationDto } from 'src/services/communication/api/request/single/target-move-single-grade-configuration';
+import { ISingleGradeConfigurationClient } from '../../communication/api/base/single-grade-configuration-client';
+import { MoveSingleGradeConfigurationDto } from '../../communication/api/request/single/move-single-grade-configuration';
+import { TargetMoveSingleGradeConfigurationDto } from '../../communication/api/request/single/target-move-single-grade-configuration';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 
 @Injectable({
   providedIn: 'root',

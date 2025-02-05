@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, map, switchMap } from 'rxjs';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { GradePeriodConfigurationService } from './grade-period-configuration.service';
 import { StudentConfigurationService } from './student-configuration.service';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 
 @Component({
   selector: 'app-class-configuration',
@@ -13,22 +13,21 @@ import { StudentConfigurationService } from './student-configuration.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ClassConfigurationComponent {
-
   // private class$: Observable<StudentCollection>;
   public info$: Observable<ClassConfigurationInfo>;
 
-  constructor(private activatedRoute: ActivatedRoute, private gradeStore: GradeStore,
-    public gradePeriodConfigurationService: GradePeriodConfigurationService,
-    public studentConfigurationService: StudentConfigurationService) {
+  constructor(private activatedRoute: ActivatedRoute, private gradeStore: GradeStore, public gradePeriodConfigurationService: GradePeriodConfigurationService, public studentConfigurationService: StudentConfigurationService) {
     const class$ = this.activatedRoute.params.pipe(map(p => p['classId'])).pipe(switchMap(i => this.gradeStore.getClass(i)));
 
-    this.info$ = class$.pipe(map(c => {
-      const result: ClassConfigurationInfo = {
-        class: c,
-        navigationName: `Configuration(${c?.name})`
-      };
-      return result;
-    }));
+    this.info$ = class$.pipe(
+      map(c => {
+        const result: ClassConfigurationInfo = {
+          class: c,
+          navigationName: `Configuration(${c?.name})`,
+        };
+        return result;
+      }),
+    );
   }
 }
 

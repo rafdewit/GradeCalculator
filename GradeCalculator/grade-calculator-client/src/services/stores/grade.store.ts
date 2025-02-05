@@ -5,7 +5,7 @@ import { ClassScoreInfo } from './models/score';
 import { convertClass } from './grade.converter';
 import { IStudentCollectionClient } from '../communication/api/base/student-collection-client';
 import { IEventClient } from '../communication/signalr/event-client';
-import { StudentCollection } from '../dtos/student-collection.model';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 
 @Injectable({
   providedIn: 'root',

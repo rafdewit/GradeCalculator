@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { CreateClassDialogData } from './create-class-dialog/create-class-dialog.data';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
@@ -10,6 +9,7 @@ import { firstValueFrom } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 
 @Component({
   selector: 'app-classes-page',

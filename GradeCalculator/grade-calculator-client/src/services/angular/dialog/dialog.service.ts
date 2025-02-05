@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 import { firstValueFrom } from 'rxjs';
 import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
 import { SelectMultiTargetDialogData } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.data';
 import { ConfirmationDialogData } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog-data';
 import { ConfirmationDialogComponent } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog.component';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
 
 @Injectable({

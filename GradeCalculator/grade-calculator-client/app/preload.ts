@@ -1,4 +1,3 @@
-import { StudentCollection } from './dtos/student-collection.model';
 import { CopyGradePeriodDto } from './request/grade-period/copy-grade-period';
 import { MoveGradePeriodDto } from './request/grade-period/move-grade-period';
 import { CreateGradePeriodDto } from './request/grade-period/create-grade-period';
@@ -21,6 +20,7 @@ import { DeleteStudentPeriodDto } from './request/students/delete-student-period
 import { UpdateStudentPeriodDto } from './request/students/update-student-period';
 import { TargetMoveSingleGradeConfigurationDto } from './request/single/target-move-single-grade-configuration';
 import { TargetMoveMultiGradeConfigurationDto } from './request/multi/target-move-multi-grade-configuration';
+import { StudentCollection } from './dtos/student-collection.model';
 
 const { contextBridge, ipcRenderer } = require('electron');
 

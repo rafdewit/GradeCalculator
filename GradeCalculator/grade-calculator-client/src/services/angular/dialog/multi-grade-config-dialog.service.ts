@@ -12,11 +12,9 @@ import { UpdateMultiGradeConfigurationDto } from '../../communication/api/reques
 import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
 import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
-import { SelectMultiTargetDialogData } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.data';
-import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
 import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
-import { StudentCollection } from 'src/services/dtos/student-collection.model';
 import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
+import { StudentCollection } from 'app/dtos/student-collection.model';
 
 @Injectable({
   providedIn: 'root',
