@@ -3,7 +3,6 @@ import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { SingleGradeConfigDialogData } from 'src/modules/common-module/dialogs/single-grade-config-dialog/single-grade-config-dialog.data';
-import { SingleGradeConfiguration } from '../../dtos/grade-config/single-grade-configuration.model';
 import { SingleGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/single-grade-config-dialog/single-grade-config-dialog.component';
 import { SingleGradeConfigurationData } from '../../communication/api/request/single/single-grade-configuration.data';
 import { CreateSingleGradeConfigurationDto } from '../../communication/api/request/single/create-single-grade-configuration';
@@ -14,6 +13,7 @@ import { ISingleGradeConfigurationClient } from '../../communication/api/base/si
 import { MoveSingleGradeConfigurationDto } from '../../communication/api/request/single/move-single-grade-configuration';
 import { TargetMoveSingleGradeConfigurationDto } from '../../communication/api/request/single/target-move-single-grade-configuration';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { SingleGradeConfiguration } from 'app/dtos/grade-config/single-grade-configuration.model';
 
 @Injectable({
   providedIn: 'root',

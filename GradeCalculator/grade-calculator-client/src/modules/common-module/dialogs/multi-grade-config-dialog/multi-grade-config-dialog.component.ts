@@ -3,8 +3,8 @@ import { MultiGradeConfigDialogData } from './multi-grade-config-dialog.data';
 import { DefaultCrudDialogData } from '../default-dialog-crud.data';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { FormArray, FormControl, FormGroup, NonNullableFormBuilder, Validators } from '@angular/forms';
-import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
-import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
+import { MultiGradeConfiguration } from 'app/dtos/grade-config/multi-grade-configuration.model';
+import { SingleGradeConfiguration } from 'app/dtos/grade-config/single-grade-configuration.model';
 
 @Component({
   selector: 'app-multi-grade-config-dialog',
@@ -14,13 +14,13 @@ import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-gr
 })
 export class MultiGradeConfigDialogComponent {
   public multiGradeConfigFormGroup: FormGroup<{
-    name: FormControl<string>,
-    weight: FormControl<number>,
-    singleGradeConfigurations: FormArray<FormControl<SingleGradeConfiguration>>,
+    name: FormControl<string>;
+    weight: FormControl<number>;
+    singleGradeConfigurations: FormArray<FormControl<SingleGradeConfiguration>>;
     multiGradeConfigurations: FormArray<FormControl<MultiGradeConfiguration>>;
   }>;
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<MultiGradeConfigDialogData>, private dialogRef: MatDialogRef<MultiGradeConfigDialogComponent>, private formBuilder: NonNullableFormBuilder) { 
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DefaultCrudDialogData<MultiGradeConfigDialogData>, private dialogRef: MatDialogRef<MultiGradeConfigDialogComponent>, private formBuilder: NonNullableFormBuilder) {
     this.multiGradeConfigFormGroup = this.formBuilder.group({
       name: this.formBuilder.control(data.object.multi?.name ?? 'GradeCollection'),
       weight: this.formBuilder.control(data.object.multi?.weight ?? 50),

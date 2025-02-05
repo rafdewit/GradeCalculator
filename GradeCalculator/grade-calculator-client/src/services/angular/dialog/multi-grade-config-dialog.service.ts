@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { firstValueFrom } from 'rxjs';
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
-import { MultiGradeConfiguration } from '../../dtos/grade-config/multi-grade-configuration.model';
 import { MultiGradeConfigDialogData } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.data';
 import { MultiGradeConfigurationData } from '../../communication/api/request/multi/multi-grade-configuration.data';
 import { MultiGradeConfigDialogComponent } from 'src/modules/common-module/dialogs/multi-grade-config-dialog/multi-grade-config-dialog.component';
@@ -12,9 +11,10 @@ import { UpdateMultiGradeConfigurationDto } from '../../communication/api/reques
 import { DeleteMultiGradeConfigurationDto } from '../../communication/api/request/multi/delete-multi-grade-configuration';
 import { IMultiGradeConfigurationClient } from 'src/services/communication/api/base/multi-grade-configuration-client';
 import { MoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/move-multi-grade-configuration';
-import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
+import { MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
 import { TargetMoveMultiGradeConfigurationDto } from 'src/services/communication/api/request/multi/target-move-multi-grade-configuration';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { MultiGradeConfiguration } from 'app/dtos/grade-config/multi-grade-configuration.model';
 
 @Injectable({
   providedIn: 'root',

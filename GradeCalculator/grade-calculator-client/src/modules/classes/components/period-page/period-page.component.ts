@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, combineLatest, map, switchMap } from 'rxjs';
-import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { MatDialog } from '@angular/material/dialog';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { GradePeriod } from 'app/dtos/grade-config/grade-period.model';
 
 @Component({
   selector: 'app-period-page',

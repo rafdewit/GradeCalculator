@@ -1,5 +1,5 @@
-import { SingleGradeConfiguration } from "src/services/dtos/grade-config/single-grade-configuration.model";
+import { SingleGradeConfiguration } from 'app/dtos/grade-config/single-grade-configuration.model';
 
 export interface SingleGradeConfigDialogData {
-    single: SingleGradeConfiguration | null;
+  single: SingleGradeConfiguration | null;
 }

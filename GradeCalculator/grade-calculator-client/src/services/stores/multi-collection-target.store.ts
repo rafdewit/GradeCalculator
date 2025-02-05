@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MultiGradeConfiguration } from '../dtos/grade-config/multi-grade-configuration.model';
 import { map, Observable } from 'rxjs';
 import { GradeStore } from 'src/services/stores/grade.store';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { MultiGradeConfiguration } from 'app/dtos/grade-config/multi-grade-configuration.model';
 
 export interface MultiCollectionTarget {
   type: 'grade' | 'multi';

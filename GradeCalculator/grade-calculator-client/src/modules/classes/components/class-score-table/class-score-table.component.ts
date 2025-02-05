@@ -9,18 +9,18 @@ import { EditStudentsSingleScoreDialogData } from './edit-students-single-score-
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { EditStudentsSingleScoreDialogComponent } from './edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { SingleGradeConfiguration } from 'src/services/dtos/grade-config/single-grade-configuration.model';
 import { SingleGradeUpdateDto } from 'src/services/communication/api/request/grade-update/single-grade-update';
-import { SingleGradesUpdateDto } from 'src/services/communication/api/request/grade-update/single-grades-update';
-import { MultiGradeConfiguration } from 'src/services/dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradeConfigDialogService } from 'src/services/angular/dialog/single-grade-config-dialog.service';
-import { GradePeriod } from 'src/services/dtos/grade-config/grade-period.model';
 import { MultiGradeConfigDialogService } from 'src/services/angular/dialog/multi-grade-config-dialog.service';
 import { ISingleGradeClient } from 'src/services/communication/api/base/single-grade-client.interface';
 import { alphabetically } from 'src/services/stores/grade.converter';
 import { StudentConfigurationService } from '../class-configuration/student-configuration.service';
 import { GradePeriodConfigurationService } from '../class-configuration/grade-period-configuration.service';
 import { ThemeSelectorService } from 'src/modules/common-module/theme/theme-selector/theme-selector.service';
+import { GradePeriod } from 'app/dtos/grade-config/grade-period.model';
+import { MultiGradeConfiguration } from 'app/dtos/grade-config/multi-grade-configuration.model';
+import { SingleGradesUpdateDto } from 'app/request/grade-update/single-grades-update';
+import { SingleGradeConfiguration } from 'app/dtos/grade-config/single-grade-configuration.model';
 
 @Component({
   selector: 'app-class-score-table',
