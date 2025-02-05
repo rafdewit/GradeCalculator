@@ -21,10 +21,14 @@ export class ClassesPageComponent {
   @ViewChild('uploadclass') uploadClassInput: ElementRef;
   @ViewChild('uploadclasses') uploadClassesInput: ElementRef;
 
-  constructor(public gradeStore: GradeStore, private router: Router, private activatedRoute: ActivatedRoute, private matDialog: MatDialog,
-    public studentCollectionClient: IStudentCollectionClient, private dialogService: DialogService) {
-
-  }
+  constructor(
+    public gradeStore: GradeStore,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private matDialog: MatDialog,
+    public studentCollectionClient: IStudentCollectionClient,
+    private dialogService: DialogService,
+  ) {}
 
   public async updateClass(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openClassDialog();
@@ -36,20 +40,16 @@ export class ClassesPageComponent {
   public async createClass(): Promise<void> {
     const result = await this.openClassDialog();
     if (result) {
-      await firstValueFrom(this.studentCollectionClient.createClass({ className: result }));
+      await firstValueFrom(this.studentCollectionClient.createClass({ className: result, directories: [] }));
     }
   }
 
   public downloadClass(studentCollection: StudentCollection): void {
-    return saveAs(
-      new Blob([JSON.stringify(studentCollection, null, 2)], { type: 'JSON' }), `${studentCollection.name}_backup.json`
-    );
+    return saveAs(new Blob([JSON.stringify(studentCollection, null, 2)], { type: 'JSON' }), `${studentCollection.name}_backup.json`);
   }
 
   public downloadClasses(studentCollections: StudentCollection[]): void {
-    return saveAs(
-      new Blob([JSON.stringify(studentCollections, null, 2)], { type: 'JSON' }), `all_classes_backup.json`
-    );
+    return saveAs(new Blob([JSON.stringify(studentCollections, null, 2)], { type: 'JSON' }), `all_classes_backup.json`);
   }
 
   public triggerUploadClasses() {
@@ -60,13 +60,13 @@ export class ClassesPageComponent {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     const fileReader = new FileReader();
-    fileReader.onload = (e) => {
+    fileReader.onload = e => {
       const result = JSON.parse(fileReader.result as string) as StudentCollection[];
-      if(result) {
+      if (result) {
         console.log(result);
       }
-    }
-    fileReader.readAsText(files[0])
+    };
+    fileReader.readAsText(files[0]);
   }
 
   public triggerUploadClass() {
@@ -77,13 +77,13 @@ export class ClassesPageComponent {
     const target = event.target as HTMLInputElement;
     const files = target.files as FileList;
     const fileReader = new FileReader();
-    fileReader.onload = (e) => {
+    fileReader.onload = e => {
       const result = JSON.parse(fileReader.result as string) as StudentCollection;
-      if(result) {
+      if (result) {
         console.log(result);
       }
-    }
-    fileReader.readAsText(files[0])
+    };
+    fileReader.readAsText(files[0]);
   }
 
   public async copyClass(studentCollection: StudentCollection): Promise<void> {
@@ -95,17 +95,17 @@ export class ClassesPageComponent {
 
   public async deleteClass(studentCollection: StudentCollection): Promise<void> {
     const dialogResult = await this.dialogService.openConfirmationDialogDialog(`Delete Class: ${studentCollection.name}?`, `Are you sure you want to delete class: ${studentCollection.name}`);
-    if(dialogResult) {
+    if (dialogResult) {
       await firstValueFrom(this.studentCollectionClient.deleteClass(studentCollection.id));
     }
   }
 
   public classClicked(studentCollection: StudentCollection): void {
-    this.router.navigate([studentCollection.id, "score-overview"], { relativeTo: this.activatedRoute })
+    this.router.navigate([studentCollection.id, 'score-overview'], { relativeTo: this.activatedRoute });
   }
 
   public tableClicked(studentCollection: StudentCollection): void {
-    this.router.navigate([studentCollection.id, "score-table"], { relativeTo: this.activatedRoute })
+    this.router.navigate([studentCollection.id, 'score-table'], { relativeTo: this.activatedRoute });
   }
 
   public editClicked(studentCollection: StudentCollection): void {
@@ -116,18 +116,18 @@ export class ClassesPageComponent {
     const isEdit = studentCollection !== null;
     const data: DefaultCrudDialogData<CreateClassDialogData> = {
       object: {
-        name: studentCollection?.name ?? 'ClassName'
+        name: studentCollection?.name ?? 'ClassName',
       },
       deleteFlag: false,
       title: isEdit ? 'Update Class' : 'Create Class',
       cancelFlag: false,
       isUpdate: isEdit,
-    }
+    };
 
     const input = new MatDialogConfig<DefaultCrudDialogData<CreateClassDialogData>>();
     input.data = data;
 
     const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, string>(CreateClassDialogComponent, input);
-    return await firstValueFrom(dialogRef.afterClosed()) ?? null;
+    return (await firstValueFrom(dialogRef.afterClosed())) ?? null;
   }
 }

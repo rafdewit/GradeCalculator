@@ -1,3 +1,4 @@
 export interface CreateStudentCollectionDto {
-    className: string;
+  className: string;
+  directories: [];
 }

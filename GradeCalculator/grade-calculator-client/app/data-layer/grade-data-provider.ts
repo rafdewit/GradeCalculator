@@ -7,14 +7,15 @@ import { setStudentCollectionOrderIds } from '../helpers/sorter-methods';
 export class GradeDataProvider {
   private _cache: Map<string, StudentCollection>;
 
+  private path = require('path');
+
   constructor() {
     this._cache = this.getAllInternal();
   }
 
   public getClassesStorageDirectory(): string {
     const { app } = require('electron');
-    const path = require('path');
-    return path.join(app.getPath('appData'), 'GradeCalculator');
+    return this.path.join(app.getPath('appData'), 'GradeCalculator');
   }
 
   private getAllInternal(): Map<string, StudentCollection> {
@@ -63,7 +64,10 @@ export class GradeDataProvider {
 
   public async createOrUpdate(studentCollection: StudentCollection): Promise<void> {
     this._cache.set(studentCollection.id, studentCollection);
-    writeFileSync(`${this.getClassesStorageDirectory()}/Class-${studentCollection.id}.json`, JSON.stringify(studentCollection));
+    const collectionPaths = studentCollection.directories ?? [];
+    const paths = [this.getClassesStorageDirectory(), ...collectionPaths, `Class-${studentCollection.id}.json`];
+    const resultingPath = this.path.join(...paths);
+    writeFileSync(resultingPath, JSON.stringify(studentCollection));
   }
 
   public delete(id: string): void {
