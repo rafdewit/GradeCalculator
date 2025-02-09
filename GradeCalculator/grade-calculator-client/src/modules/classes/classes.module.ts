@@ -23,19 +23,20 @@ import { CreateStudentDialogComponent } from './components/class-configuration/c
 import { ClassScoreTableComponent } from './components/class-score-table/class-score-table.component';
 import { ScoreRepresentationComponent } from './components/common/score-representation/score-representation.component';
 import { EditStudentsSingleScoreDialogComponent } from './components/class-score-table/edit-students-single-score-dialog/edit-students-single-score-dialog.component';
-import { TopMarginPipe } from 'src/modules/classes/components/class-score-table/top-margin.pipe';
 import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
 
 const routes: Routes = [
-  { path: ':classId/score-overview', component: ClassScoreComponent },
-  { path: ':classId/score-table', component: ClassScoreTableComponent },
+  { path: 'classes-page', component: ClassesPageComponent },
+  { path: 'classes-page/:directories', component: ClassesPageComponent },
+  { path: 'classes-page/:classId/score-overview', component: ClassScoreComponent },
+  { path: 'classes-page/:classId/score-table', component: ClassScoreTableComponent },
   {
-    path: ':classId/score-overview/:studentId',
+    path: 'classes-page/:classId/score-overview/:studentId',
     component: StudentScoreComponent,
   },
-  { path: ':classId', component: ClassConfigurationComponent },
-  { path: ':classId/periods/:periodId', component: PeriodPageComponent },
-  { path: '**', component: ClassesPageComponent },
+  { path: 'classes-page/:classId', component: ClassConfigurationComponent },
+  { path: 'classes-page/:classId/periods/:periodId', component: PeriodPageComponent },
+  { path: '**', redirectTo: 'classes-page' },
 ];
 
 @NgModule({

@@ -9,6 +9,11 @@ import { ipcMain } from 'electron';
 
 export class StudentCollectionHandler {
   public static initializeHandlers(gradeDataProvider: GradeDataProvider, updateMessenger: UpdateMessenger): void {
+    ipcMain.handle('getAllDirectories', () => {
+      const result = gradeDataProvider.getAllDirectories();
+      return result;
+    });
+
     ipcMain.handle('getAllClasses', () => {
       const result = gradeDataProvider.getAll();
       return result;

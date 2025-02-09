@@ -12,6 +12,7 @@ export class GradeHubClient extends IEventClient implements OnDestroy {
   public connectedState$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public studentCollectionUpdateEvent$: Observable<StudentCollection>;
   public studentCollectionDeletedEvent$: Observable<string>;
+  public directoriesUpdatedEvent$: Observable<string[]>;
 
   constructor() {
     super();
@@ -51,6 +52,7 @@ export class GradeHubClient extends IEventClient implements OnDestroy {
 
     this.studentCollectionUpdateEvent$ = signalRObservable('studentcollectionupdated', connection);
     this.studentCollectionDeletedEvent$ = signalRObservable('studentcollectiondeleted', connection);
+    this.directoriesUpdatedEvent$ = signalRObservable('directoriesupdated', connection);
   }
 
   ngOnDestroy(): void {

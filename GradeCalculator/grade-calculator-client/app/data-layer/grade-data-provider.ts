@@ -1,6 +1,6 @@
 import { StudentCollection } from '../dtos/student-collection.model';
 import { GradePeriod } from '../dtos/grade-config/grade-period.model';
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, writeFileSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'original-fs';
 import { deepCopy } from '../helpers/helper-methods';
 import { setStudentCollectionOrderIds } from '../helpers/sorter-methods';
 
@@ -10,7 +10,8 @@ export class GradeDataProvider {
   private path = require('path');
 
   constructor() {
-    this._cache = this.getAllInternal();
+    const files = this.getFiles();
+    this._cache = this.getAllJsonFiles(files);
   }
 
   public getClassesStorageDirectory(): string {
@@ -18,17 +19,36 @@ export class GradeDataProvider {
     return this.path.join(app.getPath('appData'), 'GradeCalculator');
   }
 
-  private getAllInternal(): Map<string, StudentCollection> {
-    if (!existsSync(this.getClassesStorageDirectory())) {
-      mkdirSync(this.getClassesStorageDirectory());
-    }
+  private getAllJsonFiles(files: string[]): Map<string, StudentCollection> {
+    const jsonFiles = files.filter(file => file.endsWith('.json'));
 
-    const jsonFiles = readdirSync(this.getClassesStorageDirectory()).filter(file => file.endsWith('.json'));
-    const studentCollections = jsonFiles.map(f => JSON.parse(readFileSync(`${this.getClassesStorageDirectory()}/${f}`).toString()) as StudentCollection);
+    const studentCollections = jsonFiles.map(f => this.readFile(f));
     const result = new Map<string, StudentCollection>();
     studentCollections.forEach(c => setStudentCollectionOrderIds(c));
     studentCollections.forEach(c => result.set(c.id, c));
     return result;
+  }
+
+  public getAllDirectories(): string[] {
+    const files = this.getFiles();
+    const directories = files.filter(f => statSync(`${this.getClassesStorageDirectory()}\\${f}`).isDirectory());
+    return directories;
+  }
+
+  private getFiles(): string[] {
+    if (!existsSync(this.getClassesStorageDirectory())) {
+      mkdirSync(this.getClassesStorageDirectory());
+    }
+
+    const files = readdirSync(this.getClassesStorageDirectory(), { recursive: true }).map(file => (typeof file === 'string' ? file : file.toString()));
+    return files;
+  }
+
+  private readFile(f: string): StudentCollection {
+    const filePath = `${this.getClassesStorageDirectory()}\\${f}`;
+    console.log(filePath);
+    const parsedJson = JSON.parse(readFileSync(filePath).toString());
+    return parsedJson as StudentCollection;
   }
 
   public getAll(): StudentCollection[] {

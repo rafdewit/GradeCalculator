@@ -5,7 +5,7 @@ import { CreateClassDialogData } from './create-class-dialog/create-class-dialog
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { CreateClassDialogComponent } from './create-class-dialog/create-class-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, map } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
@@ -28,7 +28,10 @@ export class ClassesPageComponent {
     private matDialog: MatDialog,
     public studentCollectionClient: IStudentCollectionClient,
     private dialogService: DialogService,
-  ) {}
+  ) {
+    const directories$ = this.activatedRoute.paramMap.pipe(map(p => p.get('directories')));
+    //TODO define which directories should be visible on this page on top of classes
+  }
 
   public async updateClass(studentCollection: StudentCollection): Promise<void> {
     const result = await this.openClassDialog();

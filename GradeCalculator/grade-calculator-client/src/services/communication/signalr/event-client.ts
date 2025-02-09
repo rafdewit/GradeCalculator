@@ -6,4 +6,5 @@ export abstract class IEventClient {
   public abstract connectedState$: BehaviorSubject<boolean>;
   public abstract studentCollectionUpdateEvent$: Observable<StudentCollection>;
   public abstract studentCollectionDeletedEvent$: Observable<string>;
+  public abstract directoriesUpdatedEvent$: Observable<string[]>;
 }

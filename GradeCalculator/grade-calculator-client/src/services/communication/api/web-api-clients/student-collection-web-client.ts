@@ -16,6 +16,10 @@ export class StudentCollectionWebClient extends IStudentCollectionClient {
     super();
   }
 
+  public override getAllDirectories(): Observable<string[]> {
+    return this.httpClient.get<string[]>(this.base.baseUrl + `${this.proxyName}/directories`);
+  }
+
   public getAllClasses(): Observable<StudentCollection[]> {
     return this.httpClient.get<StudentCollection[]>(this.base.baseUrl + `${this.proxyName}`);
   }

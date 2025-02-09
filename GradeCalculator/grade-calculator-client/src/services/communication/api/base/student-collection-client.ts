@@ -5,6 +5,7 @@ import { CopyStudentCollectionDto } from '../request/student-collection/copy-cla
 import { StudentCollection } from 'app/dtos/student-collection.model';
 
 export abstract class IStudentCollectionClient {
+  public abstract getAllDirectories(): Observable<string[]>;
   public abstract getAllClasses(): Observable<StudentCollection[]>;
   public abstract getClass(classId: string): Observable<StudentCollection>;
   public abstract updateClass(request: UpdateStudentCollectionDto): Observable<void>;

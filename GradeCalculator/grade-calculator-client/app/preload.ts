@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld('electron', {
   electron: () => process.versions.electron,
   ping: () => ipcRenderer.invoke('ping'),
 
+  getAllDirectories: () => ipcRenderer.invoke('getAllDirectories'),
   getAllClasses: () => ipcRenderer.invoke('getAllClasses'),
   getClass: (id: string) => ipcRenderer.invoke('getClass', id),
   updateClass: (request: UpdateStudentCollectionDto) => ipcRenderer.send('updateClass', request),
@@ -61,6 +62,7 @@ contextBridge.exposeInMainWorld('electron', {
   createGradePeriod: (request: CreateGradePeriodDto) => ipcRenderer.send('createGradePeriod', request),
   deleteGradePeriod: (request: DeleteGradePeriodDto) => ipcRenderer.send('deleteGradePeriod', request),
 
+  directoriesUpdated: (handler: (directories: string[]) => any) => ipcRenderer.on('directoriesupdated', (e, args) => handler(args)),
   studentCollectionUpdated: (handler: (studentCollection: StudentCollection) => any) => ipcRenderer.on('studentcollectionupdated', (e, args) => handler(args)),
   studentCollectionDeleted: (handler: (id: string) => any) => ipcRenderer.on('studentcollectiondeleted', (e, args) => handler(args)),
 });
