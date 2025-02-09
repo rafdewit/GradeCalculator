@@ -4,6 +4,10 @@ import { BrowserWindow, ipcMain } from 'electron';
 export class UpdateMessenger {
   constructor(private mainWindow: BrowserWindow) {}
 
+  public async SendUpdatedDirectories(directories: string[]) {
+    this.mainWindow.webContents.send('directoriesUpdated', directories);
+  }
+
   public async SendUpdatedStudentCollection(studentCollection: StudentCollection) {
     this.mainWindow.webContents.send('studentcollectionupdated', studentCollection);
   }

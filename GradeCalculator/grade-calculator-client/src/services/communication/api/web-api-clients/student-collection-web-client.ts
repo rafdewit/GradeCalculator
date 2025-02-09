@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, firstValueFrom } from 'rxjs';
+import { Observable } from 'rxjs';
 import { BaseUrlProvider } from '../base-url.provider';
 import { UpdateStudentCollectionDto } from '../request/student-collection/update-class-request';
 import { CreateStudentCollectionDto } from '../request/student-collection/create-class-request';
@@ -14,6 +14,10 @@ export class StudentCollectionWebClient extends IStudentCollectionClient {
 
   constructor(private httpClient: HttpClient, private base: BaseUrlProvider) {
     super();
+  }
+
+  public override createDirectory(directory: string): Observable<void> {
+    return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/create-directory`, { directory: directory });
   }
 
   public override getAllDirectories(): Observable<string[]> {

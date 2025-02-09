@@ -14,6 +14,12 @@ export class StudentCollectionHandler {
       return result;
     });
 
+    ipcMain.handle('createDirectory', async (c, args: string) => {
+      const result = gradeDataProvider.createDirectory(args);
+      await updateMessenger.SendUpdatedDirectories(gradeDataProvider.getAllDirectories());
+      return result;
+    });
+
     ipcMain.handle('getAllClasses', () => {
       const result = gradeDataProvider.getAll();
       return result;

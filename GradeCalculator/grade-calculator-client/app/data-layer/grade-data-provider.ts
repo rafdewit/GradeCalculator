@@ -29,6 +29,10 @@ export class GradeDataProvider {
     return result;
   }
 
+  public createDirectory(directory: string): void {
+    mkdirSync(`${this.getClassesStorageDirectory()}\\${directory}`);
+  }
+
   public getAllDirectories(): string[] {
     const files = this.getFiles();
     const directories = files.filter(f => statSync(`${this.getClassesStorageDirectory()}\\${f}`).isDirectory());
@@ -46,7 +50,6 @@ export class GradeDataProvider {
 
   private readFile(f: string): StudentCollection {
     const filePath = `${this.getClassesStorageDirectory()}\\${f}`;
-    console.log(filePath);
     const parsedJson = JSON.parse(readFileSync(filePath).toString());
     return parsedJson as StudentCollection;
   }

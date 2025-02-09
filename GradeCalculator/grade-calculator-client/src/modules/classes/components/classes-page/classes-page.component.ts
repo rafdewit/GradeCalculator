@@ -10,6 +10,7 @@ import { saveAs } from 'file-saver';
 import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { DirectoriesStore } from 'src/services/stores/directories.store';
 
 @Component({
   selector: 'app-classes-page',
@@ -28,9 +29,11 @@ export class ClassesPageComponent {
     private matDialog: MatDialog,
     public studentCollectionClient: IStudentCollectionClient,
     private dialogService: DialogService,
+    private directoriesStore: DirectoriesStore,
   ) {
     const directories$ = this.activatedRoute.paramMap.pipe(map(p => p.get('directories')));
-    //TODO define which directories should be visible on this page on top of classes
+    directories$.subscribe(c => console.log(c));
+    this.directoriesStore.directoryStructure$.subscribe(i => console.log(i));
   }
 
   public async updateClass(studentCollection: StudentCollection): Promise<void> {

@@ -12,6 +12,10 @@ export class StudentCollectionElectronClient extends IStudentCollectionClient {
     super();
   }
 
+  public override createDirectory(directory: string): Observable<void> {
+    return from((window as any).electron.createDirectory(directory)) as Observable<void>;
+  }
+
   public override getAllDirectories(): Observable<string[]> {
     return from((window as any).electron.getAllDirectories()) as Observable<string[]>;
   }
