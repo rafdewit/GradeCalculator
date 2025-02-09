@@ -17,10 +17,12 @@ export class DirectoriesStore {
     this.directoryStructure$ = this.directories$.pipe(
       map(directories => {
         const base = directories.map(directoryPath => {
+          const parts = directoryPath.split('\\');
           const result: DirectoryModel = {
             directory: directoryPath,
-            directoryParts: directoryPath.split('\\'),
+            directoryParts: parts,
             subDirectories: [],
+            directoryName: parts[parts.length - 1],
           };
 
           return result;
@@ -32,6 +34,7 @@ export class DirectoriesStore {
           directory: '',
           directoryParts: [],
           subDirectories: this.getSub(baseDirectories, base, 2),
+          directoryName: '',
         };
 
         return root;
@@ -73,5 +76,6 @@ export class DirectoriesStore {
 export interface DirectoryModel {
   directoryParts: string[];
   directory: string;
+  directoryName: string;
   subDirectories: DirectoryModel[];
 }

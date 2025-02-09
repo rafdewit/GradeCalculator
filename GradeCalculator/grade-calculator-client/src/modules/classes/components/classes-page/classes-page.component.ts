@@ -5,12 +5,13 @@ import { CreateClassDialogData } from './create-class-dialog/create-class-dialog
 import { DefaultCrudDialogData } from 'src/modules/common-module/dialogs/default-dialog-crud.data';
 import { CreateClassDialogComponent } from './create-class-dialog/create-class-dialog.component';
 import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
-import { firstValueFrom, map } from 'rxjs';
+import { combineLatest, firstValueFrom, map, Observable } from 'rxjs';
 import { saveAs } from 'file-saver';
 import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
 import { StudentCollection } from 'app/dtos/student-collection.model';
-import { DirectoriesStore } from 'src/services/stores/directories.store';
+import { DirectoriesStore, DirectoryModel } from 'src/services/stores/directories.store';
+import { ClassScoreInfo } from 'src/services/stores/models/score';
 
 @Component({
   selector: 'app-classes-page',
@@ -21,6 +22,9 @@ import { DirectoriesStore } from 'src/services/stores/directories.store';
 export class ClassesPageComponent {
   @ViewChild('uploadclass') uploadClassInput: ElementRef;
   @ViewChild('uploadclasses') uploadClassesInput: ElementRef;
+
+  public selectedDirectoryModel$: Observable<DirectoryModel | null>;
+  public directoryClasses$: Observable<ClassScoreInfo[]>;
 
   constructor(
     public gradeStore: GradeStore,
@@ -33,7 +37,42 @@ export class ClassesPageComponent {
   ) {
     const directories$ = this.activatedRoute.paramMap.pipe(map(p => p.get('directories')));
     directories$.subscribe(c => console.log(c));
-    this.directoriesStore.directoryStructure$.subscribe(i => console.log(i));
+
+    this.selectedDirectoryModel$ = combineLatest([directories$, this.directoriesStore.directoryStructure$]).pipe(
+      map(([directories, structure]) => {
+        if (!directories) {
+          return structure;
+        } else {
+          return this.getModel(structure.subDirectories, directories);
+        }
+      }),
+    );
+
+    this.directoryClasses$ = combineLatest([directories$, this.gradeStore.classScoreInfos$]).pipe(
+      map(([directories, infos]) => {
+        if (!directories) {
+          return infos.filter(i => !i.class.directories || i.class.directories.length === 0);
+        } else {
+          return infos.filter(i => i.class.directories.join('\\') === directories);
+        }
+      }),
+    );
+  }
+
+  private getModel(models: DirectoryModel[], directory: string): DirectoryModel | null {
+    for (let i = 0; i < models.length; i++) {
+      const model = models[i];
+      if (model.directory === directory) {
+        return model;
+      }
+
+      const subModel = this.getModel(model.subDirectories, directory);
+      if (subModel) {
+        return subModel;
+      }
+    }
+
+    return null;
   }
 
   public async updateClass(studentCollection: StudentCollection): Promise<void> {
