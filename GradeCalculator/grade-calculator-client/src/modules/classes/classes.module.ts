@@ -24,10 +24,10 @@ import { ClassScoreTableComponent } from './components/class-score-table/class-s
 import { ScoreRepresentationComponent } from './components/common/score-representation/score-representation.component';
 import { EditStudentsSingleScoreDialogComponent } from './components/class-score-table/edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
+import { CreateDirectoryDialogComponent } from 'src/modules/classes/components/classes-page/create-directory-dialog/create-directory-dialog.component';
 
 const routes: Routes = [
   { path: 'classes-page', component: ClassesPageComponent },
-  { path: 'classes-page/:directories', component: ClassesPageComponent },
   { path: 'classes-page/:classId/score-overview', component: ClassScoreComponent },
   { path: 'classes-page/:classId/score-table', component: ClassScoreTableComponent },
   {
@@ -55,6 +55,7 @@ const routes: Routes = [
     SingleScoreComponent,
     PercentageRepresentationComponent,
     CreateClassDialogComponent,
+    CreateDirectoryDialogComponent,
     CreatePeriodDialogComponent,
     CreateStudentDialogComponent,
     ClassScoreTableComponent,

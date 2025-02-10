@@ -3,7 +3,7 @@
   flex-direction: column;
   height: 100%;
   overflow: hidden;
-  
+
   .actions {
     margin-left: auto;
 
@@ -26,5 +26,23 @@
     visibility: hidden;
     width: 1px;
     height: 1px;
+  }
+
+  .navigation-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  .clickable {
+    cursor: pointer;
+
+    &:hover {
+      opacity: .9;
+    }
   }
 }

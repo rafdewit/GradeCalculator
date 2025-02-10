@@ -11,7 +11,9 @@ import { DialogService } from 'src/services/angular/dialog/dialog.service';
 import { IStudentCollectionClient } from 'src/services/communication/api/base/student-collection-client';
 import { StudentCollection } from 'app/dtos/student-collection.model';
 import { DirectoriesStore, DirectoryModel } from 'src/services/stores/directories.store';
-import { ClassScoreInfo } from 'src/services/stores/models/score';
+import { CreateDirectoryDialogData } from 'src/modules/classes/components/classes-page/create-directory-dialog/create-directory-dialog.data';
+import { CreateDirectoryDialogComponent } from 'src/modules/classes/components/classes-page/create-directory-dialog/create-directory-dialog.component';
+import { ActiveDirectoryService } from 'src/modules/classes/components/classes-page/active-directory.service';
 
 @Component({
   selector: 'app-classes-page',
@@ -24,7 +26,8 @@ export class ClassesPageComponent {
   @ViewChild('uploadclasses') uploadClassesInput: ElementRef;
 
   public selectedDirectoryModel$: Observable<DirectoryModel | null>;
-  public directoryClasses$: Observable<ClassScoreInfo[]>;
+  public directoryClasses$: Observable<StudentCollection[]>;
+  public classesPageInfo$: Observable<ClassesPageInfo>;
 
   constructor(
     public gradeStore: GradeStore,
@@ -34,13 +37,12 @@ export class ClassesPageComponent {
     public studentCollectionClient: IStudentCollectionClient,
     private dialogService: DialogService,
     private directoriesStore: DirectoriesStore,
+    private activeDirectoryService: ActiveDirectoryService,
   ) {
-    const directories$ = this.activatedRoute.paramMap.pipe(map(p => p.get('directories')));
-    directories$.subscribe(c => console.log(c));
-
+    const directories$ = this.activeDirectoryService.activeDirectory$;
     this.selectedDirectoryModel$ = combineLatest([directories$, this.directoriesStore.directoryStructure$]).pipe(
       map(([directories, structure]) => {
-        if (!directories) {
+        if (!directories || directories.length === 0) {
           return structure;
         } else {
           return this.getModel(structure.subDirectories, directories);
@@ -48,25 +50,62 @@ export class ClassesPageComponent {
       }),
     );
 
-    this.directoryClasses$ = combineLatest([directories$, this.gradeStore.classScoreInfos$]).pipe(
+    this.directoryClasses$ = combineLatest([directories$, this.gradeStore.classes$]).pipe(
       map(([directories, infos]) => {
         if (!directories) {
-          return infos.filter(i => !i.class.directories || i.class.directories.length === 0);
+          return infos.filter(i => !i.directories || i.directories.length === 0);
         } else {
-          return infos.filter(i => i.class.directories.join('\\') === directories);
+          return infos.filter(i => this.areEqual(i.directories ?? [], directories ?? []));
         }
+      }),
+    );
+
+    this.classesPageInfo$ = combineLatest([this.selectedDirectoryModel$, this.directoryClasses$, this.directoriesStore.directoryStructure$]).pipe(
+      map(([selectedDirectoryModel, directoryClasses, root]) => {
+        const result: ClassesPageInfo = {
+          currentDirectoryClasses: directoryClasses,
+          rootDirectory: root,
+          activeDirectory: selectedDirectoryModel,
+        };
+
+        return result;
       }),
     );
   }
 
-  private getModel(models: DirectoryModel[], directory: string): DirectoryModel | null {
+  private areEqual(a: string[], b: string[]): boolean {
+    if (!a && !b) {
+      return true;
+    }
+
+    if (!a || !b) {
+      return false;
+    }
+
+    if (a.length !== b.length) {
+      return false;
+    }
+
+    for (let i = 0; i < a.length; i++) {
+      if (a[i] !== b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private getModel(models: DirectoryModel[], directoryParts: string[]): DirectoryModel | null {
     for (let i = 0; i < models.length; i++) {
       const model = models[i];
-      if (model.directory === directory) {
+      console.log(model);
+      console.log(directoryParts);
+      console.log('directoryParts');
+      if (this.areEqual(model.directoryParts ?? [], directoryParts ?? [])) {
+        console.log(model);
         return model;
       }
 
-      const subModel = this.getModel(model.subDirectories, directory);
+      const subModel = this.getModel(model.subDirectories, directoryParts);
       if (subModel) {
         return subModel;
       }
@@ -86,6 +125,13 @@ export class ClassesPageComponent {
     const result = await this.openClassDialog();
     if (result) {
       await firstValueFrom(this.studentCollectionClient.createClass({ className: result, directories: [] }));
+    }
+  }
+
+  public async createDirectory(): Promise<void> {
+    const result = await this.openDirectoryDialog();
+    if (result) {
+      await firstValueFrom(this.studentCollectionClient.createDirectory(result));
     }
   }
 
@@ -145,6 +191,8 @@ export class ClassesPageComponent {
     }
   }
 
+  public async moveClass(studentCollection: StudentCollection): Promise<void> {}
+
   public classClicked(studentCollection: StudentCollection): void {
     this.router.navigate([studentCollection.id, 'score-overview'], { relativeTo: this.activatedRoute });
   }
@@ -155,6 +203,15 @@ export class ClassesPageComponent {
 
   public editClicked(studentCollection: StudentCollection): void {
     this.router.navigate([studentCollection.id], { relativeTo: this.activatedRoute });
+  }
+
+  public openDirectory(directory: DirectoryModel): void {
+    this.activeDirectoryService.changeDirectory(directory.directoryParts);
+  }
+
+  public routeBack(index: number, directoryParts: string[]): void {
+    const result = directoryParts.slice(0, index);
+    this.activeDirectoryService.changeDirectory(result);
   }
 
   public async openClassDialog(studentCollection: StudentCollection | null = null): Promise<string | null> {
@@ -175,4 +232,28 @@ export class ClassesPageComponent {
     const dialogRef = this.matDialog.open<CreateClassDialogComponent, DefaultCrudDialogData<CreateClassDialogData>, string>(CreateClassDialogComponent, input);
     return (await firstValueFrom(dialogRef.afterClosed())) ?? null;
   }
+
+  public async openDirectoryDialog(): Promise<string | null> {
+    const data: DefaultCrudDialogData<CreateClassDialogData> = {
+      object: {
+        name: 'DirectoryName',
+      },
+      deleteFlag: false,
+      title: 'Create Directory',
+      cancelFlag: false,
+      isUpdate: false,
+    };
+
+    const input = new MatDialogConfig<DefaultCrudDialogData<CreateDirectoryDialogData>>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<CreateDirectoryDialogComponent, DefaultCrudDialogData<CreateDirectoryDialogData>, string>(CreateDirectoryDialogComponent, input);
+    return (await firstValueFrom(dialogRef.afterClosed())) ?? null;
+  }
+}
+
+export interface ClassesPageInfo {
+  activeDirectory: DirectoryModel | null;
+  rootDirectory: DirectoryModel;
+  currentDirectoryClasses: StudentCollection[];
 }

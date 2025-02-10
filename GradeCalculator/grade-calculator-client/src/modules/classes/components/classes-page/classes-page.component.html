@@ -1,67 +1,107 @@
-@if(gradeStore.classes$ | async; as classes) {
-    <app-navigator-bar [parts]="['Classes']">
-        <div actions class="nav-bar-actions">
-            <button (click)="createClass()" mat-raised-button>
-                <mat-icon>add</mat-icon>
-                Create Class
-            </button>
+@if(classesPageInfo$ | async; as classesPageInfo) {
+<app-navigator-bar [parts]="['Classes']">
+  <div actions class="nav-bar-actions">
+    <button (click)="createDirectory()" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Create Directory
+    </button>
 
-            <input class="hidden" type="file" #uploadclasses id="uploadclasses" name="uploadclasses" accept=".json" (change)="uploadClasses($event)">
-            <button (click)="triggerUploadClasses()" mat-raised-button>
-                <mat-icon>upload</mat-icon>
-                Import Classes
-            </button>
-    
-            <button (click)="downloadClasses(classes)" mat-raised-button>
-                <mat-icon>download</mat-icon>
-                Download Classes
-            </button>
-    
-            <input class="hidden" type="file" #uploadclass id="uploadclass" name="uploadclass" accept=".json" (change)="uploadClass($event)">
-            <button (click)="triggerUploadClass()" mat-raised-button>
-                <mat-icon>upload</mat-icon>
-                Import Class
-            </button>
+    <button (click)="createClass()" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Create Class
+    </button>
+
+    <input class="hidden" type="file" #uploadclasses id="uploadclasses" name="uploadclasses" accept=".json" (change)="uploadClasses($event)" />
+    <button (click)="triggerUploadClasses()" mat-raised-button>
+      <mat-icon>upload</mat-icon>
+      Import Classes
+    </button>
+
+    <button (click)="downloadClasses(classesPageInfo.currentDirectoryClasses)" mat-raised-button>
+      <mat-icon>download</mat-icon>
+      Download Classes
+    </button>
+
+    <input class="hidden" type="file" #uploadclass id="uploadclass" name="uploadclass" accept=".json" (change)="uploadClass($event)" />
+    <button (click)="triggerUploadClass()" mat-raised-button>
+      <mat-icon>upload</mat-icon>
+      Import Class
+    </button>
+  </div>
+</app-navigator-bar>
+
+<div *ngIf="classesPageInfo.activeDirectory" class="navigation-container">
+  <h2 *ngIf="classesPageInfo.activeDirectory.directoryParts && classesPageInfo.activeDirectory.directoryParts.length > 0" class="clickable" (click)="routeBack(0, classesPageInfo.activeDirectory.directoryParts)">root</h2>
+  <mat-icon *ngIf="classesPageInfo.activeDirectory.directoryParts && classesPageInfo.activeDirectory.directoryParts.length > 0">chevron_right</mat-icon>
+  @for (directoryPart of classesPageInfo.activeDirectory.directoryParts; track directoryPart; let i = $index) {
+  <h2 [class.clickable]="i + 1 < classesPageInfo.activeDirectory.directoryParts.length" (click)="routeBack(i + 1, classesPageInfo.activeDirectory.directoryParts)">{{ directoryPart }}</h2>
+  @if(i === 0){<ng-content></ng-content>} @if(i + 1 < classesPageInfo.activeDirectory.directoryParts.length){<mat-icon>chevron_right</mat-icon>} }
+</div>
+
+<app-grid-list>
+  <ng-container *ngIf="classesPageInfo.activeDirectory">
+    @for (directory of classesPageInfo.activeDirectory.subDirectories; track $index) {
+    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="false" [title]="directory.directoryName" [showMenu]="true" [clickable]="false">
+      <div menu-items></div>
+
+      <div content>
+        <!-- <div>Directory: {{ directory.directoryName }}</div> -->
+      </div>
+
+      <div bottom-content>
+        <div class="actions">
+          <button class="action" (click)="openDirectory(directory)" mat-raised-button>Open</button>
         </div>
-    </app-navigator-bar>
-    
-    <app-grid-list>
-        @for (studentCollection of classes; track studentCollection) {
-        <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="false" [title]="studentCollection.name" [showMenu]="true" [clickable]="false" 
-            (clickRequest)="classClicked(studentCollection)" (editRequest)="editClicked(studentCollection)">
-            <div menu-items>
-                <button mat-menu-item (click)="updateClass(studentCollection)">
-                    <mat-icon>edit</mat-icon>
-                    <span>Edit class</span>
-                </button>
-                <button mat-menu-item (click)="copyClass(studentCollection)">
-                    <mat-icon>copy_all</mat-icon>
-                    <span>Copy class</span>
-                </button>
-                <button mat-menu-item (click)="downloadClass(studentCollection)">
-                    <mat-icon>download</mat-icon>
-                    <span>Download backup</span>
-                </button>
-                <button mat-menu-item (click)="deleteClass(studentCollection)">
-                    <mat-icon>delete</mat-icon>
-                    <span>Delete class</span>
-                </button>
-            </div>
-    
-            <div content>
-                <div>Periods: {{studentCollection.gradePeriods.length}}</div>
-                <div>Students: {{studentCollection.students.length}}</div>
-            </div>
-           
-            <div bottom-content>
-                <div class="actions">
-                    <button class="action" (click)="classClicked(studentCollection)" mat-raised-button>Students</button>
-                    <button class="action" (click)="tableClicked(studentCollection)" mat-raised-button>Table</button>
-                    <!-- <button class="action" (click)="editClicked(studentCollection)" mat-raised-button>Configuration</button> -->
-                </div>
-            </div>
-    
-        </app-grid-tile-blob-template-ref>
-        }
-    </app-grid-list>
+      </div>
+    </app-grid-tile-blob-template-ref>
+    }
+  </ng-container>
+
+  @for (studentCollection of classesPageInfo.currentDirectoryClasses; track studentCollection) {
+  <app-grid-tile-blob-template-ref
+    [clickable]="false"
+    [canEdit]="false"
+    [title]="studentCollection.name"
+    [showMenu]="true"
+    [clickable]="false"
+    (clickRequest)="classClicked(studentCollection)"
+    (editRequest)="editClicked(studentCollection)"
+  >
+    <div menu-items>
+      <button mat-menu-item (click)="updateClass(studentCollection)">
+        <mat-icon>edit</mat-icon>
+        <span>Edit class</span>
+      </button>
+      <button mat-menu-item (click)="copyClass(studentCollection)">
+        <mat-icon>copy_all</mat-icon>
+        <span>Copy class</span>
+      </button>
+      <button mat-menu-item (click)="downloadClass(studentCollection)">
+        <mat-icon>download</mat-icon>
+        <span>Download backup</span>
+      </button>
+      <button mat-menu-item (click)="deleteClass(studentCollection)">
+        <mat-icon>delete</mat-icon>
+        <span>Delete class</span>
+      </button>
+      <button mat-menu-item (click)="moveClass(studentCollection)">
+        <mat-icon>delete</mat-icon>
+        <span>Move class</span>
+      </button>
+    </div>
+
+    <div content>
+      <div>Periods: {{ studentCollection.gradePeriods.length }}</div>
+      <div>Students: {{ studentCollection.students.length }}</div>
+    </div>
+
+    <div bottom-content>
+      <div class="actions">
+        <button class="action" (click)="classClicked(studentCollection)" mat-raised-button>Students</button>
+        <button class="action" (click)="tableClicked(studentCollection)" mat-raised-button>Table</button>
+      </div>
+    </div>
+  </app-grid-tile-blob-template-ref>
+  }
+</app-grid-list>
 }
