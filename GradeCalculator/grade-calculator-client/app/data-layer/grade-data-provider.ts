@@ -1,6 +1,6 @@
 import { StudentCollection } from '../dtos/student-collection.model';
 import { GradePeriod } from '../dtos/grade-config/grade-period.model';
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'original-fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, rmdirSync, statSync, writeFileSync } from 'original-fs';
 import { deepCopy } from '../helpers/helper-methods';
 import { setStudentCollectionOrderIds } from '../helpers/sorter-methods';
 
@@ -27,6 +27,10 @@ export class GradeDataProvider {
     studentCollections.forEach(c => setStudentCollectionOrderIds(c));
     studentCollections.forEach(c => result.set(c.id, c));
     return result;
+  }
+
+  public deleteDirectory(directory: string): void {
+    rmdirSync(`${this.getClassesStorageDirectory()}\\${directory}`);
   }
 
   public createDirectory(directory: string): void {

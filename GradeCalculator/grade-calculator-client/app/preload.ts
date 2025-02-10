@@ -31,7 +31,8 @@ contextBridge.exposeInMainWorld('electron', {
   ping: () => ipcRenderer.invoke('ping'),
 
   getAllDirectories: () => ipcRenderer.invoke('getAllDirectories'),
-  createDirectory: () => ipcRenderer.invoke('createDirectory'),
+  createDirectory: (directory: string) => ipcRenderer.invoke('createDirectory', directory),
+  deleteDirectory: (directory: string) => ipcRenderer.invoke('deleteDirectory', directory),
   getAllClasses: () => ipcRenderer.invoke('getAllClasses'),
   getClass: (id: string) => ipcRenderer.invoke('getClass', id),
   updateClass: (request: UpdateStudentCollectionDto) => ipcRenderer.send('updateClass', request),

@@ -128,11 +128,15 @@ export class ClassesPageComponent {
     }
   }
 
-  public async createDirectory(): Promise<void> {
+  public async createDirectory(currentDirectory: DirectoryModel): Promise<void> {
     const result = await this.openDirectoryDialog();
     if (result) {
-      await firstValueFrom(this.studentCollectionClient.createDirectory(result));
+      await firstValueFrom(this.studentCollectionClient.createDirectory(`${currentDirectory.directory}\\${result}`));
     }
+  }
+
+  public async deleteDirectory(currentDirectory: DirectoryModel): Promise<void> {
+    await firstValueFrom(this.studentCollectionClient.deleteDirectory(currentDirectory.directory));
   }
 
   public downloadClass(studentCollection: StudentCollection): void {

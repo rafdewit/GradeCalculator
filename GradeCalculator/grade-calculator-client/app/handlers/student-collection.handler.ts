@@ -14,9 +14,17 @@ export class StudentCollectionHandler {
       return result;
     });
 
+    ipcMain.handle('deleteDirectory', async (c, args: string) => {
+      const result = gradeDataProvider.deleteDirectory(args);
+      const update = gradeDataProvider.getAllDirectories();
+      await updateMessenger.SendUpdatedDirectories(update);
+      return result;
+    });
+
     ipcMain.handle('createDirectory', async (c, args: string) => {
       const result = gradeDataProvider.createDirectory(args);
-      await updateMessenger.SendUpdatedDirectories(gradeDataProvider.getAllDirectories());
+      const update = gradeDataProvider.getAllDirectories();
+      await updateMessenger.SendUpdatedDirectories(update);
       return result;
     });
 

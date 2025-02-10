@@ -7,6 +7,7 @@ import { StudentCollection } from 'app/dtos/student-collection.model';
 export abstract class IStudentCollectionClient {
   public abstract getAllDirectories(): Observable<string[]>;
   public abstract createDirectory(directory: string): Observable<void>;
+  public abstract deleteDirectory(directory: string): Observable<void>;
   public abstract getAllClasses(): Observable<StudentCollection[]>;
   public abstract getClass(classId: string): Observable<StudentCollection>;
   public abstract updateClass(request: UpdateStudentCollectionDto): Observable<void>;

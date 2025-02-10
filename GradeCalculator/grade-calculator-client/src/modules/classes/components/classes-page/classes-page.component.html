@@ -1,7 +1,12 @@
 @if(classesPageInfo$ | async; as classesPageInfo) {
 <app-navigator-bar [parts]="['Classes']">
   <div actions class="nav-bar-actions">
-    <button (click)="createDirectory()" mat-raised-button>
+    <button (click)="deleteDirectory(classesPageInfo.activeDirectory)" *ngIf="classesPageInfo.activeDirectory && classesPageInfo.currentDirectoryClasses.length === 0" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Delete Directory
+    </button>
+
+    <button *ngIf="classesPageInfo.activeDirectory" (click)="createDirectory(classesPageInfo.activeDirectory)" mat-raised-button>
       <mat-icon>add</mat-icon>
       Create Directory
     </button>
@@ -38,25 +43,13 @@
   @if(i === 0){<ng-content></ng-content>} @if(i + 1 < classesPageInfo.activeDirectory.directoryParts.length){<mat-icon>chevron_right</mat-icon>} }
 </div>
 
+<mat-chip-set *ngIf="classesPageInfo.activeDirectory" aria-label="Fish selection">
+  @for (directory of classesPageInfo.activeDirectory.subDirectories; track $index) {
+  <mat-chip (click)="openDirectory(directory)" class="clickable">{{ directory.directoryName }}</mat-chip>
+  }
+</mat-chip-set>
+
 <app-grid-list>
-  <ng-container *ngIf="classesPageInfo.activeDirectory">
-    @for (directory of classesPageInfo.activeDirectory.subDirectories; track $index) {
-    <app-grid-tile-blob-template-ref [clickable]="false" [canEdit]="false" [title]="directory.directoryName" [showMenu]="true" [clickable]="false">
-      <div menu-items></div>
-
-      <div content>
-        <!-- <div>Directory: {{ directory.directoryName }}</div> -->
-      </div>
-
-      <div bottom-content>
-        <div class="actions">
-          <button class="action" (click)="openDirectory(directory)" mat-raised-button>Open</button>
-        </div>
-      </div>
-    </app-grid-tile-blob-template-ref>
-    }
-  </ng-container>
-
   @for (studentCollection of classesPageInfo.currentDirectoryClasses; track studentCollection) {
   <app-grid-tile-blob-template-ref
     [clickable]="false"

@@ -12,6 +12,10 @@ export class StudentCollectionElectronClient extends IStudentCollectionClient {
     super();
   }
 
+  public override deleteDirectory(directory: string): Observable<void> {
+    return from((window as any).electron.deleteDirectory(directory)) as Observable<void>;
+  }
+
   public override createDirectory(directory: string): Observable<void> {
     return from((window as any).electron.createDirectory(directory)) as Observable<void>;
   }

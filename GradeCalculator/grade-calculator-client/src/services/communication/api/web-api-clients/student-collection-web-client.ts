@@ -16,6 +16,10 @@ export class StudentCollectionWebClient extends IStudentCollectionClient {
     super();
   }
 
+  public override deleteDirectory(directory: string): Observable<void> {
+    return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/delete-directory`, { directory: directory });
+  }
+
   public override createDirectory(directory: string): Observable<void> {
     return this.httpClient.post<void>(this.base.baseUrl + `${this.proxyName}/create-directory`, { directory: directory });
   }
