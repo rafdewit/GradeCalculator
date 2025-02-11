@@ -45,7 +45,7 @@ export class ClassesPageComponent {
         if (!directories || directories.length === 0) {
           return structure;
         } else {
-          return this.getModel(structure.subDirectories, directories);
+          return this.getModel(structure.subDirectories, directories) ?? structure;
         }
       }),
     );
@@ -97,11 +97,7 @@ export class ClassesPageComponent {
   private getModel(models: DirectoryModel[], directoryParts: string[]): DirectoryModel | null {
     for (let i = 0; i < models.length; i++) {
       const model = models[i];
-      console.log(model);
-      console.log(directoryParts);
-      console.log('directoryParts');
       if (this.areEqual(model.directoryParts ?? [], directoryParts ?? [])) {
-        console.log(model);
         return model;
       }
 

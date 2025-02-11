@@ -5,7 +5,7 @@ export class UpdateMessenger {
   constructor(private mainWindow: BrowserWindow) {}
 
   public async SendUpdatedDirectories(directories: string[]) {
-    this.mainWindow.webContents.send('directoriesUpdated', directories);
+    this.mainWindow.webContents.send('directoriesupdated', directories);
   }
 
   public async SendUpdatedStudentCollection(studentCollection: StudentCollection) {

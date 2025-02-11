@@ -6,7 +6,7 @@ export class ActiveDirectoryService {
   public activeDirectory$ = new BehaviorSubject<string[]>(this.getInitial());
 
   public changeDirectory(directoryTarget: string[]): void {
-    // localStorage.setItem('active-directory', directoryTarget.join(';'));
+    localStorage.setItem('active-directory', directoryTarget.join(';'));
     this.activeDirectory$.next(directoryTarget);
   }
 

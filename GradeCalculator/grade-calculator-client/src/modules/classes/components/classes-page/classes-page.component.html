@@ -1,16 +1,6 @@
 @if(classesPageInfo$ | async; as classesPageInfo) {
 <app-navigator-bar [parts]="['Classes']">
   <div actions class="nav-bar-actions">
-    <button (click)="deleteDirectory(classesPageInfo.activeDirectory)" *ngIf="classesPageInfo.activeDirectory && classesPageInfo.currentDirectoryClasses.length === 0" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      Delete Directory
-    </button>
-
-    <button *ngIf="classesPageInfo.activeDirectory" (click)="createDirectory(classesPageInfo.activeDirectory)" mat-raised-button>
-      <mat-icon>add</mat-icon>
-      Create Directory
-    </button>
-
     <button (click)="createClass()" mat-raised-button>
       <mat-icon>add</mat-icon>
       Create Class
@@ -32,24 +22,45 @@
       <mat-icon>upload</mat-icon>
       Import Class
     </button>
+
+    <button *ngIf="classesPageInfo.activeDirectory" (click)="createDirectory(classesPageInfo.activeDirectory)" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Create Directory
+    </button>
+
+    <button (click)="deleteDirectory(classesPageInfo.activeDirectory)" *ngIf="classesPageInfo.activeDirectory && classesPageInfo.currentDirectoryClasses.length === 0" mat-raised-button>
+      <mat-icon>delete</mat-icon>
+      Delete Directory
+    </button>
   </div>
 </app-navigator-bar>
 
 <div *ngIf="classesPageInfo.activeDirectory" class="navigation-container">
-  <h2 *ngIf="classesPageInfo.activeDirectory.directoryParts && classesPageInfo.activeDirectory.directoryParts.length > 0" class="clickable" (click)="routeBack(0, classesPageInfo.activeDirectory.directoryParts)">root</h2>
-  <mat-icon *ngIf="classesPageInfo.activeDirectory.directoryParts && classesPageInfo.activeDirectory.directoryParts.length > 0">chevron_right</mat-icon>
-  @for (directoryPart of classesPageInfo.activeDirectory.directoryParts; track directoryPart; let i = $index) {
+  @if (classesPageInfo.activeDirectory.subDirectories.length > 0 || classesPageInfo.activeDirectory.directoryParts.length > 0) {
+  <h2 class="clickable" (click)="routeBack(0, classesPageInfo.activeDirectory.directoryParts)">root</h2>
+  <mat-icon>chevron_right</mat-icon>
+  } @for (directoryPart of classesPageInfo.activeDirectory.directoryParts; track directoryPart; let i = $index) {
   <h2 [class.clickable]="i + 1 < classesPageInfo.activeDirectory.directoryParts.length" (click)="routeBack(i + 1, classesPageInfo.activeDirectory.directoryParts)">{{ directoryPart }}</h2>
-  @if(i === 0){<ng-content></ng-content>} @if(i + 1 < classesPageInfo.activeDirectory.directoryParts.length){<mat-icon>chevron_right</mat-icon>} }
+  @if(i === 0){<ng-content></ng-content>} @if(classesPageInfo.activeDirectory.subDirectories.length > 0 || i + 1 < classesPageInfo.activeDirectory.directoryParts.length){<mat-icon>chevron_right</mat-icon>} }
+
+  <mat-chip-set *ngIf="classesPageInfo.activeDirectory">
+    @for (directory of classesPageInfo.activeDirectory.subDirectories; track $index) {
+    <mat-chip (click)="openDirectory(directory)" class="clickable">{{ directory.directoryName }}</mat-chip>
+    }
+  </mat-chip-set>
 </div>
 
-<mat-chip-set *ngIf="classesPageInfo.activeDirectory" aria-label="Fish selection">
-  @for (directory of classesPageInfo.activeDirectory.subDirectories; track $index) {
-  <mat-chip (click)="openDirectory(directory)" class="clickable">{{ directory.directoryName }}</mat-chip>
-  }
-</mat-chip-set>
+<div class="center-info" *ngIf="classesPageInfo.currentDirectoryClasses.length === 0">
+  <div class="center-info-container">
+    <span>This directory is still empty!</span>
+    <button class="create-initial-class" (click)="createClass()" mat-raised-button>
+      <mat-icon>add</mat-icon>
+      Create Class
+    </button>
+  </div>
+</div>
 
-<app-grid-list>
+<app-grid-list *ngIf="classesPageInfo.currentDirectoryClasses.length > 0">
   @for (studentCollection of classesPageInfo.currentDirectoryClasses; track studentCollection) {
   <app-grid-tile-blob-template-ref
     [clickable]="false"

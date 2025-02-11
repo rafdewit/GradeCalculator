@@ -17,6 +17,10 @@
   }
 
   .nav-bar-actions {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
     button {
       margin-right: 4px;
     }
@@ -34,6 +38,7 @@
     align-items: center;
 
     h2 {
+      height: 36px;
       margin: 0;
     }
   }
@@ -43,6 +48,24 @@
 
     &:hover {
       opacity: .9;
+    }
+  }
+
+  .center-info {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+
+    .center-info-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      .create-initial-class {
+        margin-left: 8px;
+      }
     }
   }
 }
