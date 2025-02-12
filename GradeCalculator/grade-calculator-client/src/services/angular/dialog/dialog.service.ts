@@ -4,6 +4,8 @@ import { StudentCollection } from 'app/dtos/student-collection.model';
 import { firstValueFrom } from 'rxjs';
 import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
 import { SelectMultiTargetDialogData } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.data';
+import { MoveDirectoryDialogComponent } from 'src/modules/classes/components/classes-page/move-directory-dialog/move-directory-dialog.component';
+import { MoveDirectoryDialogData } from 'src/modules/classes/components/classes-page/move-directory-dialog/move-directory-dialog.data';
 import { ConfirmationDialogData } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog-data';
 import { ConfirmationDialogComponent } from 'src/modules/common-module/dialogs/confirmation-dialog/confirmation-dialog.component';
 import { MultiCollectionTarget, MultiCollectionTargetStore } from 'src/services/stores/multi-collection-target.store';
@@ -43,6 +45,19 @@ export class DialogService {
     input.data = data;
 
     const dialogRef = this.matDialog.open<SelectMultiTargetDialogComponent, SelectMultiTargetDialogData, MultiCollectionTarget>(SelectMultiTargetDialogComponent, input);
+    const dialogResult = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
+    return dialogResult;
+  }
+
+  public async openMoveToDirectoryDialog(directories: string[][]): Promise<string[] | null> {
+    const data: MoveDirectoryDialogData = {
+      directories: directories,
+    };
+
+    const input = new MatDialogConfig<MoveDirectoryDialogData>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<MoveDirectoryDialogComponent, MoveDirectoryDialogData, string[]>(MoveDirectoryDialogComponent, input);
     const dialogResult = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
     return dialogResult;
   }

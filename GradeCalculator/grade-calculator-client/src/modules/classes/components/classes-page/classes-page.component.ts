@@ -60,12 +60,13 @@ export class ClassesPageComponent {
       }),
     );
 
-    this.classesPageInfo$ = combineLatest([this.selectedDirectoryModel$, this.directoryClasses$, this.directoriesStore.directoryStructure$]).pipe(
-      map(([selectedDirectoryModel, directoryClasses, root]) => {
+    this.classesPageInfo$ = combineLatest([this.selectedDirectoryModel$, this.directoryClasses$, this.directoriesStore.directoryStructure$, this.directoriesStore.directories$]).pipe(
+      map(([selectedDirectoryModel, directoryClasses, root, directories]) => {
         const result: ClassesPageInfo = {
           currentDirectoryClasses: directoryClasses,
           rootDirectory: root,
           activeDirectory: selectedDirectoryModel,
+          directories: directories.map(d => d.split('\\')),
         };
 
         return result;
@@ -191,7 +192,13 @@ export class ClassesPageComponent {
     }
   }
 
-  public async moveClass(studentCollection: StudentCollection): Promise<void> {}
+  public async moveClass(studentCollection: StudentCollection, directories: string[][]): Promise<void> {
+    const directoryParts = await this.dialogService.openMoveToDirectoryDialog(directories);
+    if (directoryParts) {
+      console.log(directoryParts);
+      // await firstValueFrom(this.studentCollectionClient.moveClass(studentCollection.id));
+    }
+  }
 
   public classClicked(studentCollection: StudentCollection): void {
     this.router.navigate([studentCollection.id, 'score-overview'], { relativeTo: this.activatedRoute });
@@ -256,4 +263,5 @@ export interface ClassesPageInfo {
   activeDirectory: DirectoryModel | null;
   rootDirectory: DirectoryModel;
   currentDirectoryClasses: StudentCollection[];
+  directories: string[][];
 }

@@ -25,6 +25,7 @@ import { ScoreRepresentationComponent } from './components/common/score-represen
 import { EditStudentsSingleScoreDialogComponent } from './components/class-score-table/edit-students-single-score-dialog/edit-students-single-score-dialog.component';
 import { SelectMultiTargetDialogComponent } from 'src/modules/classes/components/class-score-table/SelectMultiTargetDialog/select-multi-target-dialog.component';
 import { CreateDirectoryDialogComponent } from 'src/modules/classes/components/classes-page/create-directory-dialog/create-directory-dialog.component';
+import { MoveDirectoryDialogComponent } from 'src/modules/classes/components/classes-page/move-directory-dialog/move-directory-dialog.component';
 
 const routes: Routes = [
   { path: 'classes-page', component: ClassesPageComponent },
@@ -56,6 +57,7 @@ const routes: Routes = [
     PercentageRepresentationComponent,
     CreateClassDialogComponent,
     CreateDirectoryDialogComponent,
+    MoveDirectoryDialogComponent,
     CreatePeriodDialogComponent,
     CreateStudentDialogComponent,
     ClassScoreTableComponent,

@@ -1,0 +1,23 @@
+<app-theme-container>
+  <h2 mat-dialog-title>Select target directory</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field class="control-panel-item">
+      <mat-label>Target</mat-label>
+      <mat-select [formControl]="valueFormControl">
+        @for (target of directoryTempModels; track target) {
+        <mat-option [value]="target">
+          {{ target.directory }}
+        </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+    <div class="right-buttons">
+      <button mat-raised-button color="primary" (click)="acceptChanges()" [disabled]="this.valueFormControl.invalid" cdkFocusInitial>{{ 'Select' }}</button>
+    </div>
+  </mat-dialog-actions>
+</app-theme-container>
