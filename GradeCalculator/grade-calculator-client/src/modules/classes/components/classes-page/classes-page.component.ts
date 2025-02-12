@@ -195,8 +195,7 @@ export class ClassesPageComponent {
   public async moveClass(studentCollection: StudentCollection, directories: string[][]): Promise<void> {
     const directoryParts = await this.dialogService.openMoveToDirectoryDialog(directories);
     if (directoryParts) {
-      console.log(directoryParts);
-      // await firstValueFrom(this.studentCollectionClient.moveClass(studentCollection.id));
+      await firstValueFrom(this.studentCollectionClient.moveClass({ id: studentCollection.id, directoryParts: directoryParts }));
     }
   }
 

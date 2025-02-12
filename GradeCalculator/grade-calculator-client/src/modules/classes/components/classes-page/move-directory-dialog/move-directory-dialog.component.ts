@@ -28,7 +28,7 @@ export class MoveDirectoryDialogComponent {
   }
 
   public acceptChanges(): void {
-    this.dialogRef.close(this.valueFormControl.value);
+    this.dialogRef.close(this.valueFormControl.value.directoryParts);
   }
 
   public cancel(): void {

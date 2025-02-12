@@ -5,11 +5,16 @@ import { CreateStudentCollectionDto } from '../request/student-collection/create
 import { CopyStudentCollectionDto } from '../request/student-collection/copy-class-request';
 import { IStudentCollectionClient } from '../base/student-collection-client';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { MoveClassDirectoryRequest } from 'src/services/communication/api/request/student-collection/move-class-directory-request';
 
 @Injectable()
 export class StudentCollectionElectronClient extends IStudentCollectionClient {
   constructor() {
     super();
+  }
+
+  public override moveClass(request: MoveClassDirectoryRequest): Observable<void> {
+    return from((window as any).electron.moveClass(request)) as Observable<void>;
   }
 
   public override deleteDirectory(directory: string): Observable<void> {

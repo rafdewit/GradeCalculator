@@ -3,6 +3,7 @@ import { UpdateStudentCollectionDto } from '../request/student-collection/update
 import { CreateStudentCollectionDto } from '../request/student-collection/create-class-request';
 import { CopyStudentCollectionDto } from '../request/student-collection/copy-class-request';
 import { StudentCollection } from 'app/dtos/student-collection.model';
+import { MoveClassDirectoryRequest } from '../request/student-collection/move-class-directory-request';
 
 export abstract class IStudentCollectionClient {
   public abstract getAllDirectories(): Observable<string[]>;
@@ -14,4 +15,5 @@ export abstract class IStudentCollectionClient {
   public abstract copyClass(request: CopyStudentCollectionDto): Observable<void>;
   public abstract createClass(request: CreateStudentCollectionDto): Observable<void>;
   public abstract deleteClass(id: string): Observable<void>;
+  public abstract moveClass(request: MoveClassDirectoryRequest): Observable<void>;
 }

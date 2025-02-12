@@ -21,6 +21,7 @@ import { UpdateStudentPeriodDto } from './request/students/update-student-period
 import { TargetMoveSingleGradeConfigurationDto } from './request/single/target-move-single-grade-configuration';
 import { TargetMoveMultiGradeConfigurationDto } from './request/multi/target-move-multi-grade-configuration';
 import { StudentCollection } from './dtos/student-collection.model';
+import { MoveClassDirectoryRequest } from './request/student-collection/move-class-directory-request';
 
 const { contextBridge, ipcRenderer } = require('electron');
 
@@ -39,6 +40,7 @@ contextBridge.exposeInMainWorld('electron', {
   copyClass: (request: CopyStudentCollectionDto) => ipcRenderer.send('copyClass', request),
   createClass: (request: CreateStudentCollectionDto) => ipcRenderer.send('createClass', request),
   deleteClass: (request: string) => ipcRenderer.send('deleteClass', request),
+  moveClass: (request: MoveClassDirectoryRequest) => ipcRenderer.send('moveClass', request),
 
   updateStudent: (request: UpdateStudentPeriodDto) => ipcRenderer.send('updateStudent', request),
   createStudent: (request: CreateStudentPeriodDto) => ipcRenderer.send('createStudent', request),

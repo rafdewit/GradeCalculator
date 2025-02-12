@@ -92,13 +92,23 @@ export class GradeDataProvider {
   public async createOrUpdate(studentCollection: StudentCollection): Promise<void> {
     this._cache.set(studentCollection.id, studentCollection);
     const collectionPaths = studentCollection.directories ?? [];
+    console.log(collectionPaths);
     const paths = [this.getClassesStorageDirectory(), ...collectionPaths, `Class-${studentCollection.id}.json`];
     const resultingPath = this.path.join(...paths);
     writeFileSync(resultingPath, JSON.stringify(studentCollection));
   }
 
   public delete(id: string): void {
+    const studentCollection = this._cache.get(id);
+    if (!studentCollection) {
+      return;
+    }
+
     this._cache.delete(id);
-    rmSync(`${this.getClassesStorageDirectory()}/Class-${id}.json`);
+    const collectionPaths = studentCollection.directories ?? [];
+    console.log(collectionPaths);
+    const paths = [this.getClassesStorageDirectory(), ...collectionPaths, `Class-${studentCollection.id}.json`];
+    const resultingPath = this.path.join(...paths);
+    rmSync(resultingPath);
   }
 }

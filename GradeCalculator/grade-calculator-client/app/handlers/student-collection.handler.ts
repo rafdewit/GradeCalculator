@@ -1,3 +1,4 @@
+import { MoveClassDirectoryRequest } from '../request/student-collection/move-class-directory-request';
 import { GradeDataProvider } from '../data-layer/grade-data-provider';
 import { UpdateMessenger } from '../data-layer/update-messenger';
 import { StudentCollection } from '../dtos/student-collection.model';
@@ -55,6 +56,16 @@ export class StudentCollectionHandler {
       const item = await gradeDataProvider.getDeepCopy(arg.id);
       if (item) {
         item.name = arg.className;
+        await gradeDataProvider.createOrUpdate(item);
+        await updateMessenger.SendUpdatedStudentCollection(item);
+      }
+    });
+
+    ipcMain.on('moveClass', async (c, arg: MoveClassDirectoryRequest) => {
+      const item = await gradeDataProvider.getDeepCopy(arg.id);
+      if (item) {
+        gradeDataProvider.delete(item.id);
+        item.directories = arg.directoryParts;
         await gradeDataProvider.createOrUpdate(item);
         await updateMessenger.SendUpdatedStudentCollection(item);
       }
