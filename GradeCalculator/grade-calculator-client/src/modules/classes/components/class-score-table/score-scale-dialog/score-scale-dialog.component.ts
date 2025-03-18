@@ -15,6 +15,8 @@ export class ScoreScaleDialogComponent {
   public controls: FormGroup<{
     totalScore: FormControl<number>;
     simpleMode: FormControl<boolean>;
+    roundScores: FormControl<boolean>;
+    roundByMultipleOfValue: FormControl<number>;
   }>;
   public scoreDescriptors$: Observable<ScoreDescriptor[]>;
 
@@ -22,6 +24,8 @@ export class ScoreScaleDialogComponent {
     this.controls = this.formBuilder.group({
       totalScore: this.formBuilder.control<number>(20),
       simpleMode: this.formBuilder.control<boolean>(true),
+      roundScores: this.formBuilder.control<boolean>(true),
+      roundByMultipleOfValue: this.formBuilder.control<number>(0.5),
     });
 
     const formValue$ = this.controls.valueChanges.pipe(
@@ -35,9 +39,9 @@ export class ScoreScaleDialogComponent {
 
         const result: ScoreDescriptor[] = [];
         const firstSubResult: ScoreDescriptor = {
-          minScore: formValue.totalScore * 0,
+          minScore: formValue.roundScores ? this.roundToNearestMultiple(formValue.totalScore * 0, formValue.roundByMultipleOfValue) : formValue.totalScore * 0,
+          maxScore: formValue.roundScores ? this.roundToNearestMultiple(formValue.totalScore * toUseScoreParts[0].border, formValue.roundByMultipleOfValue) : formValue.totalScore * toUseScoreParts[0].border,
           minPercentage: 0,
-          maxScore: formValue.totalScore * toUseScoreParts[0].border,
           maxPercentage: toUseScoreParts[0].border,
           scoreRepresentation: toUseScoreParts[0].score,
         };
@@ -45,9 +49,9 @@ export class ScoreScaleDialogComponent {
 
         for (let i = 0; i < toUseScoreParts.length - 2; i++) {
           const subResult: ScoreDescriptor = {
-            minScore: formValue.totalScore * toUseScoreParts[i].border,
+            minScore: formValue.roundScores ? this.roundToNearestMultiple(formValue.totalScore * toUseScoreParts[i].border, formValue.roundByMultipleOfValue) : formValue.totalScore * toUseScoreParts[i].border,
+            maxScore: formValue.roundScores ? this.roundToNearestMultiple(formValue.totalScore * toUseScoreParts[i + 1].border, formValue.roundByMultipleOfValue) : formValue.totalScore * toUseScoreParts[i + 1].border,
             minPercentage: toUseScoreParts[i].border,
-            maxScore: formValue.totalScore * toUseScoreParts[i + 1].border,
             maxPercentage: toUseScoreParts[i + 1].border,
             scoreRepresentation: toUseScoreParts[i + 1].score,
           };
@@ -59,6 +63,10 @@ export class ScoreScaleDialogComponent {
     );
   }
 
+  private roundToNearestMultiple(value: number, multiple: number): number {
+    return Math.round(value / multiple) * multiple;
+  }
+
   public cancel(): void {
     this.dialogRef.close();
   }
@@ -67,6 +75,8 @@ export class ScoreScaleDialogComponent {
 export interface ScoreDialogControls {
   totalScore: number;
   simpleMode: boolean;
+  roundScores: boolean;
+  roundByMultipleOfValue: number;
 }
 
 export interface ScoreDescriptor {

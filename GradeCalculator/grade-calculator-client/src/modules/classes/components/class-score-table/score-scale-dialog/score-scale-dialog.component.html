@@ -2,13 +2,26 @@
   <h2 mat-dialog-title>Calculate score ranges</h2>
 
   <mat-dialog-content class="mat-typography">
-    <mat-form-field>
-      <mat-label>Total Score</mat-label>
-      <input type="number" min="0" matInput [formControl]="controls.controls.totalScore" />
-    </mat-form-field>
+    <h3>Controls:</h3>
+    <div class="controls-row">
+      <mat-form-field [subscriptSizing]="'dynamic'">
+        <mat-label>Total Score</mat-label>
+        <input type="number" min="0" matInput [formControl]="controls.controls.totalScore" />
+      </mat-form-field>
 
-    <mat-checkbox [formControl]="controls.controls.simpleMode"> Simple Mode </mat-checkbox>
+      <mat-checkbox class="margin-left" [formControl]="controls.controls.simpleMode"> Simple Mode </mat-checkbox>
+    </div>
 
+    <div class="controls-row">
+      <mat-checkbox [formControl]="controls.controls.roundScores"> Round Scores </mat-checkbox>
+
+      <mat-form-field class="margin-left" [subscriptSizing]="'dynamic'">
+        <mat-label>Round By Multiple Of Value</mat-label>
+        <input type="number" min="0" matInput [formControl]="controls.controls.roundByMultipleOfValue" />
+      </mat-form-field>
+    </div>
+
+    <h3>Score Scale Info:</h3>
     <table>
       <tr>
         <th>From(%)</th>
@@ -29,7 +42,7 @@
         <td>{{ scoreDescriptor.maxPercentage | percentage }}</td>
         <td></td>
         <td>{{ scoreDescriptor.minScore | number : '.2-2' }}</td>
-        <td>> - <=</td>
+        <td>>= - <</td>
         <td>{{ scoreDescriptor.maxScore | number : '.2-2' }}</td>
         <td></td>
         <td>{{ scoreDescriptor.scoreRepresentation }}</td>
