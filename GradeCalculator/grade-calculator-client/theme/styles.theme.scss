@@ -5,29 +5,26 @@
 @use "../src/modules/common-module/theme/theme-selector/theme-selector.theme.scss" as theme-selector;
 @use "../src/modules/common-module/grid/grid-tile-blob/grid-tile-blob.theme.scss" as grid-tile-blob;
 @use "../src/modules/classes/components/class-score-table/class-score-table.theme.scss" as class-score-table;
+@use "../src/modules/classes/components/class-score-table/score-scale-dialog/score-scale-dialog.theme.scss" as score-scale-dialog;
 @include mat.core();
 
 
 // Define a light theme
 $blue-primary: mat.define-palette(custom-material-palettes.$custom-blue, 400);
 $light-accent: mat.define-palette(custom-material-palettes.$custom-orange, A200, A100, A400);
-$light-theme: mat.define-light-theme((
- color: (
-   primary: $blue-primary,
-   accent: $light-accent,
- ),
- density: -1,
-));
+$light-theme: mat.define-light-theme((color: (primary: $blue-primary,
+        accent: $light-accent,
+      ),
+      density: -1,
+    ));
 
 // Define a dark theme
 $dark-accent: mat.define-palette(custom-material-palettes.$custom-red, A200, A100, A400);
-$dark-theme: mat.define-dark-theme((
- color: (
-   primary: $blue-primary,
-   accent: $dark-accent,
- ),
- density: -1,
-));
+$dark-theme: mat.define-dark-theme((color: (primary: $blue-primary,
+        accent: $dark-accent,
+      ),
+      density: -1,
+    ));
 
 // mat.$theme-ignore-duplication-warnings: true;
 
@@ -38,16 +35,18 @@ $dark-theme: mat.define-dark-theme((
 @include scrollbar.theme(custom-palettes.$internal-theme);
 @include grid-tile-blob.theme(custom-palettes.$internal-theme);
 @include class-score-table.theme(custom-palettes.$internal-theme);
+@include score-scale-dialog.theme(custom-palettes.$internal-theme);
 
 @include theme-selector.theme(custom-palettes.$dark-internal-theme, custom-palettes.$internal-theme);
 
 .dark-theme {
-    // @include mat.core-theme($dark-theme);
-    @include mat.all-component-themes($dark-theme);
-    @include scrollbar.theme(custom-palettes.$dark-internal-theme);
-    @include grid-tile-blob.theme(custom-palettes.$dark-internal-theme);
-    @include class-score-table.theme(custom-palettes.$dark-internal-theme);
-    
-    color: white;
-    background-color: #303030;
+  // @include mat.core-theme($dark-theme);
+  @include mat.all-component-themes($dark-theme);
+  @include scrollbar.theme(custom-palettes.$dark-internal-theme);
+  @include grid-tile-blob.theme(custom-palettes.$dark-internal-theme);
+  @include class-score-table.theme(custom-palettes.$dark-internal-theme);
+  @include score-scale-dialog.theme(custom-palettes.$dark-internal-theme);
+
+  color: white;
+  background-color: #303030;
 }

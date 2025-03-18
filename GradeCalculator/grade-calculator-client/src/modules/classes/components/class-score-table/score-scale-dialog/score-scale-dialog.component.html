@@ -1,0 +1,31 @@
+<app-theme-container>
+  <h2 mat-dialog-title>Calculate score ranges</h2>
+
+  <mat-dialog-content class="mat-typography">
+    <mat-form-field>
+      <mat-label>Total Score</mat-label>
+      <input type="number" min="0" matInput [formControl]="totalScoreFormControl" />
+    </mat-form-field>
+
+    <table>
+      <tr>
+        <th>From</th>
+        <th>From(%)</th>
+        <th>To</th>
+        <th>To (%)</th>
+        <th>Score</th>
+      </tr>
+      <tr *ngFor="let scoreDescriptor of scoreDescriptors$ | async; track: scoreDescriptors">
+        <td>{{ scoreDescriptor.minScore | number : '.2-2' }}</td>
+        <td>{{ scoreDescriptor.minPercentage | percentage }}</td>
+        <td>{{ scoreDescriptor.maxScore | number : '.2-2' }}</td>
+        <td>{{ scoreDescriptor.maxPercentage | percentage }}</td>
+        <td>{{ scoreDescriptor.scoreRepresentation }}</td>
+      </tr>
+    </table>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button mat-raised-button (click)="cancel()">Cancel</button>
+  </mat-dialog-actions>
+</app-theme-container>

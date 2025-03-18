@@ -1,6 +1,13 @@
 @if(info$ | async; as info) { @if(info.classScoreInfo; as classScoreInfo) {
 <div class="page-container">
-  <app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]"></app-navigator-bar>
+  <app-navigator-bar [partsNav]="[2]" [parts]="['Classes', info.navigationName]">
+    <ng-container actions>
+      <button mat-raised-button (click)="openScoreScaleDialog()">
+        <mat-icon>scoreboard</mat-icon>
+        <span>Score Scale Info Dialog</span>
+      </button>
+    </ng-container>
+  </app-navigator-bar>
 
   <div class="filter-table-container">
     <div class="control-panel">

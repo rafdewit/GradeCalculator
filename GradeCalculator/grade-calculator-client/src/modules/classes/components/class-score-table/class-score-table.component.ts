@@ -21,6 +21,8 @@ import { GradePeriod } from 'app/dtos/grade-config/grade-period.model';
 import { MultiGradeConfiguration } from 'app/dtos/grade-config/multi-grade-configuration.model';
 import { SingleGradesUpdateDto } from 'app/request/grade-update/single-grades-update';
 import { SingleGradeConfiguration } from 'app/dtos/grade-config/single-grade-configuration.model';
+import { ScoreScaleDialogData } from 'src/modules/classes/components/class-score-table/score-scale-dialog/score-scale-dialog.data';
+import { ScoreScaleDialogComponent } from 'src/modules/classes/components/class-score-table/score-scale-dialog/score-scale-dialog.component';
 
 @Component({
   selector: 'app-class-score-table',
@@ -230,6 +232,16 @@ export class ClassScoreTableComponent implements OnDestroy {
 
       await firstValueFrom(this.singleGradeClient.updateSingleGrades(request));
     }
+  }
+
+  public async openScoreScaleDialog(): Promise<void> {
+    const data: ScoreScaleDialogData = {};
+
+    const input = new MatDialogConfig<ScoreScaleDialogData>();
+    input.data = data;
+
+    const dialogRef = this.matDialog.open<ScoreScaleDialogComponent, ScoreScaleDialogData, void>(ScoreScaleDialogComponent, input);
+    const result = (await firstValueFrom(dialogRef.afterClosed())) ?? null;
   }
 }
 
