@@ -4,22 +4,34 @@
   <mat-dialog-content class="mat-typography">
     <mat-form-field>
       <mat-label>Total Score</mat-label>
-      <input type="number" min="0" matInput [formControl]="totalScoreFormControl" />
+      <input type="number" min="0" matInput [formControl]="controls.controls.totalScore" />
     </mat-form-field>
+
+    <mat-checkbox [formControl]="controls.controls.simpleMode"> Simple Mode </mat-checkbox>
 
     <table>
       <tr>
-        <th>From</th>
         <th>From(%)</th>
-        <th>To</th>
         <th>To (%)</th>
+
+        <th></th>
+
+        <th>From</th>
+        <th></th>
+        <th>To</th>
+
+        <th></th>
+
         <th>Score</th>
       </tr>
       <tr *ngFor="let scoreDescriptor of scoreDescriptors$ | async; track: scoreDescriptors">
-        <td>{{ scoreDescriptor.minScore | number : '.2-2' }}</td>
         <td>{{ scoreDescriptor.minPercentage | percentage }}</td>
-        <td>{{ scoreDescriptor.maxScore | number : '.2-2' }}</td>
         <td>{{ scoreDescriptor.maxPercentage | percentage }}</td>
+        <td></td>
+        <td>{{ scoreDescriptor.minScore | number : '.2-2' }}</td>
+        <td>> - <=</td>
+        <td>{{ scoreDescriptor.maxScore | number : '.2-2' }}</td>
+        <td></td>
         <td>{{ scoreDescriptor.scoreRepresentation }}</td>
       </tr>
     </table>
